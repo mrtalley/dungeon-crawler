@@ -15,8 +15,9 @@ int main(int argc, char *argv[]){
     int xStart = 0;
     int yStart = 0;
     int frame = 1;
+    int x, y, i;
 
-    for(int i = 1; i < argc; i++)
+    for(i = 1; i < argc; i++)
     {
         xStart = atoi(argv[i]);
         i++;
@@ -25,9 +26,9 @@ int main(int argc, char *argv[]){
         xStart = 0; yStart = 0;
     }
 
-    for(int y = 0; y < 24; y++)
+    for(y = 0; y < 24; y++)
     {
-        for(int x = 0; x < 80; x++)
+        for(x = 0; x < 80; x++)
         {
             if(world[y][x] != 'O')
                 world[y][x] = ' ';
@@ -38,11 +39,10 @@ int main(int argc, char *argv[]){
         }
     }
     while(1) {
-        //usleep(83333);
-        usleep(166666);
-        for(int y = 0; y < 24; y++)
+        usleep(83333);
+        for(y = 0; y < 24; y++)
         {
-            for(int x = 0; x < 80; x++)
+            for(x = 0; x < 80; x++)
             {
                 printf("%c", world[y][x]);
                 //printf("%2d", counter[y][x]);
@@ -54,7 +54,6 @@ int main(int argc, char *argv[]){
         memcpy(world, temp, sizeof(world));
         printf("%d\n",frame++);
     }
-
     // for(int i = 0; i < 24; i++)
     //   for(int j = 0; j < 80; j++)
     //     count(i, j);
@@ -65,15 +64,13 @@ int main(int argc, char *argv[]){
     //   }
     //   printf("\n");
     // }
-
-
     return 0;
 }
 
 
 void count(int row, int col)
 {
-  int count = 0;
+  int count = 0, i, j;
   //top left
   if(row == 0 && col == 0)
   {
@@ -123,9 +120,9 @@ void count(int row, int col)
       count++;
     if(world[22][1] == 'O')
       count++;
-    if(world[22][79] == 'O')
+    if(world[23][79] == 'O')
       count++;
-    if(world[22][1] == 'O')
+    if(world[23][1] == 'O')
       count++;
     if(world[0][79] == 'O')
       count++;
@@ -174,7 +171,7 @@ void count(int row, int col)
     if(world[row - 1][1] == 'O')
       count++;
   }
-  //23 column
+  //79 column
   else if(col == 79)
   {
     if(world[row + 1][78] == 'O')
@@ -214,18 +211,18 @@ void count(int row, int col)
     if(world[1][col + 1] == 'O')
       count++;
   }
-  //79 row
+  //23 row
   else if(row == 23)
   {
-    if(world[78][col - 1] == 'O')
+    if(world[22][col - 1] == 'O')
       count++;
-    if(world[78][col] == 'O')
+    if(world[22][col] == 'O')
       count++;
-    if(world[78][col + 1] == 'O')
+    if(world[22][col + 1] == 'O')
       count++;
-    if(world[79][col - 1] == 'O')
+    if(world[23][col - 1] == 'O')
       count++;
-    if(world[79][col + 1] == 'O')
+    if(world[23][col + 1] == 'O')
       count++;
     if(world[0][col - 1] == 'O')
       count++;
@@ -237,8 +234,8 @@ void count(int row, int col)
   //non edge case
   else
   {
-    for(int i = row - 1; i < row + 2; i++) {
-      for(int j = col - 1; j <  col + 2; j++) {
+    for(i = row - 1; i < row + 2; i++) {
+      for(j = col - 1; j <  col + 2; j++) {
         if(world[i][j] == 'O') {
           if(i == row && j == col) {}
           else count++;
@@ -250,14 +247,16 @@ void count(int row, int col)
 }
 
 void rules() {
-  for(int y = 0; y < 24; y++)
+  int x, y;
+  for(y = 0; y < 24; y++)
   {
-    for(int x = 0; x < 80; x++)
+    for(x = 0; x < 80; x++)
     {
       if((counter[y][x] == 0 || counter[y][x] == 1) && world[y][x] == 'O')
         temp[y][x] = ' ';
 
-      else if((counter[y][x] == 2 || counter[y][x] == 3) && world[y][x] == 'O') { }
+      else if((counter[y][x] == 2 || counter[y][x] == 3) && world[y][x] == 'O')
+        temp[y][x] = 'O';
 
       else if(counter[y][x] >= 4 && world[y][x] == 'O')
         temp[y][x] = ' ';
