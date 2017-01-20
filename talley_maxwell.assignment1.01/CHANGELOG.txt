@@ -1,0 +1,5 @@
+CHANGELOG: DUNGEON GAME
+
+**** BEGIN DUNGEON GENERATION (1.01)
+  *** 01/20/17
+    ** Set up structure of C file
