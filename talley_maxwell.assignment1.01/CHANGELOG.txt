@@ -3,3 +3,11 @@ CHANGELOG: DUNGEON GAME
 **** BEGIN DUNGEON GENERATION (1.01)
   *** 01/20/17
     ** Set up structure of C file
+
+  *** 01/22/17
+    ** Begin creating rooms
+    ** Begin printing the dungeon to the terminal
+    ** Hardness now assigned to each array position
+    ** '.' assigned to rooms in the dungeon array
+    ** 0 assigned to rooms in the hardness array, 255 assigned to
+    the outer edge to prevent anything from printing there
