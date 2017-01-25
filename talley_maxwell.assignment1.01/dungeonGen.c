@@ -4,7 +4,6 @@
 #include <time.h>
 
 int roomCheck(int yPos, int xPos, int yLen, int xLen, int hardness[105][160]);
-char hardnessScan(int hardness[105][160], int roomLocations[][2], int curY, int curX, int roomNum);
 
 int main(int argc, char *argv[])
 {
@@ -12,29 +11,30 @@ int main(int argc, char *argv[])
   int hardness[105][160];
   int seed = time(NULL);
   srand(seed);
-  int row, col, xLen, yLen, count = 0, xPos, yPos, success, roomX = 0, roomY = 0;
+  printf("%d\n", seed);
+  int row, col, xLen, yLen, count = 0, xPos, yPos, success, roomX = 0;
+  int roomY = 0, x0, x1, y0, y1;
 
   // number of rooms in the dungeon
   int numRooms = rand() % (25 - 10) + 10;
-  printf("%d\n", numRooms);
+  printf("%d\n\n", numRooms);
 
   int roomLocations[numRooms][2];
 
   // rock hardness generation
   for(row = 0; row < 105; row++) {
-    for(col = 0; col < 160; col++)
-    {
+    for(col = 0; col < 160; col++) {
       dungeon[row][col] = ' ';
+
       if(row == 0 || row == 104 || col == 0 || col == 159)
         hardness[row][col] = 255;
 
-      else hardness[row][col] = rand() % 255;
+      else hardness[row][col] = rand() % (255 - 1) + 1;
     }
   }
 
   // room generation, drawn with periods
-  while(count < numRooms)
-  {
+  while(count < numRooms) {
     success = 0, roomX = 0;
     xPos = rand() % (160 - 1) + 1;
     yPos = rand() % (105 - 1) + 1;
@@ -44,8 +44,7 @@ int main(int argc, char *argv[])
     if(xPos + xLen < 160 && yPos + yLen < 105) {
       if(roomCheck(yPos, xPos, yLen, xLen, hardness)) {
           for(row = yPos; row < yPos + yLen; row++) {
-            for(col = xPos; col < xPos + xLen; col++)
-            {
+            for(col = xPos; col < xPos + xLen; col++) {
               hardness[row][col] = 0;
               dungeon[row][col] = '.';
               success = 1;
@@ -55,12 +54,45 @@ int main(int argc, char *argv[])
       }
 
     if(success == 1) {
+     roomLocations[roomY][roomX] = yPos + (yLen / 2); roomX++;
+     roomLocations[roomY][roomX] = xPos + (xLen / 2); roomY++;
      count++;
-     roomLocations[roomY][roomX] = (yPos + yLen) / 2; roomX++;
-     roomLocations[roomY][roomX] = (xPos + xLen) / 2; roomY++;
     }
   }
 
+  // begin corridor generation, built with hashes (#)
+  count = 0;
+  int roomNum = 1;
+  while(count < numRooms - 1) {
+    y0 = roomLocations[roomNum - 1][0];
+    x0 = roomLocations[roomNum - 1][1];
+    y1 = roomLocations[roomNum][0];
+    x1 = roomLocations[roomNum][1];
+
+    while(x0 != x1) {
+      if(x0 > x1)
+        x0--;
+      else if(x0 < x1)
+        x0++;
+
+     if(hardness[y0][x0] != 0)
+        dungeon[y0][x0] = '#';
+    }
+
+    while(y0 != y1) {
+      if(y0 > y1)
+        y0--;
+      else if(y0 < y1)
+        y0++;
+
+      if(hardness[y0][x0] != 0)
+         dungeon[y0][x0] = '#';
+    }
+    count++;
+    roomNum++;
+  }
+
+  // print dungeon
   for(row = 0; row < 105; row++) {
     for(col = 0; col < 160; col++) {
       printf("%c", dungeon[row][col]);
@@ -68,29 +100,16 @@ int main(int argc, char *argv[])
     printf("\n");
   }
 
-  //begin corridor generation, built with hashes (#)
-
-
-
-
-
-
-
+  return 0;
 }
 
+/*
+  Check around the potential room placement. If there is not another room 1 cell
+  away, then function returns 1 so it will be set for that location, else returns
+  0.
+*/
 int roomCheck(int yPos, int xPos, int yLen, int xLen, int hardness[105][160])
 {
-  // if(hardness[yPos][xPos - 2] == 0 || hardness[yPos - 2][xPos] == 0)
-  //   return 0;
-  //
-  // if(hardness[yPos][xPos + xLen + 1] == 0 || hardness[yPos - 1][xPos + xLen] == 0)
-  //   return 0;
-  //
-  // if(hardness[yPos + yLen][xPos - 2] == 0 || hardness[yPos + yLen + 1][xPos] == 0)
-  //   return 0;
-  //
-  // if(hardness[yPos + yLen][xPos + xLen + 1] == 0 || hardness[yPos + yLen + 1][xPos + xLen] == 0)
-  //   return 0;
   int i, j;
   for(i = yPos; i < yPos + yLen; i++)
     if(hardness[i][xPos - 1] == 0 || hardness[i][xPos + xLen] == 0)
@@ -101,53 +120,4 @@ int roomCheck(int yPos, int xPos, int yLen, int xLen, int hardness[105][160])
       return 0;
 
   return 1;
-}
-
-char hardnessScan(int hardness[105][160], int roomLocations[][2], int curY, int curX, int roomNum)
-{
-  //returns UP: 0; RIGHT: 1; DOWN: 2; LEFT: 3;
-  int up = hardness[curY - 1][curX];
-  int down = hardness[curY + 1][curX];
-  int right = hardness[curY][curX + 1];
-  int left = hardness[curY][curX - 1];
-  int markX, markY;
-
-  //direction check
-  if(roomLocation[roomNum][0] > curX)
-    markX = 1;
-  else if(roomLocation[roomNum][0] < curX)
-    markX = 0;
-  if(roomLocation[roomNum][1] > curY)
-    markY = 1;
-  else if(roomLocation[roomNum][1] < curY)
-    markY = 0;
-
-  //hardness check
-  if(markX && markY) {
-    if(up < right)
-      return 0;
-    else if(right < up)
-      return 1;
-  }
-
-  else if(markX) {
-    if(down < right)
-      return 2;
-    else if(right < down)
-      return 1;
-  }
-
-  else if(markY) {
-    if(up < left)
-      return 0;
-    else if(left < up)
-      return 3;
-  }
-  
-  else {
-    if(down < left)
-      return 2;
-    else if(left < down)
-      return 3;
-  }
 }

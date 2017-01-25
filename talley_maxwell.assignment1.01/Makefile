@@ -1,7 +1,7 @@
-Default: dungeonGen
+default: dungeonGen
 
-dungeonGen:
+dungeonGen: dungeonGen.c
 	gcc -o dungeonGen dungeonGen.c -Wall -Werror -ggdb
 
 clean:
-	rm -f dungeonGen *~
+	rm -f game *~

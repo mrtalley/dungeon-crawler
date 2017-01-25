@@ -17,3 +17,6 @@ COM S 327 NOTES
     * rand between -100 and 100: (signed) rand() % 201 - 100
   ** Making a tar.gz file
     * cp -Rv name_of_ just look at the notes from last week/his post on BB
+
+*** Notes 01/23/17
+
