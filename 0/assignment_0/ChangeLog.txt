@@ -1,1 +1,0 @@
-CHANGE LOG: Conway's Game of Life
