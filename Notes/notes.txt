@@ -1,0 +1,59 @@
+COM S 327 NOTES
+
+KEY:
+  ∆ (alt-j) - Important Line, pay attention
+  Ω (alt-z) - Code, location listed
+
+*** Notes 1/11/17
+  ** Command line arguments for compiling c in linux
+    * gcc –Wall –Werror –ggdb –o
+    * -Werror tells the compiler to treat warnings like errors, which we want
+    * -Wall turns on most warnings, including ones that don’t show up without the flag
+
+*** Notes 1/18/17
+  ** Rock hardness from 1 – 254
+    * Rooms have hardness 0
+    * Outside border has hardness 255
+  ** Seeding the random number generator
+    * To get the seed: seed = time(NULL)
+    * Initialize rand: srand(seed) --> only call this ONCE
+    * To get a rand between 1 and 100: rand() % 100 + 1
+    * rand between -100 and 100: (signed) rand() % (200 - 100) + 100;
+
+*** Notes 01/25/17
+Ω ** CODE OPEN: week3/stack.h
+Ω ** CODE OPEN: week3/stack.c
+    * malloc happens at run time
+    * sizeof happens at compile time
+∆   * malloc can fail if the process is out of memory or no one memory
+    fragment is big enough for it
+
+*** Notes 01/27/17
+  ** FILE *fopen(const char *path, const char *mode)
+    * Used to open a file, path is path to file, mode is file access (read, write, etc)
+  ** int fclose(FILE *fp);
+  ** int fprintf(FILE *stream, const char *format)
+    * Just like printf() but first param is a FILE
+  ** int fscanf(FILE *stream, const char *format)
+    * same as printf, but for reading
+    * To read an int from std input: fscanf(stdin, "%d", &i);
+  ** char *fgets(char *s, int size, FILE *stream);
+    * Reads one line at a time, up to size bytes, where size if the amount of
+    storage available in s (there is a similar function get() -- DON'T USE IT)
+  ** size_t fwrite(const void *ptr, size_t size, size_t nmemb, FILE *stream);
+    * size & nmemb multiplied together and that is how many bytes it can use
+    * Writes binary data to file from ptr, each element is size bytes, there are nmemb elements, write to stream
+∆ ** size_t fread (void *ptr, size_t size, size_t nmemb, FILE *stream)
+    * Similar to fwrite, but reads
+
+*** Notes 01/30/17
+  ** Code OPEN: week4/fileio.c
+Ω   * Explains how to use file functions
+
+*** Notes 02/06/17
+  ** Code OPEN: week5/endianness.c
+
+---- WEEK 6 ----
+*** Notes 02/13/17
+  ** Code OPEN: week6/macros.c
+  ** Code OPEN: week6/gccCrash.c
