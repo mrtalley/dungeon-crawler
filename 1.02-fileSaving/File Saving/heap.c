@@ -83,9 +83,7 @@ void print_heap_node_list(heap_node_t *n)
   printf("\n");
 }
 
-void heap_init(heap_t *h,
-               int32_t (*compare)(const void *key, const void *with),
-               void (*datum_delete)(void *))
+void heap_init(heap_t *h, int32_t (*compare)(const void *key, const void *with), void (*datum_delete)(void *))
 {
   h->min = NULL;
   h->size = 0;

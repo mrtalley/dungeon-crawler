@@ -1,0 +1,116 @@
+Lecture - Week 5
+
+* Doing generics in C.
+  Needs function pointers
+  How do we declare one?
+    <return type> (*<function name>)(<argument list>)
+    int (*intcmp)(int, int)  /* intcmp is pointer to function taking two ints
+                                and returning int */
+  And how do we assign to a function pointer?
+    Assign a function name with no parenthesis
+** sort
+void insertion_sort(int *a, int n)
+{
+  int i, j, t;
+
+  for (i = 1; i < n; i++) {
+    for (t = a[i], j = i - 1; j > -1 && a[j] > t; j--) {
+      a[j + 1] = a[j];
+    }
+    a[j + 1] = t;
+  }
+}
+
+
+** search
+** ADTs
+
+* The C Preprocessor
+** define
+   defines a macro
+   #define <name> [<value>]
+   Defines the symbol <name> as a valid symbol in your program.
+   If <value> is set, name get the value <value>; Instances of <name> are       
+   literally replaced with the value <value> by the preprocessor
+*** value type
+    #define CLASS 327
+*** function type
+    #define min(x, y) x < y ? x : y
+    min(3, 5) -> 3 < 5 ? 3 : 5
+    min(p, q) -> p < q ? p : q
+** ifdef
+   #ifdef <name>
+   tests if <name> is defined as a macro
+** ifndef
+   Opposite of ifdef; tests if <name> is not defined
+** else
+   #else starts an else block
+** elif
+   else if
+** endif
+   ends an if directive
+** undef
+   #undef <name>
+   Undefines <name>
+** Conditional compilation
+** Guards
+   Something we put in a header file to insure it isn't included more than
+   once.
+   At the beginning of the file, we'll put
+     #ifndef FILE_H
+     # define FILE_H
+       /* code goes in here */
+       /* and at the end of the file... */
+     #endif
+
+** More on define -- macros
+   #define creates macros
+   macros are replaced into code verbatim by the preprocessor, so
+     #define value 5
+   Replaces all instances of "value" in the source with the literal "5"
+*** value type
+    Replaces a macro name with a single, literal value
+*** function type
+    Looks sort-of like a function
+    Has parentheses and takes arguments
+      #define print(x) printf("%d", x)
+   print(7) becomes printf("%d", 7)
+   print(print(value) becomes printf("%d", printf("%d", 5)) where value is 
+   defined as above.
+** Concatenation
+   Concatenation operator is ##
+   Preprocessor sticks together (concatenates) both operands, no space
+   between them, to make a single symbol.
+   Provides a shorthand
+   # define has_characteristic(character, bit)              \
+     ((character)->npc->characteristics & NPC_##bit)
+
+   has_characteristic(c, SMART) -> ((c)->npc->characteristics & NPC_SMART)
+** Stringification
+   Operator is #
+   Turns the operator into a string
+     #define to_string(s) #s
+     to_string(CS 229) -> "CS 229"
+** How to crash a compiler (there are lots of ways, actually, but here's one)
+
+* Keywords that alter declaration semantics
+** auto
+   This is the default for variables defined in functions, so you very
+   rarely see it used explicitly.  Variable's scope is restricted to the 
+   function in which it is declared.  Lifetime is the same as that of the
+   function. 
+** const
+   Makes the variable immutable.  Doesn't affect scope or lifetime.
+   Some compilers will put the variable in the text segment, which means
+   that it's actual lifetime would be equal to that of the program; however,
+   it would be an error to depend on this.
+** extern
+   Means that the storage for the variable is created elsewhere; used to
+   export data to other compilation units.  It only makes sense to use an
+   external declaration for variables in global scope.
+** static
+   In a function, changes the variables lifetime to be the lifetime of the
+   program.  Scope is unaffected.
+   On globals, prevents variable or function from being exported from the
+   compilation unit.  This is useful for internal functions of an ADT.
+   Think "private".

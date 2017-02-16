@@ -1,0 +1,177 @@
+Lecture Week 3
+
+* More on pointers
+** Last time we covered pointer syntax, but not why they are useful
+*** Parameter passing in C
+    It's faster to pass structs by address.
+    A struct passed by value is copied, so changes to its fields
+    "disappear" when the function returns.
+    On the other hand, when passed by address, the changes persist.
+    Arguably, it's safer to pass by value if you make no changes, but
+    you can pass a constant pointer for that and still get the speed
+    advantage.
+*** Dynamic allocation
+    Dynamic storage is allocated with malloc(3).  Any time you allocate
+    something, you must return it to the system with free(3).  In order
+    to use these functions, you need to include stdlib.h.
+    It is possible for malloc() to fail.  When it does, it returns NULL.
+    You should check for this!
+* void *malloc(size_t size);
+  malloc() is the function that we use to request heap memory from the
+  operating system.
+** When should we use malloc()?
+   When we don't statically know how much storage we need.
+   Ask yourself: Can I allocate this statically?  If you know how big it has
+   to be, the answer is yes, and so you shouldn't use dynamic allocation.
+   Exception: You know a maximum possible size, but that maximum is much 
+   larger than the expected size.  In that case, dynamic allocation is 
+   probably the better choice.
+** malloc() can fail
+   returns NULL; you need to check for it.  If you're an application
+   developer, you're best option is probably to terminate (gracefully).  If
+   you're a library developer, you return an error and allow your user to
+   decide what to do about it.
+** malloc() has some unnecessary but useful siblings
+*** calloc()
+    allocates arrays
+    Initializaes the returned storage to zero
+    If we use calloc() to allocate our queue_nodes in queue.c, then we don't
+    need to set next to NULL; calloc() does it for us.
+    Useful for debugging, since you can clearly see what data you have
+    modified, but the overhead is not necessarily a good thing, especially
+    in performance critical code.
+*** realloc()
+    reallocate memory
+    takes a pointer to storage previously returned by malloc()
+    Reallocates it to the new size.
+    Pointer returned may point to a new location
+    Output is truncated if new size is smaller
+    Dynamically resizable array example:
+    size_t array_size;
+    int size
+    int *array;
+    size = 0;
+    array_size = 16;
+    array = malloc(array_size * sizeof (*array));
+    /* fill up the array... */
+    if (size == array_size) {
+      /* Remember to test it! */
+      array = realloc(array, array_size *= 2);
+    }
+** It is an error--and one that corrupts program state!--to call free() on an
+   address which has not been malloc()ed.
+   Double-free bug
+   causes the program to fail in wierd ways
+   very difficult to debug
+* GDB
+** Queue code with errors from class is attached on BB.  Use it to practice
+   debugging.
+** Compile your program with -g to add debugging symbols
+   -ggdb adds even more symbols
+** Starting gdb and emacs gud-gdb mode
+   on command line: gdb <program name> 
+   In emacs: M-x gud-gdb
+   In emacs 22 or older: M-x gdb
+   'M-x gdb' works on later version of emacs, too, but it has changed in ways
+   that I don't understand, while 'M-x gud-gdb' invokes the old, pre-emacs 23
+   behavior.
+** Demonstrate above concepts and introduce basic GDB functionality
+*** run
+    Runs the program
+*** backtrace (bt)
+    prints the stack trace (all stack frames)
+*** up
+    Move up the stack (toward main())
+*** down
+    Moves down (away from main())
+*** break
+    Set a breakpoint
+    takes a function name, a line number, or a file:line number, or an address
+*** (s)tep
+    Step into a function call
+*** (n)ext
+    step over a function call
+*** print
+    print a variable
+    'set print pretty' gives nicer output
+*** list
+    list code around the current line
+    Not particularly useful in emacs, but necessary in the shell.
+*** (c)ontinue
+    Continue execution
+*** clear
+    delete a breakpoint
+*** delete
+    delete all breakpoints
+* Debugging memory errors
+** Valgrind
+   Runs your program and analyizes it for certain types of errors, including
+   uninitialized use bugs and memory leaks.  Run it with:
+        valgrind <program>
+   It will run a small, default set of tests.  If it detects any issues, it
+   will suggest other switches for you to use to run it again.  *That* run
+   may, in turn, suggest still more switches.
+   There is a graphical front-end called Valkyrie, which is not installed 
+   on pyrite.  You can get it and build it yourself, but be warned that,
+   in my experience, it doesn't build out-of-the-box, so you'll have to edit
+   the sources to fix the errors.
+* Stuff for next part of project that we haven't covered yet
+** C strings
+   Arrays of characters terminated with '\0' (the character 0).
+   If your string doesn't end with '\0', the standard library string
+   processing functions won't know when to stop, so they will run off
+   the end and bad things will happen.
+   When you use a string literal, e.g. "string", the NULL terminator 
+   is implicitly created, so "string" is 7 bytes (6 letters + NULL).
+   There is a difference between:
+     char *sptr = "string";
+   else 
+     char sarr[] = "string";
+   Both are 7 bytes, but the former goes in memory in a location that
+   makes it immutable.  You can change sptr, but you can't change sptr[i].
+   sarr[i] can be changed.
+*** string(3) lists all of the string functions in the standard library
+    You might want strcat() for this assignment
+    Concatenates two strings
+*** Indexing and using individual characters
+    Strings are character arrays, so you can index them with array or pointer
+    semantics:  s[i] == *(s + i)
+*** snprintf() is also useful
+    int snprintf(char *str, size_t size, const char *format, ...);
+    Just like printf(), but write at most size bytes to str.
+** Command line arguments
+   argc and argv
+   int main(int argc, char *argv[])
+   argc -- argument count
+   argv -- argument vector
+** File I/O
+*** FILE *fopen(const char *path, const char *mode);
+    Used to open a file
+    path is the path to the file
+    mode is the file access mode (read, write, append, or read/write)
+    read == "r"
+    write == "w"
+    append == "a"
+    binary == "b" (necessary when using binary files in windows;
+                   otherwise a no-op)
+    Returns NULL on failure
+*** int fclose(FILE *fp);
+    Closes a file previously opened by fopen()
+*** int fprintf(FILE *stream, const char *format, ...);
+    Just like printf(), but first parameter is a FILE *
+*** int fscanf(FILE *stream, const char *format, ...);
+    Analogous to printf, but for reading
+    To read an int (from standard input: fscanf(stdin, "%d", &i);
+*** char *fgets(char *s, int size, FILE *stream);
+    Reads one line at a time, up to size bytes, where size if the ammount of
+    storage available in s; analogous function called gets()
+*** size_t fwrite(const void *ptr, size_t size, size_t nmemb, FILE *stream);
+    Writes binary data to file from ptr, each element is size bytes, there
+    are nmemb elements, write to stream
+*** size_t fread(void *ptr, size_t size, size_t nmemb, FILE *stream);
+    Analogous to fwrite, but reads
+** Write an example program that uses all of the above (save endianness)...
+   Program takes one of four switchs: -wt, -wb, -rt, and -rb, specifying
+   whether to read or write text or binary, followed by a file name.  File
+   will be under $HOME, so we'll build a path, open the follow, and perform
+   the requested operation using some internal data structure.

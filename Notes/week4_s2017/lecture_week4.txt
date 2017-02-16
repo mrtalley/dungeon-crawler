@@ -1,0 +1,223 @@
+* char *getenv(const char *name);
+   All of the defined environment variables are already mapped into your
+   program's address space.  getenv() simply maps a name to a value and 
+   returns the address of that value.  The storage associate with it is
+   statically allocated, so you don't need to free() it.
+* More on types; the few that we haven't explicitly covered
+** enums
+   Define a list of constant integers
+   enum <name> {
+     element1,
+     element2,
+     ...
+  };
+  typedef it, just like a struct
+  Each element* in the above definition has an integer value.  The first one
+  has the value 0, then 1, then 2...
+  You can assign one (or more) of the values, like this:
+  enum <name> {
+    element1,
+    element2 = 5,
+    element3,
+    ...
+  };
+  in which case, element1 is still 0, but element2 is 5 and the counting
+  continues from there.  You can even make more than one assignment.
+** unions
+   A data structure in which all members overlap
+   union <name> {
+     int i;
+     float f;
+   };
+   You can use i or f, not both
+   accessed same as with a struct
+   Both the i and f fields have the same address.  i and f use the same
+   storage.
+   See endianness.c for an example that uses that *and* demonstrates
+   endianness conversions
+** void
+   Has no type
+   Functions can return void (no return value), or take void arguments
+   (no arguments)
+** void *
+   Points to anything
+   cannot be dereferenced
+   A generic pointer
+* Hexadecimal
+  Like decimal, but there are 16 digits
+  place values multiply by powers of 16
+  0-f, a==10, b=11, c==12, d==13, e==14, f==15
+
+  Decimal   Hexadecimal   Binary
+  0         0             0
+  1         1             0001
+  2         2             0010
+  3         3             0011
+  4         4             0100
+  5         5             0101
+  6         6             0110
+  7         7             0111
+  8         8             1000
+  9         9             1001
+  10        a or A        1010
+  11        b or B        1011
+  12        c or C        1100
+  13        d or D        1101
+  14        e or E        1110
+  15        f or F        1111
+
+* Endianness
+  Some computers are designed so that values are stored most-significant-
+  byte first, and some are least-significant-byte first.  The former are
+  big-endian, and the latter are little-endian.
+  These names are an homage to Swift's Gulliver's Travels in which there
+  is an island of warring people whose fight is about which end of an egg
+  should be broken.
+  There are arguments for both sides (computing, not eggs; in the latter,
+  of course you open the big end!), but none are convincing, and today,
+  essentially everybody agrees that it doesn't matter.  The ideal situation
+  would be that all systems use the same endianness, but it's been too late
+  for that for a very long time.  As a result, if we want to transfer data
+  between two machines that (may) differ in endianness, we need to convert
+  data to an agreed-upon format and then convert it back on the other end.
+  The agreed-upon format is big endian.
+** endian(3) has a bunch of functions
+   In the names, the numbers are the number of bits in the values,
+   h means host, be is big enduin, and le is little endian.
+** See endian.h for examples that use these functions
+* Representation of primitive types
+** Unsigned have all bits binary place value
+   This is place value just like you learned in elementary school (remember
+   1's place, 10's place, 100's place...?) except that in binary, the places
+   correspond with powers of 2 (1's place, 2's place, 4's place, 8's
+   place...).
+   If we use b0 to denote the least significant bit and bn the most
+   significant bit, then we can use the following summation:
+
+     _n__
+     \
+      \   b_p x 6^p
+      /
+     /___
+     p=0
+
+  Rendered in lovely ASCII!
+
+                           /(|
+                          (  :
+                         __\  \  _____
+                       (____)  `|
+                      (____)|   |
+                       (____).__|
+                        (___)__.|_____
+
+** Signed integers stored as two's complement
+   Take complement (of the bits of the unsigned value) and add 1
+   Take the compliment means "flip all the bits", then add binary 1 to the 
+   result.
+   From the above, we have 32-bit 3 (grouped for readability) ==
+     0000 0000 0000 0000 0000 0000 0000 0011
+   Compliment it:
+     1111 1111 1111 1111 1111 1111 1111 1100
+   and add 1
+     1111 1111 1111 1111 1111 1111 1111 1101
+   gives the two's compliment -3.
+   Easy to add.  Nothing special, just add the bits and throw away the carry
+   overflow (if it occurs).
+     0000 0000 0000 0000 0000 0000 0000 0011
+     1111 1111 1111 1111 1111 1111 1111 1101 +
+     ---------------------------------------
+     0000 0000 0000 0000 0000 0000 0000 0000
+   Also easy to recognize negatives.  If MSB (most significant bit) is 1,
+   then it's negative. 
+** Floats are (usually) 32-bit IEEE 754
+   1-bit sign, 8-bit exponent, 23-bit mantissa
+   value is -1^(s)*2^(e-127)*1.m
+   where s is the sign bit, e is the biased exponent, and m is the matissa
+   The mantissa is the level of precision, while the exponent is essentially
+   the range
+   127 is the bias, to allow negative exponents.  Gives actual exponent range
+   of (-127, 128).
+
+   "What every computer scientist should know about floating point"
+*** Special values
+    NaN -- not a number
+    +-infinity 
+    +-0 -- Two zeros; which direction did you round from?
+    sub-normals -- Special values where 1's place of the mantissa is zero
+** Doubles are (usually) 64-bit IEEE 754
+   1-bit sign, 11-bit exponent, 52-bit mantissa
+* Bitwise operators
+** and
+   Operator is &
+   Like logical and, but on individual bits, 1 if both bits are 1
+     1111 1101 1001 0001 0110 0111 0111 0100
+     0110 1100 0011 1010 1111 0111 0100 1110 &
+     ---------------------------------------
+     0110 1100 0001 0000 0110 0111 0100 0100
+** or
+   Operator is |
+   Like logical or, but on individual bits, 1 if either bit is 1
+     1111 1101 1001 0001 0110 0111 0111 0100
+     0110 1100 0011 1010 1111 0111 0100 1110 |
+     ---------------------------------------
+     1111 1101 1011 1011 1111 0111 0111 1110
+** xor
+   Operator is ^
+   Like logical exclusive or, but on individual bits, 1 if exactly 1 bit is 1
+     1111 1101 1001 0001 0110 0111 0111 0100
+     0110 1100 0011 1010 1111 0111 0100 1110 ^
+     ---------------------------------------
+     1001 0001 1010 1011 1001 0000 0011 1010
+** not
+   Unary compliment operator ~.  Flips every bit
+     ~1111 1101 1001 0001 0110 0111 0111 0100 ==
+      0000 0010 0110 1110 1001 1000 1000 1011
+** right shift
+   Operator is >>
+   Move bits to the right (fast division by a power of 2), fills in with zeros
+     1111 1101 1001 0001 0110 0111 0111 0100 >> 3 ==
+     0001 1111 1011 0010 0010 1100 1110 1110
+   This operation (shift by 3) divided by 8.
+** left shift
+   Operator is <<
+   Move bits to the left (fast multiplication by a power of 2), fills in
+   with zeros
+     1111 1101 1001 0001 0110 0111 0111 0100 << 5 ==
+     1011 0010 0010 1100 1110 1110 1000 0000
+   This operation (shift by 5) multiplied by 32.
+* Bitfields
+  Allow us to store boolean values using only one bit.  An array of 
+  booleans in a single primitive type.
+  See code example, and more to follow next lecture.
+* representation of char
+* Bitfields
+  Allow us to store boolean values using only one bit.  An array of 
+  booleans in a single primitive type.
+  Remember that hex is shorthand for binary, so 
+  0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80 ==
+  00000001, 00000010, 00000100, 00001000, 00010000, 00100000, 01000000, 10000000
+  Every one of these values is a power of two; we're selecting one bit at
+  a time.  Continuing with the monster characteristics example, and adding
+  a few more, consider:
+    # define NPC_SMART         0x00000001 /* Monster is smart (can path find) */
+    # define NPC_TELEPATH      0x00000002 /* Monster is telepathic            */
+    # define NPC_INVIS         0x00000004 /* Monster is invisible             */
+    # define NPC_NOSLEEP       0x00000008 /* Monster cannot be put to sleep   */
+    # define NPC_RFIRE         0x00000010 /* Monster resists fire attacks     */
+    # define NPC_RCOLD         0x00000020 /* Monster resists ice attacks      */
+    # define NPC_RELEC         0x00000040 /* Monster resists electric attacks */
+    # define NPC_RPOISON       0x00000080 /* Monster resists poison attacks   */
+  If we want to test if a monster resists any of fire, cold, and electricity,
+  we'd use the test:
+    if (characteristics & (NPC_RFIRE | NPC_RCOLD | NPC_RELEC))
+      do_something();
+  To check if a monster is all of smart, telepathic, and invisible:
+    if ((characteristics & (NPC_SMART | NPC_TELEPATH | NPC_INVIS)) ==
+        (NPC_SMART | NPC_TELEPATH | NPC_INVIS)) {
+      do_something_else();
+    }
+  To check that a monster does not resist poison:
+    if (!(characteristics & NPC_POISON)) {
+      do_another_thing();
+    }
