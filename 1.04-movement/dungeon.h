@@ -39,6 +39,7 @@ typedef struct room {
 
 typedef struct pc {
   pair_t position;
+  uint8_t alive;
 } pc_t;
 
 typedef struct npc {
@@ -46,6 +47,7 @@ typedef struct npc {
   uint32_t type;
   uint8_t speed;
   uint8_t alive;
+  uint32_t tick;
 } npc_t;
 
 typedef struct dungeon {

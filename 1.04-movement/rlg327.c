@@ -169,16 +169,16 @@ int main(int argc, char *argv[])
   printf("PC is at (y, x): %d, %d\n",
          d.pc.position[dim_y], d.pc.position[dim_x]);
 
-  render_dungeon(&d);
-
   dijkstra(&d);
   dijkstra_tunnel(&d);
-  render_distance_map(&d);
-  render_tunnel_distance_map(&d);
+  // render_distance_map(&d);
+  // render_tunnel_distance_map(&d);
 
   if(do_place_monsters) {
     npc_define(&d, NPCs);
   }
+
+  render_dungeon(&d);
 
   if (do_save) {
     write_dungeon(&d, save_file);

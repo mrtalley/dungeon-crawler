@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdint.h>
 //#include <machine/endian.h>
-#include <endian.h>
+//#include <HOME/Desktop/endian.h>
 #include <sys/stat.h>
 #include <sys/time.h>
 #include <limits.h>
@@ -10,6 +10,7 @@
 #include "dungeon.h"
 #include "utils.h"
 #include "heap.h"
+#include "endian.h"
 
 typedef struct corridor_path {
   heap_node_t *hn;
@@ -54,7 +55,7 @@ static void dijkstra_corridor(dungeon_t *d, pair_t from, pair_t to)
     }
     initialized = 1;
   }
-  
+
   for (y = 0; y < DUNGEON_Y; y++) {
     for (x = 0; x < DUNGEON_X; x++) {
       path[y][x].cost = INT_MAX;
@@ -153,7 +154,7 @@ static void dijkstra_corridor_inv(dungeon_t *d, pair_t from, pair_t to)
     }
     initialized = 1;
   }
-  
+
   for (y = 0; y < DUNGEON_Y; y++) {
     for (x = 0; x < DUNGEON_X; x++) {
       path[y][x].cost = INT_MAX;
@@ -605,23 +606,63 @@ void render_dungeon(dungeon_t *d)
 {
   pair_t p;
 
-  for (p[dim_y] = 0; p[dim_y] < DUNGEON_Y; p[dim_y]++) {
-    for (p[dim_x] = 0; p[dim_x] < DUNGEON_X; p[dim_x]++) {
-      if (p[dim_x] ==  d->pc.position[dim_x] &&
-          p[dim_y] ==  d->pc.position[dim_y]) {
-        putchar('@');
+  // for (p[dim_y] = 0; p[dim_y] < DUNGEON_Y; p[dim_y]++) {
+  //   for (p[dim_x] = 0; p[dim_x] < DUNGEON_X; p[dim_x]++) {
+  //     if (p[dim_x] ==  d->pc.position[dim_x] &&
+  //         p[dim_y] ==  d->pc.position[dim_y]) {
+  //       //putchar('@');
+  //       printf("@");
+  //     } else {
+  //       switch (mappair(p)) {
+  //       case ter_wall:
+  //       case ter_wall_immutable:
+  //         //putchar(' ');
+  //         printf(" ");
+  //         break;
+  //       case ter_floor:
+  //       case ter_floor_room:
+  //         if(d->npc[p[dim_y]][p[dim_x]].alive == 1)
+  //           printf("%X", d->npc[p[dim_y]][p[dim_x]].type);
+  //         //putchar('.');
+  //         else printf(".");
+  //         break;
+  //       case ter_floor_hall:
+  //         //putchar('#');
+  //         printf("#");
+  //         break;
+  //       case ter_debug:
+  //         putchar('*');
+  //         fprintf(stderr, "Debug character at %d, %d\n", p[dim_y], p[dim_x]);
+  //         break;
+  //       }
+  //     }
+  //   }
+  //   putchar('\n');
+  // }
+  int y, x;
+  for (y = 0; y < DUNGEON_Y; y++) {
+    for (x = 0; x < DUNGEON_X; x++) {
+      if (x ==  d->pc.position[dim_x] &&
+          y ==  d->pc.position[dim_y]) {
+        //putchar('@');
+        printf("\x1B[35m@\x1B[0m");
       } else {
-        switch (mappair(p)) {
+        switch (d->map[y][x]) {
         case ter_wall:
         case ter_wall_immutable:
-          putchar(' ');
+          //putchar(' ');
+          printf(" ");
           break;
         case ter_floor:
         case ter_floor_room:
-          putchar('.');
+          if(d->npc[y][x].alive == 1)
+            printf("\x1B[36m%x\x1B[0m", d->npc[y][x].type);
+          //putchar('.');
+          else printf(".");
           break;
         case ter_floor_hall:
-          putchar('#');
+          //putchar('#');
+          printf("#");
           break;
         case ter_debug:
           putchar('*');
