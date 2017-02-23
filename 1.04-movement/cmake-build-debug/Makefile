@@ -48,10 +48,10 @@ RM = /Applications/CLion.app/Contents/bin/cmake/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/maxtalley/Documents/COM_S_327/1.04
+CMAKE_SOURCE_DIR = /Users/maxtalley/Documents/COM_S_327/1.04-movement
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/maxtalley/Documents/COM_S_327/1.04/cmake-build-debug
+CMAKE_BINARY_DIR = /Users/maxtalley/Documents/COM_S_327/1.04-movement/cmake-build-debug
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -80,9 +80,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/maxtalley/Documents/COM_S_327/1.04/cmake-build-debug/CMakeFiles /Users/maxtalley/Documents/COM_S_327/1.04/cmake-build-debug/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/maxtalley/Documents/COM_S_327/1.04-movement/cmake-build-debug/CMakeFiles /Users/maxtalley/Documents/COM_S_327/1.04-movement/cmake-build-debug/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/maxtalley/Documents/COM_S_327/1.04/cmake-build-debug/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/maxtalley/Documents/COM_S_327/1.04-movement/cmake-build-debug/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -204,6 +204,33 @@ main.c.s:
 	$(MAKE) -f CMakeFiles/1_04.dir/build.make CMakeFiles/1_04.dir/main.c.s
 .PHONY : main.c.s
 
+movement.o: movement.c.o
+
+.PHONY : movement.o
+
+# target to build an object file
+movement.c.o:
+	$(MAKE) -f CMakeFiles/1_04.dir/build.make CMakeFiles/1_04.dir/movement.c.o
+.PHONY : movement.c.o
+
+movement.i: movement.c.i
+
+.PHONY : movement.i
+
+# target to preprocess a source file
+movement.c.i:
+	$(MAKE) -f CMakeFiles/1_04.dir/build.make CMakeFiles/1_04.dir/movement.c.i
+.PHONY : movement.c.i
+
+movement.s: movement.c.s
+
+.PHONY : movement.s
+
+# target to generate assembly for a file
+movement.c.s:
+	$(MAKE) -f CMakeFiles/1_04.dir/build.make CMakeFiles/1_04.dir/movement.c.s
+.PHONY : movement.c.s
+
 path.o: path.c.o
 
 .PHONY : path.o
@@ -230,6 +257,33 @@ path.s: path.c.s
 path.c.s:
 	$(MAKE) -f CMakeFiles/1_04.dir/build.make CMakeFiles/1_04.dir/path.c.s
 .PHONY : path.c.s
+
+rlg327.o: rlg327.c.o
+
+.PHONY : rlg327.o
+
+# target to build an object file
+rlg327.c.o:
+	$(MAKE) -f CMakeFiles/1_04.dir/build.make CMakeFiles/1_04.dir/rlg327.c.o
+.PHONY : rlg327.c.o
+
+rlg327.i: rlg327.c.i
+
+.PHONY : rlg327.i
+
+# target to preprocess a source file
+rlg327.c.i:
+	$(MAKE) -f CMakeFiles/1_04.dir/build.make CMakeFiles/1_04.dir/rlg327.c.i
+.PHONY : rlg327.c.i
+
+rlg327.s: rlg327.c.s
+
+.PHONY : rlg327.s
+
+# target to generate assembly for a file
+rlg327.c.s:
+	$(MAKE) -f CMakeFiles/1_04.dir/build.make CMakeFiles/1_04.dir/rlg327.c.s
+.PHONY : rlg327.c.s
 
 utils.o: utils.c.o
 
@@ -276,9 +330,15 @@ help:
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
+	@echo "... movement.o"
+	@echo "... movement.i"
+	@echo "... movement.s"
 	@echo "... path.o"
 	@echo "... path.i"
 	@echo "... path.s"
+	@echo "... rlg327.o"
+	@echo "... rlg327.i"
+	@echo "... rlg327.s"
 	@echo "... utils.o"
 	@echo "... utils.i"
 	@echo "... utils.s"

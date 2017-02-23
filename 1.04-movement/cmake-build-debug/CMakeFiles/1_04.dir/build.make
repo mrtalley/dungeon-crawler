@@ -43,10 +43,10 @@ RM = /Applications/CLion.app/Contents/bin/cmake/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/maxtalley/Documents/COM_S_327/1.04
+CMAKE_SOURCE_DIR = /Users/maxtalley/Documents/COM_S_327/1.04-movement
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/maxtalley/Documents/COM_S_327/1.04/cmake-build-debug
+CMAKE_BINARY_DIR = /Users/maxtalley/Documents/COM_S_327/1.04-movement/cmake-build-debug
 
 # Include any dependencies generated for this target.
 include CMakeFiles/1_04.dir/depend.make
@@ -59,16 +59,16 @@ include CMakeFiles/1_04.dir/flags.make
 
 CMakeFiles/1_04.dir/main.c.o: CMakeFiles/1_04.dir/flags.make
 CMakeFiles/1_04.dir/main.c.o: ../main.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/maxtalley/Documents/COM_S_327/1.04/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/1_04.dir/main.c.o"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/1_04.dir/main.c.o   -c /Users/maxtalley/Documents/COM_S_327/1.04/main.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/maxtalley/Documents/COM_S_327/1.04-movement/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/1_04.dir/main.c.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/1_04.dir/main.c.o   -c /Users/maxtalley/Documents/COM_S_327/1.04-movement/main.c
 
 CMakeFiles/1_04.dir/main.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/1_04.dir/main.c.i"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/maxtalley/Documents/COM_S_327/1.04/main.c > CMakeFiles/1_04.dir/main.c.i
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/maxtalley/Documents/COM_S_327/1.04-movement/main.c > CMakeFiles/1_04.dir/main.c.i
 
 CMakeFiles/1_04.dir/main.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/1_04.dir/main.c.s"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/maxtalley/Documents/COM_S_327/1.04/main.c -o CMakeFiles/1_04.dir/main.c.s
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/maxtalley/Documents/COM_S_327/1.04-movement/main.c -o CMakeFiles/1_04.dir/main.c.s
 
 CMakeFiles/1_04.dir/main.c.o.requires:
 
@@ -83,16 +83,16 @@ CMakeFiles/1_04.dir/main.c.o.provides.build: CMakeFiles/1_04.dir/main.c.o
 
 CMakeFiles/1_04.dir/dungeon.c.o: CMakeFiles/1_04.dir/flags.make
 CMakeFiles/1_04.dir/dungeon.c.o: ../dungeon.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/maxtalley/Documents/COM_S_327/1.04/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/1_04.dir/dungeon.c.o"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/1_04.dir/dungeon.c.o   -c /Users/maxtalley/Documents/COM_S_327/1.04/dungeon.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/maxtalley/Documents/COM_S_327/1.04-movement/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/1_04.dir/dungeon.c.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/1_04.dir/dungeon.c.o   -c /Users/maxtalley/Documents/COM_S_327/1.04-movement/dungeon.c
 
 CMakeFiles/1_04.dir/dungeon.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/1_04.dir/dungeon.c.i"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/maxtalley/Documents/COM_S_327/1.04/dungeon.c > CMakeFiles/1_04.dir/dungeon.c.i
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/maxtalley/Documents/COM_S_327/1.04-movement/dungeon.c > CMakeFiles/1_04.dir/dungeon.c.i
 
 CMakeFiles/1_04.dir/dungeon.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/1_04.dir/dungeon.c.s"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/maxtalley/Documents/COM_S_327/1.04/dungeon.c -o CMakeFiles/1_04.dir/dungeon.c.s
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/maxtalley/Documents/COM_S_327/1.04-movement/dungeon.c -o CMakeFiles/1_04.dir/dungeon.c.s
 
 CMakeFiles/1_04.dir/dungeon.c.o.requires:
 
@@ -107,16 +107,16 @@ CMakeFiles/1_04.dir/dungeon.c.o.provides.build: CMakeFiles/1_04.dir/dungeon.c.o
 
 CMakeFiles/1_04.dir/heap.c.o: CMakeFiles/1_04.dir/flags.make
 CMakeFiles/1_04.dir/heap.c.o: ../heap.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/maxtalley/Documents/COM_S_327/1.04/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object CMakeFiles/1_04.dir/heap.c.o"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/1_04.dir/heap.c.o   -c /Users/maxtalley/Documents/COM_S_327/1.04/heap.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/maxtalley/Documents/COM_S_327/1.04-movement/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object CMakeFiles/1_04.dir/heap.c.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/1_04.dir/heap.c.o   -c /Users/maxtalley/Documents/COM_S_327/1.04-movement/heap.c
 
 CMakeFiles/1_04.dir/heap.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/1_04.dir/heap.c.i"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/maxtalley/Documents/COM_S_327/1.04/heap.c > CMakeFiles/1_04.dir/heap.c.i
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/maxtalley/Documents/COM_S_327/1.04-movement/heap.c > CMakeFiles/1_04.dir/heap.c.i
 
 CMakeFiles/1_04.dir/heap.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/1_04.dir/heap.c.s"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/maxtalley/Documents/COM_S_327/1.04/heap.c -o CMakeFiles/1_04.dir/heap.c.s
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/maxtalley/Documents/COM_S_327/1.04-movement/heap.c -o CMakeFiles/1_04.dir/heap.c.s
 
 CMakeFiles/1_04.dir/heap.c.o.requires:
 
@@ -131,16 +131,16 @@ CMakeFiles/1_04.dir/heap.c.o.provides.build: CMakeFiles/1_04.dir/heap.c.o
 
 CMakeFiles/1_04.dir/path.c.o: CMakeFiles/1_04.dir/flags.make
 CMakeFiles/1_04.dir/path.c.o: ../path.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/maxtalley/Documents/COM_S_327/1.04/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building C object CMakeFiles/1_04.dir/path.c.o"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/1_04.dir/path.c.o   -c /Users/maxtalley/Documents/COM_S_327/1.04/path.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/maxtalley/Documents/COM_S_327/1.04-movement/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building C object CMakeFiles/1_04.dir/path.c.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/1_04.dir/path.c.o   -c /Users/maxtalley/Documents/COM_S_327/1.04-movement/path.c
 
 CMakeFiles/1_04.dir/path.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/1_04.dir/path.c.i"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/maxtalley/Documents/COM_S_327/1.04/path.c > CMakeFiles/1_04.dir/path.c.i
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/maxtalley/Documents/COM_S_327/1.04-movement/path.c > CMakeFiles/1_04.dir/path.c.i
 
 CMakeFiles/1_04.dir/path.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/1_04.dir/path.c.s"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/maxtalley/Documents/COM_S_327/1.04/path.c -o CMakeFiles/1_04.dir/path.c.s
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/maxtalley/Documents/COM_S_327/1.04-movement/path.c -o CMakeFiles/1_04.dir/path.c.s
 
 CMakeFiles/1_04.dir/path.c.o.requires:
 
@@ -155,16 +155,16 @@ CMakeFiles/1_04.dir/path.c.o.provides.build: CMakeFiles/1_04.dir/path.c.o
 
 CMakeFiles/1_04.dir/utils.c.o: CMakeFiles/1_04.dir/flags.make
 CMakeFiles/1_04.dir/utils.c.o: ../utils.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/maxtalley/Documents/COM_S_327/1.04/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building C object CMakeFiles/1_04.dir/utils.c.o"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/1_04.dir/utils.c.o   -c /Users/maxtalley/Documents/COM_S_327/1.04/utils.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/maxtalley/Documents/COM_S_327/1.04-movement/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building C object CMakeFiles/1_04.dir/utils.c.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/1_04.dir/utils.c.o   -c /Users/maxtalley/Documents/COM_S_327/1.04-movement/utils.c
 
 CMakeFiles/1_04.dir/utils.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/1_04.dir/utils.c.i"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/maxtalley/Documents/COM_S_327/1.04/utils.c > CMakeFiles/1_04.dir/utils.c.i
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/maxtalley/Documents/COM_S_327/1.04-movement/utils.c > CMakeFiles/1_04.dir/utils.c.i
 
 CMakeFiles/1_04.dir/utils.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/1_04.dir/utils.c.s"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/maxtalley/Documents/COM_S_327/1.04/utils.c -o CMakeFiles/1_04.dir/utils.c.s
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/maxtalley/Documents/COM_S_327/1.04-movement/utils.c -o CMakeFiles/1_04.dir/utils.c.s
 
 CMakeFiles/1_04.dir/utils.c.o.requires:
 
@@ -177,13 +177,63 @@ CMakeFiles/1_04.dir/utils.c.o.provides: CMakeFiles/1_04.dir/utils.c.o.requires
 CMakeFiles/1_04.dir/utils.c.o.provides.build: CMakeFiles/1_04.dir/utils.c.o
 
 
+CMakeFiles/1_04.dir/movement.c.o: CMakeFiles/1_04.dir/flags.make
+CMakeFiles/1_04.dir/movement.c.o: ../movement.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/maxtalley/Documents/COM_S_327/1.04-movement/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building C object CMakeFiles/1_04.dir/movement.c.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/1_04.dir/movement.c.o   -c /Users/maxtalley/Documents/COM_S_327/1.04-movement/movement.c
+
+CMakeFiles/1_04.dir/movement.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/1_04.dir/movement.c.i"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/maxtalley/Documents/COM_S_327/1.04-movement/movement.c > CMakeFiles/1_04.dir/movement.c.i
+
+CMakeFiles/1_04.dir/movement.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/1_04.dir/movement.c.s"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/maxtalley/Documents/COM_S_327/1.04-movement/movement.c -o CMakeFiles/1_04.dir/movement.c.s
+
+CMakeFiles/1_04.dir/movement.c.o.requires:
+
+.PHONY : CMakeFiles/1_04.dir/movement.c.o.requires
+
+CMakeFiles/1_04.dir/movement.c.o.provides: CMakeFiles/1_04.dir/movement.c.o.requires
+	$(MAKE) -f CMakeFiles/1_04.dir/build.make CMakeFiles/1_04.dir/movement.c.o.provides.build
+.PHONY : CMakeFiles/1_04.dir/movement.c.o.provides
+
+CMakeFiles/1_04.dir/movement.c.o.provides.build: CMakeFiles/1_04.dir/movement.c.o
+
+
+CMakeFiles/1_04.dir/rlg327.c.o: CMakeFiles/1_04.dir/flags.make
+CMakeFiles/1_04.dir/rlg327.c.o: ../rlg327.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/maxtalley/Documents/COM_S_327/1.04-movement/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building C object CMakeFiles/1_04.dir/rlg327.c.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/1_04.dir/rlg327.c.o   -c /Users/maxtalley/Documents/COM_S_327/1.04-movement/rlg327.c
+
+CMakeFiles/1_04.dir/rlg327.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/1_04.dir/rlg327.c.i"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/maxtalley/Documents/COM_S_327/1.04-movement/rlg327.c > CMakeFiles/1_04.dir/rlg327.c.i
+
+CMakeFiles/1_04.dir/rlg327.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/1_04.dir/rlg327.c.s"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/maxtalley/Documents/COM_S_327/1.04-movement/rlg327.c -o CMakeFiles/1_04.dir/rlg327.c.s
+
+CMakeFiles/1_04.dir/rlg327.c.o.requires:
+
+.PHONY : CMakeFiles/1_04.dir/rlg327.c.o.requires
+
+CMakeFiles/1_04.dir/rlg327.c.o.provides: CMakeFiles/1_04.dir/rlg327.c.o.requires
+	$(MAKE) -f CMakeFiles/1_04.dir/build.make CMakeFiles/1_04.dir/rlg327.c.o.provides.build
+.PHONY : CMakeFiles/1_04.dir/rlg327.c.o.provides
+
+CMakeFiles/1_04.dir/rlg327.c.o.provides.build: CMakeFiles/1_04.dir/rlg327.c.o
+
+
 # Object files for target 1_04
 1_04_OBJECTS = \
 "CMakeFiles/1_04.dir/main.c.o" \
 "CMakeFiles/1_04.dir/dungeon.c.o" \
 "CMakeFiles/1_04.dir/heap.c.o" \
 "CMakeFiles/1_04.dir/path.c.o" \
-"CMakeFiles/1_04.dir/utils.c.o"
+"CMakeFiles/1_04.dir/utils.c.o" \
+"CMakeFiles/1_04.dir/movement.c.o" \
+"CMakeFiles/1_04.dir/rlg327.c.o"
 
 # External object files for target 1_04
 1_04_EXTERNAL_OBJECTS =
@@ -193,9 +243,11 @@ CMakeFiles/1_04.dir/utils.c.o.provides.build: CMakeFiles/1_04.dir/utils.c.o
 1_04: CMakeFiles/1_04.dir/heap.c.o
 1_04: CMakeFiles/1_04.dir/path.c.o
 1_04: CMakeFiles/1_04.dir/utils.c.o
+1_04: CMakeFiles/1_04.dir/movement.c.o
+1_04: CMakeFiles/1_04.dir/rlg327.c.o
 1_04: CMakeFiles/1_04.dir/build.make
 1_04: CMakeFiles/1_04.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/maxtalley/Documents/COM_S_327/1.04/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Linking C executable 1_04"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/maxtalley/Documents/COM_S_327/1.04-movement/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Linking C executable 1_04"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/1_04.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -208,6 +260,8 @@ CMakeFiles/1_04.dir/requires: CMakeFiles/1_04.dir/dungeon.c.o.requires
 CMakeFiles/1_04.dir/requires: CMakeFiles/1_04.dir/heap.c.o.requires
 CMakeFiles/1_04.dir/requires: CMakeFiles/1_04.dir/path.c.o.requires
 CMakeFiles/1_04.dir/requires: CMakeFiles/1_04.dir/utils.c.o.requires
+CMakeFiles/1_04.dir/requires: CMakeFiles/1_04.dir/movement.c.o.requires
+CMakeFiles/1_04.dir/requires: CMakeFiles/1_04.dir/rlg327.c.o.requires
 
 .PHONY : CMakeFiles/1_04.dir/requires
 
@@ -216,6 +270,6 @@ CMakeFiles/1_04.dir/clean:
 .PHONY : CMakeFiles/1_04.dir/clean
 
 CMakeFiles/1_04.dir/depend:
-	cd /Users/maxtalley/Documents/COM_S_327/1.04/cmake-build-debug && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/maxtalley/Documents/COM_S_327/1.04 /Users/maxtalley/Documents/COM_S_327/1.04 /Users/maxtalley/Documents/COM_S_327/1.04/cmake-build-debug /Users/maxtalley/Documents/COM_S_327/1.04/cmake-build-debug /Users/maxtalley/Documents/COM_S_327/1.04/cmake-build-debug/CMakeFiles/1_04.dir/DependInfo.cmake --color=$(COLOR)
+	cd /Users/maxtalley/Documents/COM_S_327/1.04-movement/cmake-build-debug && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/maxtalley/Documents/COM_S_327/1.04-movement /Users/maxtalley/Documents/COM_S_327/1.04-movement /Users/maxtalley/Documents/COM_S_327/1.04-movement/cmake-build-debug /Users/maxtalley/Documents/COM_S_327/1.04-movement/cmake-build-debug /Users/maxtalley/Documents/COM_S_327/1.04-movement/cmake-build-debug/CMakeFiles/1_04.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/1_04.dir/depend
 

@@ -29,6 +29,8 @@ int main(int argc, char *argv[])
   char *load_file;
   char *pgm_file;
   int NPCs;
+  heap_t h;
+  unsigned long ticks = 0;
 
   /* Default behavior: Seed with the time, generate a new dungeon, *
    * and don't write to disk.                                      */
@@ -175,10 +177,15 @@ int main(int argc, char *argv[])
   // render_tunnel_distance_map(&d);
 
   if(do_place_monsters) {
-    npc_define(&d, NPCs);
+    npc_define(&d, NPCs, h);
   }
 
-  render_dungeon(&d);
+  while(d.pc.alive == 1) {
+    //render_dungeon(&d);
+    char_movement(&d, h, ticks);
+    ticks++;
+
+  }
 
   if (do_save) {
     write_dungeon(&d, save_file);

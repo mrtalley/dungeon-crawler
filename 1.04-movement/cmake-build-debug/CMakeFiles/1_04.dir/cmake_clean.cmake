@@ -4,6 +4,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/1_04.dir/heap.c.o"
   "CMakeFiles/1_04.dir/path.c.o"
   "CMakeFiles/1_04.dir/utils.c.o"
+  "CMakeFiles/1_04.dir/movement.c.o"
+  "CMakeFiles/1_04.dir/rlg327.c.o"
   "1_04.pdb"
   "1_04"
 )

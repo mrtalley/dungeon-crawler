@@ -8,25 +8,18 @@
 #include "movement.h"
 #include "heap.h"
 
-#define INTELLIGENT 0b00000001
-#define TELEPATHIC  0b00000010
-#define TUNNELING   0b00000100
-#define ERRATIC     0b00001000
-#define PLAYER      0b00010000
-
 dungeon_t *d;
 
 static int32_t tick_cmp(const void *key, const void *with) {
-  return ((int32_t) d->npc[((npc_t *) key)->position[dim_y]]
-                                        [((npc_t *) key)->position[dim_x]].tick -
-          (int32_t) d->npc[((npc_t *) with)->position[dim_y]]
-                                        [((npc_t *) with)->position[dim_x]].tick);
+  return ((int32_t) d->npc[((pc_t *) key)->position[dim_y]]
+                                        [((pc_t *) key)->position[dim_x]].tick -
+          (int32_t) d->npc[((pc_t *) with)->position[dim_y]]
+                                        [((pc_t *) with)->position[dim_x]].tick);
 }
 
-void npc_define(dungeon_t *dungeon, int numNPC) {
+void npc_define(dungeon_t *dungeon, int numNPC, heap_t h) {
     d = dungeon;
     int i = 0, x = 0, y = 0;
-    heap_t h;
     //srand(time(NULL));
     heap_init(&h, tick_cmp, NULL);
 
@@ -44,7 +37,6 @@ void npc_define(dungeon_t *dungeon, int numNPC) {
     heap_insert(&h, &d->npc[y][x]);
     printf("done\n");
 
-    int counter = 0;
     printf("Placing monsters... "); fflush(stdout);
     for(i = 0; i < numNPC; i++) {
 
@@ -53,7 +45,6 @@ void npc_define(dungeon_t *dungeon, int numNPC) {
 
         // define NPC locations and monster types
         if(d->map[y][x] == ter_floor_room) {
-          counter++;
           // define NPC abilities
           d->npc[y][x].type = rand() % 2 ? d->npc[y][x].type | INTELLIGENT : d->npc[y][x].type;
           d->npc[y][x].type = rand() % 2 ? d->npc[y][x].type | TELEPATHIC : d->npc[y][x].type;
@@ -66,30 +57,40 @@ void npc_define(dungeon_t *dungeon, int numNPC) {
           d->npc[y][x].speed = (rand() % (20-5)) + 5;
           d->npc[y][x].tick = 1000 / d->npc[y][x].speed;
           d->npc[y][x].alive = 1;
-          //heap_insert(&h, &d->npc[y][x]);
+          heap_insert(&h, &d->npc[y][x]);
         }
         else i--;
     }
     printf("done\n");
-    //printf("%d\n", counter);
-
-    // for(int i = 0; i < DUNGEON_Y; i++){
-    //   for(int j = 0; j < DUNGEON_X; j++) {
-    //     if(d->npc[i][j].type != NULL && d->npc[i][j].type != PLAYER)
-    //       printf(" %01x ", d->npc[i][j].type);
-    //
-    //     else if(d->npc[i][j].type == PLAYER)
-    //       printf("@");
-    //
-    //     else if(d->map[y][x] == ter_floor_room)
-    //       printf(".");
-    //
-    //     else if(d->map[y][x] == ter_floor_hall)
-    //       printf("#");
-    //
-    //     else printf(" ");
-    //
-    //   }
-    //   printf("\n");
-    // }
 }
+
+ void char_movement(dungeon_t *d, heap_t h, unsigned long ticks) {
+   static pc_t *check;
+   static pc_t *mob;
+   static pc_t *character;
+
+   check = heap_peek_min(&h);
+
+   while(check->type != PLAYER) {
+     if(check->tick > ticks) {
+       mob = heap_remove_min(&h);
+       mob->position[dim_y]++;
+       mob->position[dim_x]++;
+       mob->tick = ticks + 1000/mob->speed;
+       heap_insert(&h, mob);
+       check = heap_peek_min(&h);
+     }
+
+     if(check->type == PLAYER && check->tick > ticks) {
+       character = heap_remove_min(&h);
+       character->position[dim_y]++;
+       character->position[dim_x]++;
+       character->tick = ticks + 1000/character->speed;
+       printf("Player has moved");
+       render_dungeon(&d);
+       printf("%ld\n", ticks);
+     }
+   }
+
+
+ }

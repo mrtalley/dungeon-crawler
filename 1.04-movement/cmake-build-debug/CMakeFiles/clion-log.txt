@@ -1,4 +1,4 @@
-/Applications/CLion.app/Contents/bin/cmake/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /Users/maxtalley/Documents/COM_S_327/1.04
+/Applications/CLion.app/Contents/bin/cmake/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /Users/maxtalley/Documents/COM_S_327/1.04-movement
 -- Configuring done
 -- Generating done
--- Build files have been written to: /Users/maxtalley/Documents/COM_S_327/1.04/cmake-build-debug
+-- Build files have been written to: /Users/maxtalley/Documents/COM_S_327/1.04-movement/cmake-build-debug

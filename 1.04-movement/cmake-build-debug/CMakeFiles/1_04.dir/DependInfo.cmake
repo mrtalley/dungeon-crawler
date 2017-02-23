@@ -4,11 +4,13 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_C
-  "/Users/maxtalley/Documents/COM_S_327/1.04/dungeon.c" "/Users/maxtalley/Documents/COM_S_327/1.04/cmake-build-debug/CMakeFiles/1_04.dir/dungeon.c.o"
-  "/Users/maxtalley/Documents/COM_S_327/1.04/heap.c" "/Users/maxtalley/Documents/COM_S_327/1.04/cmake-build-debug/CMakeFiles/1_04.dir/heap.c.o"
-  "/Users/maxtalley/Documents/COM_S_327/1.04/main.c" "/Users/maxtalley/Documents/COM_S_327/1.04/cmake-build-debug/CMakeFiles/1_04.dir/main.c.o"
-  "/Users/maxtalley/Documents/COM_S_327/1.04/path.c" "/Users/maxtalley/Documents/COM_S_327/1.04/cmake-build-debug/CMakeFiles/1_04.dir/path.c.o"
-  "/Users/maxtalley/Documents/COM_S_327/1.04/utils.c" "/Users/maxtalley/Documents/COM_S_327/1.04/cmake-build-debug/CMakeFiles/1_04.dir/utils.c.o"
+  "/Users/maxtalley/Documents/COM_S_327/1.04-movement/dungeon.c" "/Users/maxtalley/Documents/COM_S_327/1.04-movement/cmake-build-debug/CMakeFiles/1_04.dir/dungeon.c.o"
+  "/Users/maxtalley/Documents/COM_S_327/1.04-movement/heap.c" "/Users/maxtalley/Documents/COM_S_327/1.04-movement/cmake-build-debug/CMakeFiles/1_04.dir/heap.c.o"
+  "/Users/maxtalley/Documents/COM_S_327/1.04-movement/main.c" "/Users/maxtalley/Documents/COM_S_327/1.04-movement/cmake-build-debug/CMakeFiles/1_04.dir/main.c.o"
+  "/Users/maxtalley/Documents/COM_S_327/1.04-movement/movement.c" "/Users/maxtalley/Documents/COM_S_327/1.04-movement/cmake-build-debug/CMakeFiles/1_04.dir/movement.c.o"
+  "/Users/maxtalley/Documents/COM_S_327/1.04-movement/path.c" "/Users/maxtalley/Documents/COM_S_327/1.04-movement/cmake-build-debug/CMakeFiles/1_04.dir/path.c.o"
+  "/Users/maxtalley/Documents/COM_S_327/1.04-movement/rlg327.c" "/Users/maxtalley/Documents/COM_S_327/1.04-movement/cmake-build-debug/CMakeFiles/1_04.dir/rlg327.c.o"
+  "/Users/maxtalley/Documents/COM_S_327/1.04-movement/utils.c" "/Users/maxtalley/Documents/COM_S_327/1.04-movement/cmake-build-debug/CMakeFiles/1_04.dir/utils.c.o"
   )
 set(CMAKE_C_COMPILER_ID "AppleClang")
 

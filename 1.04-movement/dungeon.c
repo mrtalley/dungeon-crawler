@@ -1,7 +1,5 @@
 #include <stdio.h>
 #include <stdint.h>
-//#include <machine/endian.h>
-//#include <HOME/Desktop/endian.h>
 #include <sys/stat.h>
 #include <sys/time.h>
 #include <limits.h>
@@ -11,6 +9,7 @@
 #include "utils.h"
 #include "heap.h"
 #include "endian.h"
+#include "movement.h"
 
 typedef struct corridor_path {
   heap_node_t *hn;
@@ -606,63 +605,32 @@ void render_dungeon(dungeon_t *d)
 {
   pair_t p;
 
-  // for (p[dim_y] = 0; p[dim_y] < DUNGEON_Y; p[dim_y]++) {
-  //   for (p[dim_x] = 0; p[dim_x] < DUNGEON_X; p[dim_x]++) {
-  //     if (p[dim_x] ==  d->pc.position[dim_x] &&
-  //         p[dim_y] ==  d->pc.position[dim_y]) {
-  //       //putchar('@');
-  //       printf("@");
-  //     } else {
-  //       switch (mappair(p)) {
-  //       case ter_wall:
-  //       case ter_wall_immutable:
-  //         //putchar(' ');
-  //         printf(" ");
-  //         break;
-  //       case ter_floor:
-  //       case ter_floor_room:
-  //         if(d->npc[p[dim_y]][p[dim_x]].alive == 1)
-  //           printf("%X", d->npc[p[dim_y]][p[dim_x]].type);
-  //         //putchar('.');
-  //         else printf(".");
-  //         break;
-  //       case ter_floor_hall:
-  //         //putchar('#');
-  //         printf("#");
-  //         break;
-  //       case ter_debug:
-  //         putchar('*');
-  //         fprintf(stderr, "Debug character at %d, %d\n", p[dim_y], p[dim_x]);
-  //         break;
-  //       }
-  //     }
-  //   }
-  //   putchar('\n');
-  // }
   int y, x;
   for (y = 0; y < DUNGEON_Y; y++) {
     for (x = 0; x < DUNGEON_X; x++) {
-      if (x ==  d->pc.position[dim_x] &&
-          y ==  d->pc.position[dim_y]) {
-        //putchar('@');
+      if (x ==  d->pc.position[dim_x] && y ==  d->pc.position[dim_y]) {
+        // prints pc in magenta
         printf("\x1B[35m@\x1B[0m");
       } else {
         switch (d->map[y][x]) {
         case ter_wall:
         case ter_wall_immutable:
-          //putchar(' ');
           printf(" ");
           break;
         case ter_floor:
         case ter_floor_room:
-          if(d->npc[y][x].alive == 1)
+          if(d->npc[y][x].alive == 1 && d->npc[y][x].type != PLAYER) {
+            // prints monsters in cyan
             printf("\x1B[36m%x\x1B[0m", d->npc[y][x].type);
-          //putchar('.');
+          }
           else printf(".");
           break;
         case ter_floor_hall:
-          //putchar('#');
-          printf("#");
+          if(d->npc[y][x].alive == 1 && d->npc[y][x].type != PLAYER) {
+            // prints monsters in cyan
+            printf("\x1B[36m%x\x1B[0m", d->npc[y][x].type);
+          }
+          else printf("#");
           break;
         case ter_debug:
           putchar('*');
@@ -671,7 +639,7 @@ void render_dungeon(dungeon_t *d)
         }
       }
     }
-    putchar('\n');
+    printf("\n");
   }
 }
 

@@ -37,18 +37,18 @@ typedef struct room {
   pair_t size;
 } room_t;
 
-typedef struct pc {
-  pair_t position;
-  uint8_t alive;
-} pc_t;
+//typedef struct pc {
+//  pair_t position;
+//  uint8_t alive;
+//} pc_t;
 
-typedef struct npc {
-  pair_t position;
-  uint32_t type;
-  uint8_t speed;
-  uint8_t alive;
-  uint32_t tick;
-} npc_t;
+typedef struct pc {
+  pair_t position; // position on the map
+  uint32_t type; // defined in movement.h
+  uint8_t speed; // 10 for player; 5-20 for MOBs
+  uint8_t alive; // 1: alive; 0: dead
+  unsigned long tick; // how often a character can move: 1000 / speed
+} pc_t;
 
 typedef struct dungeon {
   uint32_t num_rooms;
@@ -65,7 +65,7 @@ typedef struct dungeon {
   uint8_t hardness[DUNGEON_Y][DUNGEON_X];
   uint8_t pc_distance[DUNGEON_Y][DUNGEON_X];
   uint8_t pc_tunnel[DUNGEON_Y][DUNGEON_X];
-  npc_t npc[DUNGEON_Y][DUNGEON_X];
+  pc_t npc[DUNGEON_Y][DUNGEON_X];
   pc_t pc;
 } dungeon_t;
 
