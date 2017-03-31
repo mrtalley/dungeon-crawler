@@ -1,0 +1,147 @@
+Week 7
+
+
+* Controlling a terminal
+** Primitive "terminal control" with carriage return
+   whatsit.c
+** ANSI Escape Sequences allow you to completely control the terminal
+   whatsitansi.c
+   http://ascii-table.com/ansi-escape-sequences.php
+** Curses (very punny name, "cursor optimization") abstract the terminal 
+   from the programmer
+   We'll use Ncurses (new curses)
+   To get data types: #include <ncurses.h>
+   To link in library: -lncurses
+*** Initialization:
+    WINDOW *initscr(void)
+      Initializes the terminal
+    int raw(void)
+      Turns off buffered I/O
+      We can read one byte at a time, no need to wait for user to hit enter
+    int noecho(void)
+      Doesn't echo input to the terminal
+    int curs_set(int visibility)
+      Make cursor invisible with visibility of 0
+    int keypad(WINDOW *win, bool bf)
+      Turns on the keypad
+
+    My solution to 1.05 uses:
+
+    void io_init_terminal(void)
+    {
+      initscr();
+      raw();
+      noecho();
+      curs_set(0);
+      keypad(stdscr, TRUE);
+    }
+
+*** Deinitialization
+    int endwin(void)
+      Returns resources to the system
+    If your program crashes and corrupts the terminal: run the "reset" command
+
+*** Reading input
+    int getch(void)
+      Read a single character
+      blocking call
+
+*** Displaying
+    int clear(void)
+      Before redrawing, use this
+    int mvaddch(int y, int x, const chtype ch)
+      Move cursor to (y, x) and write ch
+    int refresh(void)
+      Redraw the terminal
+*** Other I/O
+    See curs_addch(3), curs_printw(3), curs_getch(3) and curs_scanw(3)
+*** More info
+    Fairly comprehensive coverage in curses(3), including a list of all curses
+    functions.
+    Lots of curses tutorials and quick-start guides on the web.
+    Check out ncurses.h (in /usr/include/ncurses.h).  
+
+
+* C++
+** Created by Bjarne Stroustrup in the early 80s.
+   He was working on a discrete event simulator, wanted an object oriented
+   language, but also wanted speed.
+   Originally known as "C with classes".
+** Philosophy
+   Retain as much of C as possible
+   Strengthen type checking
+   Add new features to make programming higher level
+     References
+     Classes
+     Templates
+     Exceptions
+     Namespaces
+     Function and operator overloading
+     I/O changes
+** Things you'll (probably) like
+   C++ has bool
+   // comments
+   Variables can be defined anywhere
+   Exceptions
+   Objects
+   Function-style casts (and some runtime casts)
+     C style: (int) iG
+     C++ style:  int(i) 
+   Semantic change in struct definitions
+     structs also have public, private, and protected fields
+     fields in structs are public by default
+     struct foo {
+       //...
+     };
+** Things you (probably) won't like
+   Things require casts that didn't before
+   Lots of finicky error messages
+** Things that aren't part of C++
+   New data types (like string)
+   Bounds checking
+   Garbage collection
+     But it has features that let you implement some of these things
+** Other differences from C
+   C++ standard header files don't have a ".h" extension
+   File extensions
+   .cc, .cpp, .cxx, .c++, .C
+   Compile with g++
+   hello world...
+** const
+   C has const, but it's not used very much
+   C++ uses it extensively
+   Syntatically identical, but semantically different
+
+   const int *p;        /* The addressed data cannot be changed   */
+   int * const p;       /* The pointer variable cannot be changed */
+   const int * const p; /* Neither can be changed                 */
+
+   const program...
+* References
+  Use the address operator in a declaration (called the reference operator in
+  this context).
+  Must initialize immediately!
+  int &r = i;
+  swap.cpp demonstrates the pointer way and the reference way of
+  implementing a swap function.
+  Common convention: If changing a value inside a function, pass by address
+                     In not changing it, pass by const reference
+  functions can return references
+* Overloading
+  Functions
+  Functions can have the same name, as long as they have different formal
+  parameters.  Compiler figures out which one to call based on the actual
+  parameters. 
+  Operators
+  Operators are overloaded by defining a special "operator<operator>()"
+  functions where <operator> is the actual operator.  For instance, overrload
+  the addition operator by defining "operator+()".
+* Classes
+  public
+    Anybody can see this field
+  private
+    Only members of this class can see it
+  protected
+    Only this class and subclasses can see it
+  friend
+    Your friends have full access to your privates.

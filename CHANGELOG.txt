@@ -50,12 +50,14 @@ CHANGELOG: DUNGEON GAME
   *** 02/20/17
     ** Begin 1.04
     ** Begin npc_define function (creates monsters and defines PC)
-    
+
   *** 02/21/17
     ** Write code to place monsters in the dungeon
-
-  *** 02/22/17
     ** Write code to define ticks of monsters and pc
     ** Get heap working properly (sorting by ticks)
     ** Get NPC types working properly
-    ** NPCs printing in the dungon (and in color, might I add
+    ** NPCs printing in the dungeon (and in color, might I add)
+
+  *** 02/22/17
+    ** Work with event queue to add and remove NPCs at the correct time
+    ** Begin applying character abilities
