@@ -61,10 +61,10 @@ void handlePiles(int map[23][23])
     for(y = 0; y < 23; y++) {
         for(x = 0; x < 23; x++) {
             if(map[x][y] >= 4) {
-                map[x - 1][y] += 1;
-                map[x + 1][y] += 1;
-                map[x][y - 1] += 1;
-                map[x][y + 1] += 1;
+                if(x != 0)  map[x - 1][y] += 1;
+                if(x != 22) map[x + 1][y] += 1;
+                if(y != 0)  map[x][y - 1] += 1;
+                if(y != 22) map[x][y + 1] += 1;
                 map[x][y] = 0;
             }
         }
