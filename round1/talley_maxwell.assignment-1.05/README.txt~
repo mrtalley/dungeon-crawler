@@ -1,0 +1,18 @@
+README 1.05
+
+To get the character to move, I added all relevant ncurses functions to the
+pc_next_pos function. It takes in a character from the user and checks if its a valid
+character. If not, it asks for input again. The character can move using all
+specified keys, plus wasd for simplicity. Relevant code relating to going up and
+down stairs is also included in this function.
+
+To get the staircases to print in the dungeon, I added two new enums called
+ter_floor_stair_up and ter_floor_stair_down. I also created a new function called
+create_stairs. A room has a 1 in 5 chance of containing a staircase and a 50% chance
+of it either being up or down. Each staircase is placed in or near the middle of the room
+for simplicity. Render dungeon was altered to use ncurses prints (mvaddch) instead
+of putchars. The characters '>' and '<' were added here.
+
+The 80x24 window does not work perfectly yet. There is still a bug on the far left side.
+I have not added the look mode yet either. I was going to perfect the window before
+I created that mode because they would work almost identical. 
