@@ -5,6 +5,7 @@
 void fillMapWithCommandLineValues(int map[23][23], int argc, char *argv[]);
 void dropSand(int map[23][23]);
 void handlePiles(int map[23][23]);
+int checkUnstable(int map[23][23]);
 
 int main(int argc, char *argv[])
 {
@@ -23,6 +24,7 @@ int main(int argc, char *argv[])
         usleep(83333);
         dropSand(map);
         handlePiles(map);
+
         for(y = 0; y < 23; y++) {
             for(x = 0; x < 23; x++) {
                 printf("%d ", map[x][y]);
@@ -57,16 +59,33 @@ void handlePiles(int map[23][23])
 {
     int x = 0;
     int y = 0;
+    int unstable = 1;
 
+    while(unstable == 1) {
+        for(y = 0; y < 23; y++) {
+            for(x = 0; x < 23; x++) {
+                if(map[x][y] > 4) {
+                    map[x - 1][y] += 1;
+                    map[x + 1][y] += 1;
+                    map[x][y - 1] += 1;
+                    map[x][y + 1] += 1;
+                    map[x][y] = 0;
+                }
+            }
+        }
+        unstable = checkUnstable(map);
+    }
+}
+
+int checkUnstable(int map[23][23])
+{
+    int x = 0, y = 0;
     for(y = 0; y < 23; y++) {
         for(x = 0; x < 23; x++) {
-            if(map[x][y] >= 4) {
-                map[x - 1][y] += 1;
-                map[x + 1][y] += 1;
-                map[x][y - 1] += 1;
-                map[x][y + 1] += 1;
-                map[x][y] = 0;
+            if(map[x][y] > 4) {
+                return 1;
             }
         }
     }
+    return 0;
 }
