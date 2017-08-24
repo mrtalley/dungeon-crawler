@@ -1,0 +1,127 @@
+*** All assignments must be turned in with an ASCII readme file, named README and containing no more than 150
+    words, which describes your project’s compliance with the specification to date including relevant function, data
+    structures, and file names. Assignments must also contain an ASCII change log file named CHANGELOG that contains a
+    cumulative list of dated updates from day 1 (e.g., “started project”). The change log will list every significant change
+    you make to your project, including bug discoveries, bug fixes, functionality additions and changes, etc.
+
+*** All projects must include a working makefile, named Makefile, which correctly builds a binary with debugging
+    symbols on pyrite. We will discuss these things in the first week of class.
+
+*** All projects must be submitted via the appropriate assignment page on BlackBoard. Projects should be turned in as
+    a tarball (a gzipped tar archive). Basic instructions, with an example, on how to create and extract acceptable tarballs
+    follow. Tarballs are to be named
+
+    <surname> <forename>.assignment-<assignment number>.tar.gz
+
+    and should extract to a directory named
+
+    <surname> <forename>.assignment-<assignment number>
+
+    where <surname> is your family name, <forename> is your given name, <assignment number> is the submitted
+    assignment number, and all other characters are literals. Thus, if I am submitting assignment 1.05, my tarball will be
+    named
+
+    sheaffer jeremy.assignment-1.05.tar.gz
+
+    and it will expand to the directory
+
+    sheaffer jeremy.assignment-1.05
+
+    which will contain all of my source files, and Makefile, README, and CHANGELOG as defined above, but no generated
+    files (run make clean first!).
+
+*** Still using assignment 1.05 as the driving example, the simplest way to create a tarball follows. This is an actual
+    session from my shell, saved with a program named script. I have added comments inline, preceding them with ‘%%
+    ’, which are not part of the actually shell I/O. Lines beginning with sheaffer@sheaffer... are input. Lines ending
+    with a backslash (‘\’) are continued on the following line. I’ve indented continued lines by two spaces to make them
+    stand out. All other lines are output.
+
+    Script started on Thu 08 Jan 2015 08:20:53 AM CST
+    %% Run 'make clean' to get rid of the binaries
+    sheaffer@sheaffer-e7440:˜/classes/semester/s2015/229/assignments/assignment1.05$ make clean
+    rm -f dungeon.o cds/heap.o rlg229
+    %% Move into the parent directory so that we can make a tarball of the
+    %% current directory
+    sheaffer@sheaffer-e7440:˜/classes/semester/s2015/229/assignments/assignment1.05$ cd ..
+    %% My directory isn't named as per the specification, so create a copy of it.
+    %% '-R' makes it copy recursively (a deep copy) so the 'cds' subdirectory is
+    %% copied, too, or you could rename it with 'mv'.
+    sheaffer@sheaffer-e7440:˜/classes/semester/s2015/229/assignments$ cp -R assignment1.05/ \
+    sheaffer_jeremy.assignment-1.05
+    %% Create the tarball. Four switches to tar. 'c' means create, 'v' means
+    %% verbose, 'f' means force, and 'z' means compress with gzip. 'v' and 'f'
+    %% aren't strictly needed, but 'v' does cause it to give the file list that
+    %% follows.
+    sheaffer@sheaffer-e7440:˜/classes/semester/s2015/229/assignments$ tar cvfz \
+    sheaffer_jeremy.assignment-1.05.tar.gz sheaffer_jeremy.assignment-1.05/
+    sheaffer_jeremy.assignment-1.05/
+    sheaffer_jeremy.assignment-1.05/cds/
+    sheaffer_jeremy.assignment-1.05/cds/hash.h
+    sheaffer_jeremy.assignment-1.05/cds/tree.c
+    sheaffer_jeremy.assignment-1.05/cds/macros.h
+    sheaffer_jeremy.assignment-1.05/cds/neural_net.h
+    sheaffer_jeremy.assignment-1.05/cds/neural_net.c
+    sheaffer_jeremy.assignment-1.05/cds/list.c
+    sheaffer_jeremy.assignment-1.05/cds/heap.c
+    sheaffer_jeremy.assignment-1.05/cds/list.h
+    sheaffer_jeremy.assignment-1.05/cds/spinlock.h
+    sheaffer_jeremy.assignment-1.05/cds/heap.h
+    sheaffer_jeremy.assignment-1.05/cds/hash.c
+    sheaffer_jeremy.assignment-1.05/cds/heap.d
+    sheaffer_jeremy.assignment-1.05/cds/circular_queue.h
+    sheaffer_jeremy.assignment-1.05/cds/circular_queue.c
+    sheaffer_jeremy.assignment-1.05/cds/tree.h
+    sheaffer_jeremy.assignment-1.05/Makefile
+    sheaffer_jeremy.assignment-1.05/dungeon.h
+    sheaffer_jeremy.assignment-1.05/dungeon.c
+    sheaffer_jeremy.assignment-1.05/CHANGELOG
+    sheaffer_jeremy.assignment-1.05/README
+    %% At this point, I am done. I could submit, however, I don't want to risk a
+    %% penalty to my grade, so I am going to test it out. I can't really expand
+    %% the archive here, because the target directory exists. Since that
+    %% directory is a copy, I could just delete it now, but if I made a mistake
+    %% and need to try again, I would rather not have to retype all that stuff, so
+    %% let's make a temporary directory to expand in, call it 'test'.
+    sheaffer@sheaffer-e7440:˜/classes/semester/s2015/229/assignments$ mkdir test
+    %% And move into it...
+    sheaffer@sheaffer-e7440:˜/classes/semester/s2015/229/assignments$ cd test
+    %% Now to open up the archive. gzip compresses and decompresses. The 'd'
+    %% switch tells it to decompress. 'c' tells it to concatenate the output to
+    %% the standard output, then we pipe ('|') that to tar, where 'x' means to
+    %% expand ('v' and 'f' are as above) and a file name of '-' means to read the
+    %% file from the standard input. I can see in the output that follows that
+    %% the files are all there. I can move in, do a build, some testing, etc.,
+    %% as I please.
+    sheaffer@sheaffer-e7440:˜/classes/semester/s2015/229/assignments/test$ gzip -dc \
+    ../sheaffer_jeremy.assignment-1.05.tar.gz |tar xvf -
+    sheaffer_jeremy.assignment-1.05/
+    sheaffer_jeremy.assignment-1.05/cds/
+    sheaffer_jeremy.assignment-1.05/cds/hash.h
+    sheaffer_jeremy.assignment-1.05/cds/tree.c
+    sheaffer_jeremy.assignment-1.05/cds/macros.h
+    sheaffer_jeremy.assignment-1.05/cds/neural_net.h
+    sheaffer_jeremy.assignment-1.05/cds/neural_net.c
+    sheaffer_jeremy.assignment-1.05/cds/list.c
+    sheaffer_jeremy.assignment-1.05/cds/heap.c
+    sheaffer_jeremy.assignment-1.05/cds/list.h
+    sheaffer_jeremy.assignment-1.05/cds/spinlock.h
+    sheaffer_jeremy.assignment-1.05/cds/heap.h
+    sheaffer_jeremy.assignment-1.05/cds/hash.c
+    sheaffer_jeremy.assignment-1.05/cds/heap.d
+    sheaffer_jeremy.assignment-1.05/cds/circular_queue.h
+    sheaffer_jeremy.assignment-1.05/cds/circular_queue.c
+    sheaffer_jeremy.assignment-1.05/cds/tree.h
+    sheaffer_jeremy.assignment-1.05/Makefile
+    sheaffer_jeremy.assignment-1.05/dungeon.h
+    sheaffer_jeremy.assignment-1.05/dungeon.c
+    sheaffer_jeremy.assignment-1.05/CHANGELOG
+    sheaffer_jeremy.assignment-1.05/README
+    sheaffer@sheaffer-e7440:˜/classes/semester/s2015/229/assignments/test$ cd ..
+    %% Looks good! I am ready to submit. I don't need the temporary directory,
+    %% nor the renamed directory, so I am cleaning them up.
+    sheaffer@sheaffer-e7440:˜/classes/semester/s2015/229/assignments$ rm -rf test
+    7
+    sheaffer_jeremy.assignment-1.05
+    %% And exiting the 'script' program.
+    sheaffer@sheaffer-e7440:˜/classes/semester/s2015/229/assignments$ exit
+    Script done on Thu 08 Jan 2015 08:22:54 AM CST
