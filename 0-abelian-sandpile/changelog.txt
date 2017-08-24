@@ -1,0 +1,6 @@
+CHANGELOG
+
+08/24
+* Created project
+* Created initial map
+* Initialize map array to zeros
