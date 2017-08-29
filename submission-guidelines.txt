@@ -30,11 +30,13 @@
     which will contain all of my source files, and Makefile, README, and CHANGELOG as defined above, but no generated
     files (run make clean first!).
 
-*** Still using assignment 1.05 as the driving example, the simplest way to create a tarball follows. This is an actual
-    session from my shell, saved with a program named script. I have added comments inline, preceding them with ‘%%
-    ’, which are not part of the actually shell I/O. Lines beginning with sheaffer@sheaffer... are input. Lines ending
-    with a backslash (‘\’) are continued on the following line. I’ve indented continued lines by two spaces to make them
-    stand out. All other lines are output.
+*** Still using assignment 1.05 as the driving example, the simplest way to create a
+    tarball follows. This is an actualsession from my shell, saved with a program named
+    script. I have added comments inline, preceding them with ‘%%
+    ’, which are not part of the actually shell I/O. Lines beginning with
+    sheaffer@sheaffer... are input. Lines ending with a backslash (‘\’) are continued on 
+    the following line. I’ve indented continued
+    lines by two spaces to make them stand out. All other lines are output.
 
     Script started on Thu 08 Jan 2015 08:20:53 AM CST
     %% Run 'make clean' to get rid of the binaries

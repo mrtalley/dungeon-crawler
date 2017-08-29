@@ -4,3 +4,8 @@ CHANGELOG
 * Created project
 * Created initial map
 * Initialize map array to zeros
+* Add sand dropping into center space
+* Allow command line values to be passed
+* Add toppling piles
+* Handle map edge cases
+* End simulation after all piles are stable

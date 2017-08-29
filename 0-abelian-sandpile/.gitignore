@@ -1,3 +1,4 @@
 *.dSYM
 sandpile
+rand
 .DS_Store
