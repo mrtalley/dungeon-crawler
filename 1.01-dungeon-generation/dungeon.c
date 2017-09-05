@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <time.h>
 #include <stdlib.h>
-#include <curses.h>
 
 #define MAXROOMS 10
 #define COLS 80
