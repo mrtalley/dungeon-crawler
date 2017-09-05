@@ -1,3 +1,18 @@
+commit d382ef1c88ee79d47b5d6f23b36771800aff4dfb
+Merge: 327d405 2c9c5f2
+Author: Maxwell Talley <max.talley0@gmail.com>
+Date:   Tue Sep 5 12:21:17 2017 -0500
+
+    Merge pull request #24 from mrtalley/DG-5
+    
+    DG-5 create shell file to write commits to changelog
+
+commit 2c9c5f29172c31d810d6f76c50bd31d1d4e917bc
+Author: mrtalley <mrtalley@iastate.edu>
+Date:   Tue Sep 5 12:19:51 2017 -0500
+
+    DG-5 create shell file to write commits to CHANGELOG
+
 commit 327d405ec30b19920dfcf94f6eb8a0d6ec38c159
 Merge: 2e56a7c a1e48c4
 Author: Maxwell Talley <max.talley0@gmail.com>

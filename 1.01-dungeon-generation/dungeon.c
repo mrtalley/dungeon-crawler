@@ -7,6 +7,8 @@
 #define COLS 80
 #define ROWS 21
 
+int roomCount = 0;
+
 struct Dungeon {
   unsigned char hardness[COLS][ROWS];
   char map[COLS][ROWS];
@@ -53,7 +55,7 @@ static void generateRooms(struct Dungeon *dungeon) {
   srand((unsigned) time(NULL));
   int i = 0, j = 0;
   int max = 10, min = 5;
-  int maxRooms = generateRandom(max, min);
+  roomCount = generateRandom(max, min);
   int numRooms = 0;
   int xMin = 3, yMin = 5, xMax = 10, yMax = 15;
   int x = 0, y = 0, xSize = 0, ySize = 0;
@@ -61,7 +63,7 @@ static void generateRooms(struct Dungeon *dungeon) {
   int tries = 0;
   int roomPosition = 0;
 
-  while(numRooms != maxRooms) {
+  while(numRooms <= roomCount) {
     x = generateRandom(COLS - 1, 1);
     y = generateRandom(ROWS - 1, 1);
     xSize = generateRandom(xMax, xMin);
@@ -132,5 +134,42 @@ int roomCheck(int xPos, int yPos, int xSize, int ySize, struct Dungeon *dungeon)
 }
 
 static void generateCorridors(struct Dungeon *dungeon) {
+  int count = 1;
+  int secondX, secondY, firstX, firstY;
 
+  while(count <= roomCount) {
+    secondX = dungeon->rooms[count][0];
+    secondY = dungeon->rooms[count][1];
+    firstX = dungeon->rooms[count - 1][0];
+    firstY = dungeon->rooms[count - 1][1];
+
+    while(firstX != secondX) {
+      if(firstX > secondX) {
+        firstX--;
+      }
+      else if(firstX < secondX) {
+        firstX++;
+      }
+
+      if(dungeon->hardness[firstX][firstY] != 0) {
+        dungeon->map[firstX][firstY] = '#';
+        dungeon->hardness[firstX][firstY] = 0;
+      }
+    }
+
+    while(firstY != secondY) {
+      if(firstY > secondY) {
+        firstY--;
+      }
+      else if(firstY < secondY) {
+        firstY++;
+      }
+
+      if(dungeon->hardness[firstX][firstY] != 0) {
+        dungeon->map[firstX][firstY] = '#';
+        dungeon->hardness[firstX][firstY] = 0;
+      }
+    }
+    count++;
+  }
 }
