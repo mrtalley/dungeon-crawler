@@ -1,0 +1,8 @@
+This assignment fits the required specifications.
+* Dungeon is the required dimensions
+* At least 5 rooms are created each time
+* Each room fits minimum dimensions (3 x 2)
+* 1 cell of non-room separates each rooms
+* outermost cells are immutable, with 255 hardness
+* dungeon is fully connected
+* corridors do not extend into rooms
