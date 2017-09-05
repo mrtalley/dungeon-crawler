@@ -1,3 +1,9 @@
+commit 746607404b91889609ba2eb19ef797060a7d4f53
+Author: mrtalley <mrtalley@iastate.edu>
+Date:   Tue Sep 5 13:42:05 2017 -0500
+
+    Remove curses.h dependency -- will implement later
+
 commit 959f6d7b2476cc2e0c07182166a5beab08e0e9b2
 Merge: d382ef1 95ffa23
 Author: Maxwell Talley <max.talley0@gmail.com>
