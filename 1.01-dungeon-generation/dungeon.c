@@ -38,7 +38,7 @@ int main(int argc, char* argv[]) {
   }
 
   static void generateRooms(struct Dungeon *dungeon) {
-
+    
   }
 
   static void printMap(struct Dungeon *dungeon) {
