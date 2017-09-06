@@ -1,0 +1,5 @@
+```README
+tar cvfz \
+  talley_maxwell.assignment-<assignment_no>.tar.gz \
+  <name_of_directory_to_compress>
+```

@@ -1,15 +1,8 @@
-*** All assignments must be turned in with an ASCII readme file, named README and containing no more than 150
-    words, which describes your project’s compliance with the specification to date including relevant function, data
-    structures, and file names. Assignments must also contain an ASCII change log file named CHANGELOG that contains a
-    cumulative list of dated updates from day 1 (e.g., “started project”). The change log will list every significant change
-    you make to your project, including bug discoveries, bug fixes, functionality additions and changes, etc.
+* All assignments must be turned in with an ASCII readme file, named README and containing no more than 150 words, which describes your project’s compliance with the specification to date including relevant function, data structures, and file names. Assignments must also contain an ASCII change log file named CHANGELOG that contains a cumulative list of dated updates from day 1 (e.g., “started project”). The change log will list every significant change you make to your project, including bug discoveries, bug fixes, functionality additions and changes, etc.
 
-* All projects must include a working makefile, named Makefile, which correctly builds a binary with debugging
-    symbols on pyrite. We will discuss these things in the first week of class.
+* All projects must include a working makefile, named Makefile, which correctly builds a binary with debugging symbols on pyrite. We will discuss these things in the first week of class.
 
-* All projects must be submitted via the appropriate assignment page on BlackBoard. Projects should be turned in as
-    a tarball (a gzipped tar archive). Basic instructions, with an example, on how to create and extract acceptable tarballs
-    follow. Tarballs are to be named
+* All projects must be submitted via the appropriate assignment page on BlackBoard. Projects should be turned in as a tarball (a gzipped tar archive). Basic instructions, with an example, on how to create and extract acceptable tarballs follow. Tarballs are to be named
 
     `<surname>_<forename>.assignment-<assignment number>.tar.gz`
 

@@ -1,3 +1,9 @@
+commit 88f6849a11a5f7f6f2d42cedd6eafbf142ec49eb
+Author: mrtalley <mrtalley@iastate.edu>
+Date:   Wed Sep 6 08:25:17 2017 -0500
+
+    Update CHANGELOG, README, Notes, move main in dungeon.c
+
 commit 315ebfa7687c543e52605964e24670685110160c
 Author: mrtalley <mrtalley@pyrite-n2.cs.iastate.edu>
 Date:   Tue Sep 5 13:53:05 2017 -0500
