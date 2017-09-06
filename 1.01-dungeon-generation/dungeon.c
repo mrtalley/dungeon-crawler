@@ -7,29 +7,18 @@
 #define COLS 80
 #define ROWS 21
 
-typedef struct Dungeon {
+typedef struct dungeon {
   uint32_t num_rooms;
   uint8_t hardness[COLS][ROWS];
   char map[COLS][ROWS];
   unsigned char rooms[MAXROOMS][2];
 } dungeon_t;
 
-static void createEmptyMap(struct Dungeon *dungeon);
-static void generateRooms(struct Dungeon *dungeon);
-static void printMap(struct Dungeon *dungeon);
-int generateRandom(int max, int min);
-int roomCheck(int yPos, int xPos, int ySize, int xSize, struct Dungeon *dungeon);
-static void generateCorridors(struct Dungeon *dungeon);
-
-int main(int argc, char* argv[]) {
-  struct Dungeon dungeon;
-  createEmptyMap(&dungeon);
-  generateRooms(&dungeon);
-  generateCorridors(&dungeon);
-  printMap(&dungeon);
+int generateRandom(int max, int min) {
+  return (rand() % (max - min)) + min;
 }
 
-static void createEmptyMap(struct Dungeon *dungeon) {
+static void createEmptyMap(dungeon_t *dungeon) {
   srand((unsigned) time(NULL));
   int y = 0, x = 0;
   for(y = 0; y < ROWS; y++) {
@@ -50,7 +39,28 @@ static void createEmptyMap(struct Dungeon *dungeon) {
   }
 }
 
-static void generateRooms(struct Dungeon *dungeon) {
+int roomCheck(int xPos, int yPos, int xSize, int ySize, dungeon_t *dungeon){
+  int y, x;
+  for(y = yPos; y < yPos + ySize; y++) {
+    if(dungeon->hardness[xPos - 1][y] == 0
+      || dungeon->hardness[xPos + xSize][y] == 0)
+      {
+        return 0;
+      }
+  }
+
+  for(x = xPos; x < xPos + xSize; x++) {
+    if(dungeon->hardness[x][yPos - 1] == 0
+      || dungeon->hardness[x][yPos + ySize] == 0)
+      {
+        return 0;
+      }
+  }
+
+  return 1;
+}
+
+static void generateRooms(dungeon_t *dungeon) {
   srand((unsigned) time(NULL));
   int i = 0, j = 0;
   int max = 10, min = 5;
@@ -97,7 +107,7 @@ static void generateRooms(struct Dungeon *dungeon) {
   printf("Rooms generated in %d tries\n", tries);
 }
 
-static void printMap(struct Dungeon *dungeon) {
+static void printMap(dungeon_t *dungeon) {
   int y = 0, x = 0;
   for(y = 0; y < ROWS; y++) {
     for(x = 0; x < COLS; x++) {
@@ -107,32 +117,7 @@ static void printMap(struct Dungeon *dungeon) {
   }
 }
 
-int generateRandom(int max, int min) {
-  return (rand() % (max - min)) + min;
-}
-
-int roomCheck(int xPos, int yPos, int xSize, int ySize, struct Dungeon *dungeon){
-  int y, x;
-  for(y = yPos; y < yPos + ySize; y++) {
-    if(dungeon->hardness[xPos - 1][y] == 0
-      || dungeon->hardness[xPos + xSize][y] == 0)
-      {
-        return 0;
-      }
-  }
-
-  for(x = xPos; x < xPos + xSize; x++) {
-    if(dungeon->hardness[x][yPos - 1] == 0
-      || dungeon->hardness[x][yPos + ySize] == 0)
-      {
-        return 0;
-      }
-  }
-
-  return 1;
-}
-
-static void generateCorridors(struct Dungeon *dungeon) {
+static void generateCorridors(dungeon_t *dungeon) {
   int count = 1;
   int secondX, secondY, firstX, firstY;
 
@@ -171,4 +156,12 @@ static void generateCorridors(struct Dungeon *dungeon) {
     }
     count++;
   }
+}
+
+int main(int argc, char* argv[]) {
+  dungeon_t dungeon;
+  createEmptyMap(&dungeon);
+  generateRooms(&dungeon);
+  generateCorridors(&dungeon);
+  printMap(&dungeon);
 }

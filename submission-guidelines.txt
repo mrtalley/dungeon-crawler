@@ -4,40 +4,35 @@
     cumulative list of dated updates from day 1 (e.g., “started project”). The change log will list every significant change
     you make to your project, including bug discoveries, bug fixes, functionality additions and changes, etc.
 
-*** All projects must include a working makefile, named Makefile, which correctly builds a binary with debugging
+* All projects must include a working makefile, named Makefile, which correctly builds a binary with debugging
     symbols on pyrite. We will discuss these things in the first week of class.
 
-*** All projects must be submitted via the appropriate assignment page on BlackBoard. Projects should be turned in as
+* All projects must be submitted via the appropriate assignment page on BlackBoard. Projects should be turned in as
     a tarball (a gzipped tar archive). Basic instructions, with an example, on how to create and extract acceptable tarballs
     follow. Tarballs are to be named
 
-    <surname> <forename>.assignment-<assignment number>.tar.gz
+    `<surname>_<forename>.assignment-<assignment number>.tar.gz`
 
     and should extract to a directory named
 
-    <surname> <forename>.assignment-<assignment number>
+    `<surname>_<forename>.assignment-<assignment number>`
 
-    where <surname> is your family name, <forename> is your given name, <assignment number> is the submitted
+    where `<surname>` is your family name, `<forename>` is your given name, `<assignment number>` is the submitted
     assignment number, and all other characters are literals. Thus, if I am submitting assignment 1.05, my tarball will be
     named
 
-    sheaffer jeremy.assignment-1.05.tar.gz
+    `sheaffer_jeremy.assignment-1.05.tar.gz`
 
     and it will expand to the directory
 
-    sheaffer jeremy.assignment-1.05
+    `sheaffer_jeremy.assignment-1.05`
 
     which will contain all of my source files, and Makefile, README, and CHANGELOG as defined above, but no generated
     files (run make clean first!).
 
-*** Still using assignment 1.05 as the driving example, the simplest way to create a
-    tarball follows. This is an actualsession from my shell, saved with a program named
-    script. I have added comments inline, preceding them with ‘%%
-    ’, which are not part of the actually shell I/O. Lines beginning with
-    sheaffer@sheaffer... are input. Lines ending with a backslash (‘\’) are continued on 
-    the following line. I’ve indented continued
-    lines by two spaces to make them stand out. All other lines are output.
+* Still using assignment 1.05 as the driving example, the simplest way to create a tarball follows. This is an actual session from my shell, saved with a program named script. I have added comments inline, preceding them with ‘%%’, which are not part of the actually shell I/O. Lines beginning with sheaffer@sheaffer... are input. Lines ending with a backslash (‘\’) are continued on the following line. I’ve indented continued lines by two spaces to make them stand out. All other lines are output.
 
+    ```README
     Script started on Thu 08 Jan 2015 08:20:53 AM CST
     %% Run 'make clean' to get rid of the binaries
     sheaffer@sheaffer-e7440:˜/classes/semester/s2015/229/assignments/assignment1.05$ make clean
@@ -126,4 +121,4 @@
     sheaffer_jeremy.assignment-1.05
     %% And exiting the 'script' program.
     sheaffer@sheaffer-e7440:˜/classes/semester/s2015/229/assignments$ exit
-    Script done on Thu 08 Jan 2015 08:22:54 AM CST
+    Script done on Thu 08 Jan 2015 08:22:54 AM CST```

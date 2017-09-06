@@ -1,7 +1,7 @@
 default: dungeon
 
 dungeon: dungeon.c
-	gcc -o dungeon dungeon.c -lncurses -Wall -Werror -ggdb
+	gcc -o dungeon dungeon.c -Wall -Werror -ggdb
 
 clean:
 	rm -f dungeon *~
