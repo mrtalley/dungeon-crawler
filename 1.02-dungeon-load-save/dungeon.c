@@ -188,30 +188,12 @@ void writeToFile(dungeon_t *dungeon) {
         }
     }
 
-    for(int i = 0; i < )
-
-    // read from file for testing purposes
-    char temp[100];
-    uint32_t tempint;
-    uint32_t tempsize;
-    uint8_t tempHard[COLS][ROWS];
-
-    fseek(&dungeonFile, 0, SEEK_SET);
-
-    fread(temp, 1, 6, &dungeonFile);
-    fread(&tempint, 4, 1, &dungeonFile);
-    fread(&tempsize, 4, 1, &dungeonFile);
-
-    for(int y = 0; y < ROWS; y++) {
-        for(int x = 0; x < COLS; x++) {
-            fread(&tempHard[x][y], 1, 1, &dungeonFile);
+    // Location of All Rooms, Bytes 1694 - eof
+    for(int i = 0; i < dungeon->num_rooms; i++) {
+        for(int j = 0; j < 4; j++) {
+            fwrite(&dungeon->rooms[i][j], 1, 1, &dungeonFile);
         }
     }
-
-    printf("NAME: %s\n", temp);
-    printf("Version: %d\n", tempint);
-    printf("Size: %d\n", tempsize);
-
 }
 
 void loadFromFile() {
