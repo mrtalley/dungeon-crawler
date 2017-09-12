@@ -231,10 +231,4 @@ int main(int argc, char* argv[]) {
         generateCorridors(&dungeon);
         printMap(&dungeon);
     }
-
-    // dungeon_t dungeon;
-    // createEmptyMap(&dungeon);
-    // generateRooms(&dungeon);
-    // generateCorridors(&dungeon);
-    // printMap(&dungeon);
 }
