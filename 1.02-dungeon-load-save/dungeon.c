@@ -12,7 +12,7 @@ typedef struct dungeon {
     uint32_t num_rooms;
     uint8_t hardness[COLS][ROWS];
     char map[COLS][ROWS];
-    unsigned char rooms[MAXROOMS][2];
+    unsigned char rooms[MAXROOMS][4]; // y, x, y-size, x-size
 } dungeon_t;
 
 int generateRandom(int max, int min) {
@@ -95,9 +95,13 @@ static void generateRooms(dungeon_t *dungeon) {
                 }
             }
 
-            dungeon->rooms[numRooms][roomPosition] = x + (xSize / 2);
+            dungeon->rooms[numRooms][roomPosition] = y;
             roomPosition++;
-            dungeon->rooms[numRooms][roomPosition] = y + (ySize / 2);
+            dungeon->rooms[numRooms][roomPosition] = x;
+            roomPosition++;
+            dungeon->rooms[numRooms][roomPosition] = ySize;
+            roomPosition++;
+            dungeon->rooms[numRooms][roomPosition] = xSize;
             numRooms++;
             roomPosition = 0;
         }
@@ -123,10 +127,10 @@ static void generateCorridors(dungeon_t *dungeon) {
     int secondX, secondY, firstX, firstY;
 
     while(count <= dungeon->num_rooms) {
-        secondX = dungeon->rooms[count][0];
-        secondY = dungeon->rooms[count][1];
-        firstX = dungeon->rooms[count - 1][0];
-        firstY = dungeon->rooms[count - 1][1];
+        secondY = dungeon->rooms[count][0] + dungeon->rooms[count][2] / 2;
+        secondX = dungeon->rooms[count][1] + dungeon->rooms[count][3] / 2;
+        firstY = dungeon->rooms[count - 1][0] + dungeon->rooms[count - 1][2] / 2;
+        firstX = dungeon->rooms[count - 1][1] + dungeon->rooms[count - 1][3] / 2;
 
         while(firstX != secondX) {
             if(firstX > secondX) {
