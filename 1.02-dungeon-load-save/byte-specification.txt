@@ -1,0 +1,7 @@
+Bytes | Values
+-----  | -------
+0 - 5 | The value RLG327
+6 - 9 | Unsigned **32-bit int** file version marker with the value 0
+10 - 13 | Unsigned **32-bit int** size of file
+14 - 1693 | **Row-major** dungeon martix from **top to bottom**, with one byte containing cell hardness per cell. The hardness ranges from 0 to 255 [0 = room/corridor & 255 = border]
+1694 - end | Positions of all rooms in dungeon, given with **4 unsigned 8-bit ints** each. First byte is y pos of upper left corner, second byte is x pos of upper left corner, third byte is y size (height), fourth byte is x size (width).

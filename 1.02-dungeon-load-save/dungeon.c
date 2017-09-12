@@ -159,16 +159,75 @@ static void generateCorridors(dungeon_t *dungeon) {
     }
 }
 
+void writeToFile(dungeon_t *dungeon) {
+    char *home = getenv("HOME");
+    uint32_t version = 0;
+    uint32_t size = 0;
+    home = strcat(home, "/.rlg327/rlg327");
+    FILE dungeonFile = *fopen(home, "w+");
+
+    // Name of File, Bytes 0 - 5
+    fwrite("RLG327", 1, 6, &dungeonFile);
+
+    // File Version Number, Bytes 6 - 9
+    fwrite(&version, 4, 1, &dungeonFile);
+
+    // Size of File, Bytes 10 - 13
+    size = 1694 + sizeof(dungeon->rooms) * 4;
+    fwrite(&size, 4, 1, &dungeonFile);
+
+    // Dungeon Hardness, Bytes 14 - 1693
+    // make sure this is correct, row-major
+    for(int y = 0; y < ROWS; y++) {
+        for(int x = 0; x < COLS; x++) {
+            fwrite(&dungeon->hardness[x][y], 1, 1, &dungeonFile);
+        }
+    }
+
+    for(int i = 0; i < )
+
+    // read from file for testing purposes
+    char temp[100];
+    uint32_t tempint;
+    uint32_t tempsize;
+    uint8_t tempHard[COLS][ROWS];
+
+    fseek(&dungeonFile, 0, SEEK_SET);
+
+    fread(temp, 1, 6, &dungeonFile);
+    fread(&tempint, 4, 1, &dungeonFile);
+    fread(&tempsize, 4, 1, &dungeonFile);
+
+    for(int y = 0; y < ROWS; y++) {
+        for(int x = 0; x < COLS; x++) {
+            fread(&tempHard[x][y], 1, 1, &dungeonFile);
+        }
+    }
+
+    printf("NAME: %s\n", temp);
+    printf("Version: %d\n", tempint);
+    printf("Size: %d\n", tempsize);
+
+}
+
+void loadFromFile() {
+    printf("%s\n", "Load");
+}
+
 int main(int argc, char* argv[]) {
-    printf("%d\n", argc);
+    dungeon_t dungeon;
+
     if(argc > 1 && argc < 3) {
         if(!strcmp(argv[1], "--save")) {
             /* Save file here */
-            printf("%s\n", "Save");
+            createEmptyMap(&dungeon);
+            generateRooms(&dungeon);
+            generateCorridors(&dungeon);
+            writeToFile(&dungeon);
         }
         else if(!strcmp(argv[1], "--load")) {
             /* Load file here */
-            printf("%s\n", "Load");
+            loadFromFile();
         }
     }
     else if(argc == 3) {
@@ -181,11 +240,15 @@ int main(int argc, char* argv[]) {
     else {
         /* Print dungeon like normal */
         printf("%s\n", "Print dungeon and don't save");
+        createEmptyMap(&dungeon);
+        generateRooms(&dungeon);
+        generateCorridors(&dungeon);
+        printMap(&dungeon);
     }
 
-    dungeon_t dungeon;
-    createEmptyMap(&dungeon);
-    generateRooms(&dungeon);
-    generateCorridors(&dungeon);
-    printMap(&dungeon);
+    // dungeon_t dungeon;
+    // createEmptyMap(&dungeon);
+    // generateRooms(&dungeon);
+    // generateCorridors(&dungeon);
+    // printMap(&dungeon);
 }
