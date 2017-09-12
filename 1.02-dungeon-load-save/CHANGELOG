@@ -1,0 +1,113 @@
+commit 88f6849a11a5f7f6f2d42cedd6eafbf142ec49eb
+Author: mrtalley <mrtalley@iastate.edu>
+Date:   Wed Sep 6 08:25:17 2017 -0500
+
+    Update CHANGELOG, README, Notes, move main in dungeon.c
+
+commit 315ebfa7687c543e52605964e24670685110160c
+Author: mrtalley <mrtalley@pyrite-n2.cs.iastate.edu>
+Date:   Tue Sep 5 13:53:05 2017 -0500
+
+    Added stdint.h to dungeon.c
+
+commit 514b3b35e9f058505e2ad911c8916b7658ec5315
+Author: mrtalley <mrtalley@iastate.edu>
+Date:   Tue Sep 5 13:47:24 2017 -0500
+
+    Update README
+
+commit c88923e77c0b3e2231850347f2230e4d1973d6e0
+Author: mrtalley <mrtalley@iastate.edu>
+Date:   Tue Sep 5 13:42:54 2017 -0500
+
+    Update changelog with latest commit
+
+commit 746607404b91889609ba2eb19ef797060a7d4f53
+Author: mrtalley <mrtalley@iastate.edu>
+Date:   Tue Sep 5 13:42:05 2017 -0500
+
+    Remove curses.h dependency -- will implement later
+
+commit 959f6d7b2476cc2e0c07182166a5beab08e0e9b2
+Merge: d382ef1 95ffa23
+Author: Maxwell Talley <max.talley0@gmail.com>
+Date:   Tue Sep 5 13:33:56 2017 -0500
+
+    Merge pull request #25 from mrtalley/DG-3
+    
+    DG-3 Connect rooms with corridors (#)
+
+commit 95ffa23df23d1b4f07ee7c107bf9d8d9a7b18f38
+Author: mrtalley <mrtalley@iastate.edu>
+Date:   Tue Sep 5 13:32:00 2017 -0500
+
+    DG-3 Added num_rooms to dungeon struct
+
+commit 1440ff009841d257a1f521dd0ad9eadd4d9132f0
+Author: mrtalley <mrtalley@iastate.edu>
+Date:   Tue Sep 5 13:13:29 2017 -0500
+
+    DG-3 Connect rooms with corridors
+
+commit d382ef1c88ee79d47b5d6f23b36771800aff4dfb
+Merge: 327d405 2c9c5f2
+Author: Maxwell Talley <max.talley0@gmail.com>
+Date:   Tue Sep 5 12:21:17 2017 -0500
+
+    Merge pull request #24 from mrtalley/DG-5
+    
+    DG-5 create shell file to write commits to changelog
+
+commit 2c9c5f29172c31d810d6f76c50bd31d1d4e917bc
+Author: mrtalley <mrtalley@iastate.edu>
+Date:   Tue Sep 5 12:19:51 2017 -0500
+
+    DG-5 create shell file to write commits to CHANGELOG
+
+commit 327d405ec30b19920dfcf94f6eb8a0d6ec38c159
+Merge: 2e56a7c a1e48c4
+Author: Maxwell Talley <max.talley0@gmail.com>
+Date:   Tue Sep 5 11:44:16 2017 -0500
+
+    Merge pull request #21 from mrtalley/DG-2
+    
+    DG-2 Create at least 5 rooms per dungeon
+
+commit a1e48c4778df27020b5d9cd8547bfe362ccc811f
+Author: mrtalley <mrtalley@iastate.edu>
+Date:   Tue Sep 5 11:39:36 2017 -0500
+
+    DG-2 Generate rooms on map
+
+commit 2e56a7c0772d58b0671e51b338829af27ad9f573
+Merge: 25bd2a6 0c20ece
+Author: Maxwell Talley <max.talley0@gmail.com>
+Date:   Mon Sep 4 19:36:46 2017 -0500
+
+    Merge pull request #20 from mrtalley/DG-1
+    
+    DG-1 Create 80 (x) x 21 (y) dungeon
+
+commit 0c20ece73bffb9fd64e0c21db4722d725c34f05b
+Author: mrtalley <mrtalley@iastate.edu>
+Date:   Mon Sep 4 19:33:13 2017 -0500
+
+    delete .dSYM files
+
+commit 7e8f8190baab1fce8240b4c38b02d7b6fecf6831
+Author: mrtalley <mrtalley@iastate.edu>
+Date:   Mon Sep 4 19:32:18 2017 -0500
+
+    delete dungeon binary
+
+commit 9b371d6b3cfaee65ce242dab96050ed361ff7849
+Author: mrtalley <mrtalley@iastate.edu>
+Date:   Mon Sep 4 19:31:10 2017 -0500
+
+    DG-1 Update gitignore
+
+commit 27f3a9d67ea9741ae12f3b488944828510f9c07d
+Author: mrtalley <mrtalley@iastate.edu>
+Date:   Mon Sep 4 19:15:52 2017 -0500
+
+    Created initial dungeon map
