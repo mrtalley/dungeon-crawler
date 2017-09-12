@@ -2,6 +2,7 @@
 #include <time.h>
 #include <stdlib.h>
 #include <stdint.h>
+#include <string.h>
 
 #define MAXROOMS 10
 #define COLS 80
@@ -159,6 +160,28 @@ static void generateCorridors(dungeon_t *dungeon) {
 }
 
 int main(int argc, char* argv[]) {
+    printf("%d\n", argc);
+    if(argc > 1 && argc < 3) {
+        if(!strcmp(argv[1], "--save")) {
+            /* Save file here */
+            printf("%s\n", "Save");
+        }
+        else if(!strcmp(argv[1], "--load")) {
+            /* Load file here */
+            printf("%s\n", "Load");
+        }
+    }
+    else if(argc == 3) {
+        if((!strcmp(argv[1], "--save") && !strcmp(argv[2], "--load"))
+            || (!strcmp(argv[1], "--load") && !strcmp(argv[2], "--save"))) {
+                /* Do both save and load action */
+                printf("%s\n", "Save and Load");
+        }
+    }
+    else {
+        /* Print dungeon like normal */
+        printf("%s\n", "Print dungeon and don't save");
+    }
 
     dungeon_t dungeon;
     createEmptyMap(&dungeon);
