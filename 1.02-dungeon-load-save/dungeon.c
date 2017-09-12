@@ -10,8 +10,8 @@
 
 typedef struct dungeon {
     uint32_t num_rooms;
-    uint8_t hardness[COLS][ROWS];
-    char map[COLS][ROWS]; // these are reversed
+    uint8_t hardness[ROWS][COLS];
+    char map[ROWS][COLS]; // these are reversed
     unsigned char rooms[MAXROOMS][4]; // y, x, y-size, x-size
 } dungeon_t;
 
@@ -25,16 +25,16 @@ static void createEmptyMap(dungeon_t *dungeon) {
     for(y = 0; y < ROWS; y++) {
         for(x = 0; x < COLS; x++) {
             if(x == 0 || x == 79) {
-                dungeon->map[x][y] = '|';
-                dungeon->hardness[x][y] = 255;
+                dungeon->map[y][x] = '|';
+                dungeon->hardness[y][x] = 255;
             }
             else if(y == 0 || y == 20) {
-                dungeon->map[x][y] = '-';
-                dungeon->hardness[x][y] = 255;
+                dungeon->map[y][x] = '-';
+                dungeon->hardness[y][x] = 255;
             }
             else {
-                dungeon->map[x][y] = ' ';
-                dungeon->hardness[x][y] = generateRandom(254, 1);
+                dungeon->map[y][x] = ' ';
+                dungeon->hardness[y][x] = generateRandom(254, 1);
             }
         }
     }
@@ -43,16 +43,16 @@ static void createEmptyMap(dungeon_t *dungeon) {
 int roomCheck(int xPos, int yPos, int xSize, int ySize, dungeon_t *dungeon) {
     int y, x;
     for(y = yPos; y < yPos + ySize; y++) {
-        if(dungeon->hardness[xPos - 1][y] == 0
-            || dungeon->hardness[xPos + xSize][y] == 0)
+        if(dungeon->hardness[y][xPos - 1] == 0
+            || dungeon->hardness[y][xPos + xSize] == 0)
             {
                 return 0;
             }
     }
 
     for(x = xPos; x < xPos + xSize; x++) {
-        if(dungeon->hardness[x][yPos - 1] == 0
-            || dungeon->hardness[x][yPos + ySize] == 0)
+        if(dungeon->hardness[yPos - 1][x] == 0
+            || dungeon->hardness[yPos + ySize][x] == 0)
             {
                 return 0;
             }
@@ -90,8 +90,8 @@ static void generateRooms(dungeon_t *dungeon) {
         if(success) {
             for(j = y; j < y + ySize; j++) {
                 for(i = x; i < x + xSize; i++) {
-                    dungeon->map[i][j] = '.';
-                    dungeon->hardness[i][j] = 0;
+                    dungeon->map[j][i] = '.';
+                    dungeon->hardness[j][i] = 0;
                 }
             }
 
@@ -116,7 +116,7 @@ static void printMap(dungeon_t *dungeon) {
     int y = 0, x = 0;
     for(y = 0; y < ROWS; y++) {
         for(x = 0; x < COLS; x++) {
-            printf("%c", dungeon->map[x][y]);
+            printf("%c", dungeon->map[y][x]);
         }
         printf("\n");
     }
@@ -140,9 +140,9 @@ static void generateCorridors(dungeon_t *dungeon) {
                 firstX++;
             }
 
-            if(dungeon->hardness[firstX][firstY] != 0) {
-                dungeon->map[firstX][firstY] = '#';
-                dungeon->hardness[firstX][firstY] = 0;
+            if(dungeon->hardness[firstY][firstX] != 0) {
+                dungeon->map[firstY][firstX] = '#';
+                dungeon->hardness[firstY][firstX] = 0;
             }
         }
 
@@ -154,9 +154,9 @@ static void generateCorridors(dungeon_t *dungeon) {
                 firstY++;
             }
 
-            if(dungeon->hardness[firstX][firstY] != 0) {
-                dungeon->map[firstX][firstY] = '#';
-                dungeon->hardness[firstX][firstY] = 0;
+            if(dungeon->hardness[firstY][firstX] != 0) {
+                dungeon->map[firstY][firstX] = '#';
+                dungeon->hardness[firstY][firstX] = 0;
             }
         }
         count++;
@@ -184,7 +184,7 @@ void writeToFile(dungeon_t *dungeon) {
     // make sure this is correct, row-major
     for(int y = 0; y < ROWS; y++) {
         for(int x = 0; x < COLS; x++) {
-            fwrite(&dungeon->hardness[x][y], 1, 1, &dungeonFile);
+            fwrite(&dungeon->hardness[y][x], 1, 1, &dungeonFile);
         }
     }
 
@@ -195,7 +195,7 @@ void writeToFile(dungeon_t *dungeon) {
         }
     }
 
-    fclose(dungeonFile);
+    fclose(&dungeonFile);
 }
 
 void loadFromFile() {
