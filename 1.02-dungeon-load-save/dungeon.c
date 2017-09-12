@@ -11,7 +11,7 @@
 typedef struct dungeon {
     uint32_t num_rooms;
     uint8_t hardness[COLS][ROWS];
-    char map[COLS][ROWS];
+    char map[COLS][ROWS]; // these are reversed
     unsigned char rooms[MAXROOMS][4]; // y, x, y-size, x-size
 } dungeon_t;
 
@@ -168,7 +168,7 @@ void writeToFile(dungeon_t *dungeon) {
     uint32_t version = 0;
     uint32_t size = 0;
     home = strcat(home, "/.rlg327/rlg327");
-    FILE dungeonFile = *fopen(home, "w+");
+    FILE dungeonFile = *fopen(home, "w");
 
     // Name of File, Bytes 0 - 5
     fwrite("RLG327", 1, 6, &dungeonFile);
@@ -194,6 +194,8 @@ void writeToFile(dungeon_t *dungeon) {
             fwrite(&dungeon->rooms[i][j], 1, 1, &dungeonFile);
         }
     }
+
+    fclose(dungeonFile);
 }
 
 void loadFromFile() {
