@@ -4,6 +4,8 @@
 #include <stdint.h>
 #include <string.h>
 
+#include "endian.h"
+
 #define MAXROOMS 10
 #define COLS 80
 #define ROWS 21
@@ -11,8 +13,9 @@
 typedef struct dungeon {
     uint32_t num_rooms;
     uint8_t hardness[ROWS][COLS];
-    char map[ROWS][COLS]; // these are reversed
+    char map[ROWS][COLS];
     unsigned char rooms[MAXROOMS][4]; // y, x, y-size, x-size
+    uint32_t version;
 } dungeon_t;
 
 int generateRandom(int max, int min) {
@@ -73,7 +76,7 @@ static void generateRooms(dungeon_t *dungeon) {
     int tries = 0;
     int roomPosition = 0;
 
-    while(numRooms <= dungeon->num_rooms) {
+    while(numRooms < dungeon->num_rooms) {
         x = generateRandom(COLS - 1, 1);
         y = generateRandom(ROWS - 1, 1);
         xSize = generateRandom(xMax, xMin);
@@ -122,11 +125,48 @@ static void printMap(dungeon_t *dungeon) {
     }
 }
 
+static void setRoomsFromFile(dungeon_t *d) {
+    int i = 0, x = 0, y = 0;
+
+    for(i = 0; i < d->num_rooms; i++) {
+        for(y = d->rooms[i][0]; y < d->rooms[i][0] + d->rooms[i][2]; y++) {
+            for(x = d->rooms[i][1]; x < d->rooms[i][1] + d->rooms[i][3]; x++) {
+                d->map[y][x] = '.';
+            }
+        }
+    }
+}
+
+static void setMapFromFile(dungeon_t *d) {
+    setRoomsFromFile(d);
+    int y = 0, x = 0;
+
+    for(y = 0; y < ROWS; y++) {
+        for(x = 0; x < COLS; x++) {
+            if(d->map[y][x] == '.') {
+                continue;
+            }
+            if(y == 0 || y == ROWS - 1) {
+                d->map[y][x] = '-';
+            }
+            else if(x == 0 || x == COLS - 1) {
+                d->map[y][x] = '|';
+            }
+            else if(d->hardness[y][x] == 0) { // what the heck
+                d->map[y][x] = '#';
+            }
+            else {
+                d->map[y][x] = ' ';
+            }
+        }
+    }
+}
+
 static void generateCorridors(dungeon_t *dungeon) {
     int count = 1;
     int secondX, secondY, firstX, firstY;
 
-    while(count <= dungeon->num_rooms) {
+    while(count < dungeon->num_rooms) {
         secondY = dungeon->rooms[count][0] + dungeon->rooms[count][2] / 2;
         secondX = dungeon->rooms[count][1] + dungeon->rooms[count][3] / 2;
         firstY = dungeon->rooms[count - 1][0] + dungeon->rooms[count - 1][2] / 2;
@@ -164,8 +204,9 @@ static void generateCorridors(dungeon_t *dungeon) {
 }
 
 void writeToFile(dungeon_t *dungeon) {
+    printf("Saving to file\n");
     char *home = getenv("HOME");
-    uint32_t version = 0;
+    dungeon->version = 0;
     uint32_t size = 0;
     home = strcat(home, "/.rlg327/rlg327");
     FILE dungeonFile = *fopen(home, "w");
@@ -174,14 +215,15 @@ void writeToFile(dungeon_t *dungeon) {
     fwrite("RLG327", 1, 6, &dungeonFile);
 
     // File Version Number, Bytes 6 - 9
-    fwrite(&version, 4, 1, &dungeonFile);
+    dungeon->version = htobe32(dungeon->version);
+    fwrite(&dungeon->version, 4, 1, &dungeonFile);
 
     // Size of File, Bytes 10 - 13
-    size = 1694 + sizeof(dungeon->rooms) * 4;
+    size = 1694 + sizeof(dungeon->rooms);
+    size = htobe32(size);
     fwrite(&size, 4, 1, &dungeonFile);
 
     // Dungeon Hardness, Bytes 14 - 1693
-    // make sure this is correct, row-major
     for(int y = 0; y < ROWS; y++) {
         for(int x = 0; x < COLS; x++) {
             fwrite(&dungeon->hardness[y][x], 1, 1, &dungeonFile);
@@ -198,8 +240,44 @@ void writeToFile(dungeon_t *dungeon) {
     fclose(&dungeonFile);
 }
 
-void loadFromFile() {
-    printf("%s\n", "Load");
+void loadFromFile(dungeon_t *dungeon) {
+    printf("Loading from file\n");
+    char *home = getenv("HOME");
+    dungeon->version = 0;
+    uint32_t size = 0;
+    home = strcat(home, "/.rlg327/rlg327");
+    FILE dungeonFile = *fopen(home, "r");
+
+    fseek(&dungeonFile, 6, SEEK_SET);
+
+    // File Version Number, Bytes 6 - 9
+    fread(&dungeon->version, 4, 1, &dungeonFile);
+
+    // Size of File, Bytes 10 - 13
+    fread(&size, 4, 1, &dungeonFile);
+
+    dungeon->version = be32toh(dungeon->version);
+    size = be32toh(size);
+
+    // Dungeon Hardness, Bytes 14 - 1693
+    for(int y = 0; y < ROWS; y++) {
+        for(int x = 0; x < COLS; x++) {
+            fread(&dungeon->hardness[y][x], 1, 1, &dungeonFile);
+        }
+    }
+
+    dungeon->num_rooms = (size - 1694) / 4;
+
+    // Location of All Rooms, Bytes 1694 - eof
+    for(int i = 0; i < dungeon->num_rooms; i++) {
+        for(int j = 0; j < 4; j++) {
+            fread(&dungeon->rooms[i][j], 1, 1, &dungeonFile);
+        }
+    }
+    printf("Number of rooms: %d\n", dungeon->num_rooms);
+
+    setMapFromFile(dungeon);
+    fclose(&dungeonFile);
 }
 
 int main(int argc, char* argv[]) {
@@ -207,27 +285,32 @@ int main(int argc, char* argv[]) {
 
     if(argc > 1 && argc < 3) {
         if(!strcmp(argv[1], "--save")) {
-            /* Save file here */
             createEmptyMap(&dungeon);
             generateRooms(&dungeon);
             generateCorridors(&dungeon);
             writeToFile(&dungeon);
         }
         else if(!strcmp(argv[1], "--load")) {
-            /* Load file here */
-            loadFromFile();
+            loadFromFile(&dungeon);
+            printMap(&dungeon);
         }
     }
     else if(argc == 3) {
         if((!strcmp(argv[1], "--save") && !strcmp(argv[2], "--load"))
             || (!strcmp(argv[1], "--load") && !strcmp(argv[2], "--save"))) {
-                /* Do both save and load action */
-                printf("%s\n", "Save and Load");
+                createEmptyMap(&dungeon);
+                generateRooms(&dungeon);
+                generateCorridors(&dungeon);
+                writeToFile(&dungeon);
+
+                // this doesn't work because we don't delete the dungeon
+                // before we try to reuse it
+
+                loadFromFile(&dungeon);
+                printMap(&dungeon);
         }
     }
     else {
-        /* Print dungeon like normal */
-        printf("%s\n", "Print dungeon and don't save");
         createEmptyMap(&dungeon);
         generateRooms(&dungeon);
         generateCorridors(&dungeon);
