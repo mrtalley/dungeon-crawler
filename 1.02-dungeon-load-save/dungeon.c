@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <time.h>
 #include <stdlib.h>
-#include <stdint.h>
 #include <string.h>
 
 #include "endian.h"
@@ -152,7 +151,7 @@ static void setMapFromFile(dungeon_t *d) {
             else if(x == 0 || x == COLS - 1) {
                 d->map[y][x] = '|';
             }
-            else if(d->hardness[y][x] == 0) { // what the heck
+            else if(d->hardness[y][x] == 0) {
                 d->map[y][x] = '#';
             }
             else {
@@ -203,58 +202,50 @@ static void generateCorridors(dungeon_t *dungeon) {
     }
 }
 
-void writeToFile(dungeon_t *dungeon) {
+void writeToFile(dungeon_t *dungeon, FILE *file) {
     printf("Saving to file\n");
-    char *home = getenv("HOME");
     dungeon->version = 0;
     uint32_t size = 0;
-    home = strcat(home, "/.rlg327/rlg327");
-    FILE dungeonFile = *fopen(home, "w");
 
     // Name of File, Bytes 0 - 5
-    fwrite("RLG327", 1, 6, &dungeonFile);
+    fwrite("RLG327", 1, 6, file);
 
     // File Version Number, Bytes 6 - 9
     dungeon->version = htobe32(dungeon->version);
-    fwrite(&dungeon->version, 4, 1, &dungeonFile);
+    fwrite(&dungeon->version, 4, 1, file);
 
     // Size of File, Bytes 10 - 13
     size = 1694 + sizeof(dungeon->rooms);
     size = htobe32(size);
-    fwrite(&size, 4, 1, &dungeonFile);
+    fwrite(&size, 4, 1, file);
 
     // Dungeon Hardness, Bytes 14 - 1693
     for(int y = 0; y < ROWS; y++) {
         for(int x = 0; x < COLS; x++) {
-            fwrite(&dungeon->hardness[y][x], 1, 1, &dungeonFile);
+            fwrite(&dungeon->hardness[y][x], 1, 1, file);
         }
     }
 
     // Location of All Rooms, Bytes 1694 - eof
     for(int i = 0; i < dungeon->num_rooms; i++) {
         for(int j = 0; j < 4; j++) {
-            fwrite(&dungeon->rooms[i][j], 1, 1, &dungeonFile);
+            fwrite(&dungeon->rooms[i][j], 1, 1, file);
         }
     }
-
-    fclose(&dungeonFile);
 }
 
-void loadFromFile(dungeon_t *dungeon) {
+void loadFromFile(dungeon_t *dungeon, FILE *file) {
     printf("Loading from file\n");
-    char *home = getenv("HOME");
     dungeon->version = 0;
     uint32_t size = 0;
-    home = strcat(home, "/.rlg327/rlg327");
-    FILE dungeonFile = *fopen(home, "r");
 
-    fseek(&dungeonFile, 6, SEEK_SET);
+    fseek(file, 6, SEEK_SET);
 
     // File Version Number, Bytes 6 - 9
-    fread(&dungeon->version, 4, 1, &dungeonFile);
+    fread(&dungeon->version, 4, 1, file);
 
     // Size of File, Bytes 10 - 13
-    fread(&size, 4, 1, &dungeonFile);
+    fread(&size, 4, 1, file);
 
     dungeon->version = be32toh(dungeon->version);
     size = be32toh(size);
@@ -262,7 +253,7 @@ void loadFromFile(dungeon_t *dungeon) {
     // Dungeon Hardness, Bytes 14 - 1693
     for(int y = 0; y < ROWS; y++) {
         for(int x = 0; x < COLS; x++) {
-            fread(&dungeon->hardness[y][x], 1, 1, &dungeonFile);
+            fread(&dungeon->hardness[y][x], 1, 1, file);
         }
     }
 
@@ -271,43 +262,60 @@ void loadFromFile(dungeon_t *dungeon) {
     // Location of All Rooms, Bytes 1694 - eof
     for(int i = 0; i < dungeon->num_rooms; i++) {
         for(int j = 0; j < 4; j++) {
-            fread(&dungeon->rooms[i][j], 1, 1, &dungeonFile);
+            fread(&dungeon->rooms[i][j], 1, 1, file);
         }
     }
     printf("Number of rooms: %d\n", dungeon->num_rooms);
 
     setMapFromFile(dungeon);
-    fclose(&dungeonFile);
 }
 
 int main(int argc, char* argv[]) {
     dungeon_t dungeon;
+    char *home = getenv("HOME");
+    char *filePath = strcat(home, "/.rlg327/");
+    FILE *file;
 
     if(argc > 1 && argc < 3) {
+        strcat(filePath, "rlg327");
         if(!strcmp(argv[1], "--save")) {
+            file = fopen(filePath, "w");
             createEmptyMap(&dungeon);
             generateRooms(&dungeon);
             generateCorridors(&dungeon);
-            writeToFile(&dungeon);
+            writeToFile(&dungeon, file);
+            fclose(file);
         }
         else if(!strcmp(argv[1], "--load")) {
-            loadFromFile(&dungeon);
+            file = fopen(filePath, "r");
+            loadFromFile(&dungeon, file);
             printMap(&dungeon);
+            fclose(file);
         }
     }
     else if(argc == 3) {
         if((!strcmp(argv[1], "--save") && !strcmp(argv[2], "--load"))
             || (!strcmp(argv[1], "--load") && !strcmp(argv[2], "--save"))) {
-                createEmptyMap(&dungeon);
-                generateRooms(&dungeon);
-                generateCorridors(&dungeon);
-                writeToFile(&dungeon);
+                strcat(filePath, "rlg327");
+                printf("File path: %s\n", filePath);
+                file = fopen(filePath, "r+");
 
-                // this doesn't work because we don't delete the dungeon
-                // before we try to reuse it
-
-                loadFromFile(&dungeon);
+                loadFromFile(&dungeon, file);
                 printMap(&dungeon);
+                writeToFile(&dungeon, file);
+                fclose(file);
+        }
+        else if(!strcmp(argv[1], "--load")) {
+            strcat(filePath, argv[2]);
+            if((file = fopen(filePath, "r")) != NULL) {
+                loadFromFile(&dungeon, file);
+                printMap(&dungeon);
+                fclose(file);
+            }
+            else {
+                printf("Please enter a valid file name\n");
+                return 0;
+            }
         }
     }
     else {
@@ -316,4 +324,6 @@ int main(int argc, char* argv[]) {
         generateCorridors(&dungeon);
         printMap(&dungeon);
     }
+
+    return 0;
 }

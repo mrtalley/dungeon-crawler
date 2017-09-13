@@ -4,3 +4,4 @@ test_dungeon_files
 *.dSYM
 .DS_Store
 dungeon
+*.idea
