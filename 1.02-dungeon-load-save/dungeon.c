@@ -216,7 +216,8 @@ void writeToFile(dungeon_t *dungeon, FILE *file) {
     fwrite(&dungeon->version, 4, 1, file);
 
     // Size of File, Bytes 10 - 13
-    size = 1694 + sizeof(dungeon->rooms);
+    // size = 1694 + sizeof(dungeon->rooms);
+    size = 1694 + dungeon->num_rooms * 4;
     size = htobe32(size);
     fwrite(&size, 4, 1, file);
 
