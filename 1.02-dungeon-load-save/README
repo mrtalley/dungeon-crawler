@@ -1,8 +1,8 @@
 ### This assignment fits the required specifications.
-* Dungeon is the required dimensions
-* At least 5 rooms are created each time
-* Each room fits minimum dimensions (3 x 2)
-* 1 cell of non-room separates each rooms
-* outermost cells are immutable, with 255 hardness
-* dungeon is fully connected
-* corridors do not extend into rooms
+* Can save a dungeon to HOME/.rlg327 with the --save flag
+* Can load file from HOME/.rlg327 with the --load flag
+* Can load custom file with flag --load and then specify file name
+* Can save and load with either --save --load or --load --save
+* Runs adventure.rlg327, hello.rlg327, and welldone.rlg327
+* Since endian.h doesn't exist on mac, the endian.h is included. I've
+commented out the custom header for the system one.

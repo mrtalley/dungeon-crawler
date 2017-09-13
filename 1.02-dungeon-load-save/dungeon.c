@@ -2,8 +2,9 @@
 #include <time.h>
 #include <stdlib.h>
 #include <string.h>
+#include <endian.h>
 
-#include "endian.h"
+// #include "endian.h"
 
 #define MAXROOMS 10
 #define COLS 80

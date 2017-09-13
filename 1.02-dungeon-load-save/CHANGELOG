@@ -1,3 +1,157 @@
+commit d10a67d88bcb830ec6f45a2663bb3c6084438976
+Merge: e4c21a0 080c6eb
+Author: Maxwell Talley <max.talley0@gmail.com>
+Date:   Wed Sep 13 12:28:32 2017 -0500
+
+    Merge pull request #44 from mrtalley/LS-12
+    
+    LS-12 save and load, file opening moved, ran against test dungeons
+
+commit 080c6eb7065e389ac5b488e7784e52e3df26a72f
+Author: mrtalley <mrtalley@iastate.edu>
+Date:   Wed Sep 13 12:25:44 2017 -0500
+
+    LS-12 save and load works, file opening moved to main, ran against test dungeons, added ability to load files from command line (Closes #42, closes #41, closes #31)
+
+commit e4c21a0f6a2473465e73f6e59c4ce923c5fefd07
+Author: Maxwell Talley <max.talley0@gmail.com>
+Date:   Tue Sep 12 23:14:56 2017 -0500
+
+    Create README.md
+
+commit ffece57d7f4b3604e2c5f5afbf5c9148e2e63d07
+Merge: 8c0c32b 69fcf44
+Author: Maxwell Talley <max.talley0@gmail.com>
+Date:   Tue Sep 12 23:03:40 2017 -0500
+
+    Merge pull request #43 from mrtalley/LS-5
+    
+    LS-5 Finished file loading, did endian conversions
+
+commit 69fcf44cfe1f535ce05fb1fa15a53b26f3193f69
+Author: mrtalley <mrtalley@iastate.edu>
+Date:   Tue Sep 12 23:01:53 2017 -0500
+
+    LS-5 Finished file loading, did endian conversions (Closes #30 and closes #39)
+
+commit 8c0c32bd03ae903f52b9db3e5560646dabd56528
+Merge: 5de2aaa d9c316a
+Author: Maxwell Talley <max.talley0@gmail.com>
+Date:   Tue Sep 12 18:45:08 2017 -0500
+
+    Merge pull request #40 from mrtalley/LS-3
+    
+    LS-3 Convert from col-major to row-major (Closes #27)
+
+commit d9c316ac326fa818e9a621988728a64b4f8a1576
+Author: mrtalley <mrtalley@iastate.edu>
+Date:   Tue Sep 12 18:42:16 2017 -0500
+
+    LS-3 Convert from col-major to row-major (Closes #27)
+
+commit 5de2aaaf965b0d182bc1756b848929ec964d81a9
+Merge: 2416858 463bbe7
+Author: Maxwell Talley <max.talley0@gmail.com>
+Date:   Tue Sep 12 16:52:28 2017 -0500
+
+    Merge pull request #38 from mrtalley/LS-4
+    
+    LS-4 Save dungeons when --save flag is used
+
+commit 463bbe758e6c67d1ef8c30d793dd7fc4e0128e61
+Author: mrtalley <mrtalley@iastate.edu>
+Date:   Tue Sep 12 15:18:29 2017 -0500
+
+    LS-4 Added fclose() and notes on endianness
+
+commit 8d3d0502081caee62a3e1ef1c4082e4619834563
+Author: mrtalley <mrtalley@iastate.edu>
+Date:   Tue Sep 12 14:48:01 2017 -0500
+
+    LS-4 Removed comment
+
+commit 3a0f9e6d1725b77d43a2d01c371b663833450655
+Author: mrtalley <mrtalley@iastate.edu>
+Date:   Tue Sep 12 14:46:27 2017 -0500
+
+    LS-4 Removed text file
+
+commit eb0ccffc99f1e2db36707df732cada0f805d977b
+Author: mrtalley <mrtalley@iastate.edu>
+Date:   Tue Sep 12 14:43:23 2017 -0500
+
+    LS-4 Finish dungeon save feature (Closes #26)
+
+commit 845b601132724688b7aff9faffe640548ef79d52
+Merge: 6d2e440 2416858
+Author: mrtalley <mrtalley@iastate.edu>
+Date:   Tue Sep 12 14:32:26 2017 -0500
+
+    Merge branch 'master' into LS-4
+
+commit 2416858c4a69f0d4b527901fe6c5baff96851cf8
+Merge: a5b08d1 af1b8cd
+Author: Maxwell Talley <max.talley0@gmail.com>
+Date:   Tue Sep 12 14:31:55 2017 -0500
+
+    Merge pull request #37 from mrtalley/LS-9
+    
+    LS-9 Reconfigure rooms array to hold 4 values instead of 2
+
+commit af1b8cdcb2192d5f0f52d9084fd87a487f150cec
+Author: mrtalley <mrtalley@iastate.edu>
+Date:   Tue Sep 12 14:30:27 2017 -0500
+
+    LS-9 Reconfigure rooms array to hold 4 values instead of 2 (Closes #36)
+
+commit 6d2e440ab8d4bfd1db6b1c2206f8bb1d4dc5b1e1
+Author: mrtalley <mrtalley@iastate.edu>
+Date:   Tue Sep 12 14:22:24 2017 -0500
+
+    LS-4 Writes to file up until rooms array
+
+commit a5b08d18a00e89e33e86b8185663b6cdf73201c4
+Merge: be2500a b339b1f
+Author: Maxwell Talley <max.talley0@gmail.com>
+Date:   Tue Sep 12 12:19:04 2017 -0500
+
+    Merge pull request #34 from mrtalley/LS-2
+    
+    LS-2 Get input from command line
+
+commit b339b1f01cb5bcc7f4bd105d8951fd56f01c72ce
+Author: mrtalley <mrtalley@iastate.edu>
+Date:   Tue Sep 12 12:17:19 2017 -0500
+
+    LS-2 Read input from command line. Closes #28
+
+commit b6f255de5c236dc92892bcf606b1a0362bb90870
+Author: mrtalley <mrtalley@iastate.edu>
+Date:   Tue Sep 12 11:57:55 2017 -0500
+
+    LS-2 Changed indent from 2 to 4 spaces
+
+commit be2500af2cb3e86b8099a8cf5b1e4451d2e00e7e
+Merge: 47fa04e ba6c921
+Author: Maxwell Talley <max.talley0@gmail.com>
+Date:   Tue Sep 12 11:29:20 2017 -0500
+
+    Merge pull request #33 from mrtalley/LS-7
+    
+    LS-7 Create .gitignore
+
+commit ba6c921c50d84d1ec0f9a401034516b346ede10e
+Author: mrtalley <mrtalley@iastate.edu>
+Date:   Tue Sep 12 11:27:48 2017 -0500
+
+    LS-7 Update .gitignore, add project folder (#32)
+
+commit 47fa04e2fc31fa7d8a7375f13e26d0da78e52955
+Author: mrtalley <mrtalley@iastate.edu>
+Date:   Wed Sep 6 08:58:56 2017 -0500
+
+    Create shell file to write tar file
+
 commit 88f6849a11a5f7f6f2d42cedd6eafbf142ec49eb
 Author: mrtalley <mrtalley@iastate.edu>
 Date:   Wed Sep 6 08:25:17 2017 -0500
