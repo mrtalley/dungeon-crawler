@@ -1,0 +1,27 @@
+# Endianness Notes
+
+* if low order bytes come first, *little endian*
+* if high order bytes come first, *big endian*
+    * The internet uses *network order* which is big endian
+
+### Will be saving game as big endian
+* Must convert size and version from little to big endian
+
+```C
+    int j = 5; // 32 bits, 4 bytes, 8 bits per byte
+    // little endian j : 00000101 00000000 00000000 00000000
+    // low order bytes come first
+
+    // big endian j : 00000000 00000000 00000000 00000101
+    // high order bytes come first
+```
+
+* Endianness does not apply to one byte values, obviously (nothing to switch)
+
+How to do the conversion
+```C
+    #include <endian.h>
+
+    int htobe32(int x); // use when writing
+    int be32toh(int x); // use when reading
+```
