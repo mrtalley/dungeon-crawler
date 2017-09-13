@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <endian.h>
+#include <stdint.h>
 
 // #include "endian.h"
 
@@ -127,6 +128,12 @@ static void printMap(dungeon_t *dungeon) {
 
 static void setRoomsFromFile(dungeon_t *d) {
     int i = 0, x = 0, y = 0;
+
+    for(y = 0; y < ROWS; y++) {
+        for(x = 0; x < COLS; x++) {
+            d->map[y][x] = ' ';
+        }
+    }
 
     for(i = 0; i < d->num_rooms; i++) {
         for(y = d->rooms[i][0]; y < d->rooms[i][0] + d->rooms[i][2]; y++) {
