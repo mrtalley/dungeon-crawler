@@ -19,6 +19,9 @@ Generates an empty, fully connected dungeon. Each space in the dungeon has an as
 ### 1.02-dungeon-save-load
 Adds the ability to save and load to a folder in the home directory. This will allow for the continuation of gameplay in the future.
 
+### 1.03-path-finding
+
+
 **To run a particular assignment:**
 1. Pull the repo
 1. Navigate to the assignment that you want to run
