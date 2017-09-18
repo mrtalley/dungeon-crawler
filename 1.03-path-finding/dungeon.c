@@ -1,167 +1,379 @@
 #include <stdio.h>
 #include <time.h>
 #include <stdlib.h>
+#include <string.h>
+//#include <endian.h>
 #include <stdint.h>
+
+#include "endian.h"
 
 #define MAXROOMS 10
 #define COLS 80
 #define ROWS 21
 
 typedef struct dungeon {
-  uint32_t num_rooms;
-  uint8_t hardness[COLS][ROWS];
-  char map[COLS][ROWS];
-  unsigned char rooms[MAXROOMS][2];
+    uint32_t num_rooms;
+    uint8_t hardness[ROWS][COLS];
+    char map[ROWS][COLS];
+    unsigned char rooms[MAXROOMS][4]; // y, x, y-size, x-size
+    uint32_t version;
 } dungeon_t;
 
 int generateRandom(int max, int min) {
-  return (rand() % (max - min)) + min;
+    return (rand() % (max - min)) + min;
 }
 
 static void createEmptyMap(dungeon_t *dungeon) {
-  srand((unsigned) time(NULL));
-  int y = 0, x = 0;
-  for(y = 0; y < ROWS; y++) {
-    for(x = 0; x < COLS; x++) {
-      if(x == 0 || x == 79) {
-        dungeon->map[x][y] = '|';
-        dungeon->hardness[x][y] = 255;
-      }
-      else if(y == 0 || y == 20) {
-        dungeon->map[x][y] = '-';
-        dungeon->hardness[x][y] = 255;
-      }
-      else {
-        dungeon->map[x][y] = ' ';
-        dungeon->hardness[x][y] = generateRandom(254, 1);
-      }
+    srand((unsigned) time(NULL));
+    int y = 0, x = 0;
+    for(y = 0; y < ROWS; y++) {
+        for(x = 0; x < COLS; x++) {
+            if(x == 0 || x == 79) {
+                dungeon->map[y][x] = '|';
+                dungeon->hardness[y][x] = 255;
+            }
+            else if(y == 0 || y == 20) {
+                dungeon->map[y][x] = '-';
+                dungeon->hardness[y][x] = 255;
+            }
+            else {
+                dungeon->map[y][x] = ' ';
+                dungeon->hardness[y][x] = generateRandom(254, 1);
+            }
+        }
     }
-  }
 }
 
-int roomCheck(int xPos, int yPos, int xSize, int ySize, dungeon_t *dungeon){
-  int y, x;
-  for(y = yPos; y < yPos + ySize; y++) {
-    if(dungeon->hardness[xPos - 1][y] == 0
-      || dungeon->hardness[xPos + xSize][y] == 0)
-      {
-        return 0;
-      }
-  }
+int roomCheck(int xPos, int yPos, int xSize, int ySize, dungeon_t *dungeon) {
+    int y, x;
+    for(y = yPos; y < yPos + ySize; y++) {
+        if(dungeon->hardness[y][xPos - 1] == 0
+            || dungeon->hardness[y][xPos + xSize] == 0)
+            {
+                return 0;
+            }
+    }
 
-  for(x = xPos; x < xPos + xSize; x++) {
-    if(dungeon->hardness[x][yPos - 1] == 0
-      || dungeon->hardness[x][yPos + ySize] == 0)
-      {
-        return 0;
-      }
-  }
+    for(x = xPos; x < xPos + xSize; x++) {
+        if(dungeon->hardness[yPos - 1][x] == 0
+            || dungeon->hardness[yPos + ySize][x] == 0)
+            {
+                return 0;
+            }
+    }
 
-  return 1;
+    return 1;
 }
 
 static void generateRooms(dungeon_t *dungeon) {
-  srand((unsigned) time(NULL));
-  int i = 0, j = 0;
-  int max = 10, min = 5;
-  dungeon->num_rooms = generateRandom(max, min);
-  int numRooms = 0;
-  int xMin = 3, yMin = 5, xMax = 10, yMax = 15;
-  int x = 0, y = 0, xSize = 0, ySize = 0;
-  int success = 1;
-  int tries = 0;
-  int roomPosition = 0;
+    srand((unsigned) time(NULL));
+    int i = 0, j = 0;
+    int max = 10, min = 5;
+    dungeon->num_rooms = generateRandom(max, min);
+    int numRooms = 0;
+    int xMin = 3, yMin = 5, xMax = 10, yMax = 15;
+    int x = 0, y = 0, xSize = 0, ySize = 0;
+    int success = 1;
+    int tries = 0;
+    int roomPosition = 0;
 
-  while(numRooms <= dungeon->num_rooms) {
-    x = generateRandom(COLS - 1, 1);
-    y = generateRandom(ROWS - 1, 1);
-    xSize = generateRandom(xMax, xMin);
-    ySize = generateRandom(yMax, yMin);
+    while(numRooms < dungeon->num_rooms) {
+        x = generateRandom(COLS - 1, 1);
+        y = generateRandom(ROWS - 1, 1);
+        xSize = generateRandom(xMax, xMin);
+        ySize = generateRandom(yMax, yMin);
 
-    if(!(x + xSize < COLS && y + ySize < ROWS)) {
-      success = 0;
-    }
-
-    if(!(roomCheck(x, y, xSize, ySize, dungeon)) && success) {
-      success = 0;
-    }
-
-    if(success) {
-      for(j = y; j < y + ySize; j++) {
-        for(i = x; i < x + xSize; i++) {
-          dungeon->map[i][j] = '.';
-          dungeon->hardness[i][j] = 0;
+        if(!(x + xSize < COLS && y + ySize < ROWS)) {
+            success = 0;
         }
-      }
 
-      dungeon->rooms[numRooms][roomPosition] = x + (xSize / 2);
-      roomPosition++;
-      dungeon->rooms[numRooms][roomPosition] = y + (ySize / 2);
-      numRooms++;
-      roomPosition = 0;
+        if(!(roomCheck(x, y, xSize, ySize, dungeon)) && success) {
+            success = 0;
+        }
+
+        if(success) {
+            for(j = y; j < y + ySize; j++) {
+                for(i = x; i < x + xSize; i++) {
+                    dungeon->map[j][i] = '.';
+                    dungeon->hardness[j][i] = 0;
+                }
+            }
+
+            dungeon->rooms[numRooms][roomPosition] = y;
+            roomPosition++;
+            dungeon->rooms[numRooms][roomPosition] = x;
+            roomPosition++;
+            dungeon->rooms[numRooms][roomPosition] = ySize;
+            roomPosition++;
+            dungeon->rooms[numRooms][roomPosition] = xSize;
+            numRooms++;
+            roomPosition = 0;
+        }
+        success = 1;
+        tries++;
     }
-    success = 1;
-    tries++;
-  }
 
-  printf("Rooms generated in %d tries\n", tries);
+    printf("Rooms generated in %d tries\n", tries);
 }
 
 static void printMap(dungeon_t *dungeon) {
-  int y = 0, x = 0;
-  for(y = 0; y < ROWS; y++) {
-    for(x = 0; x < COLS; x++) {
-      printf("%c", dungeon->map[x][y]);
+    int y = 0, x = 0;
+    for(y = 0; y < ROWS; y++) {
+        for(x = 0; x < COLS; x++) {
+            printf("%c", dungeon->map[y][x]);
+        }
+        printf("\n");
     }
-    printf("\n");
-  }
+}
+
+static void setRoomsFromFile(dungeon_t *d) {
+    int i = 0, x = 0, y = 0;
+
+    for(y = 0; y < ROWS; y++) {
+        for(x = 0; x < COLS; x++) {
+            d->map[y][x] = ' ';
+        }
+    }
+
+    for(i = 0; i < d->num_rooms; i++) {
+        for(y = d->rooms[i][0]; y < d->rooms[i][0] + d->rooms[i][2]; y++) {
+            for(x = d->rooms[i][1]; x < d->rooms[i][1] + d->rooms[i][3]; x++) {
+                d->map[y][x] = '.';
+            }
+        }
+    }
+}
+
+static void setMapFromFile(dungeon_t *d) {
+    setRoomsFromFile(d);
+    int y = 0, x = 0;
+
+    for(y = 0; y < ROWS; y++) {
+        for(x = 0; x < COLS; x++) {
+            if(d->map[y][x] == '.') {
+                continue;
+            }
+            if(y == 0 || y == ROWS - 1) {
+                d->map[y][x] = '-';
+            }
+            else if(x == 0 || x == COLS - 1) {
+                d->map[y][x] = '|';
+            }
+            else if(d->hardness[y][x] == 0) {
+                d->map[y][x] = '#';
+            }
+            else {
+                d->map[y][x] = ' ';
+            }
+        }
+    }
 }
 
 static void generateCorridors(dungeon_t *dungeon) {
-  int count = 1;
-  int secondX, secondY, firstX, firstY;
+    int count = 1;
+    int secondX, secondY, firstX, firstY;
 
-  while(count <= dungeon->num_rooms) {
-    secondX = dungeon->rooms[count][0];
-    secondY = dungeon->rooms[count][1];
-    firstX = dungeon->rooms[count - 1][0];
-    firstY = dungeon->rooms[count - 1][1];
+    while(count < dungeon->num_rooms) {
+        secondY = dungeon->rooms[count][0] + dungeon->rooms[count][2] / 2;
+        secondX = dungeon->rooms[count][1] + dungeon->rooms[count][3] / 2;
+        firstY = dungeon->rooms[count - 1][0] + dungeon->rooms[count - 1][2] / 2;
+        firstX = dungeon->rooms[count - 1][1] + dungeon->rooms[count - 1][3] / 2;
 
-    while(firstX != secondX) {
-      if(firstX > secondX) {
-        firstX--;
-      }
-      else if(firstX < secondX) {
-        firstX++;
-      }
+        while(firstX != secondX) {
+            if(firstX > secondX) {
+                firstX--;
+            }
+            else if(firstX < secondX) {
+                firstX++;
+            }
 
-      if(dungeon->hardness[firstX][firstY] != 0) {
-        dungeon->map[firstX][firstY] = '#';
-        dungeon->hardness[firstX][firstY] = 0;
-      }
+            if(dungeon->hardness[firstY][firstX] != 0) {
+                dungeon->map[firstY][firstX] = '#';
+                dungeon->hardness[firstY][firstX] = 0;
+            }
+        }
+
+        while(firstY != secondY) {
+            if(firstY > secondY) {
+                firstY--;
+            }
+            else if(firstY < secondY) {
+                firstY++;
+            }
+
+            if(dungeon->hardness[firstY][firstX] != 0) {
+                dungeon->map[firstY][firstX] = '#';
+                dungeon->hardness[firstY][firstX] = 0;
+            }
+        }
+        count++;
+    }
+}
+
+void writeToFile(dungeon_t *dungeon, FILE *file) {
+    dungeon->version = 0;
+    uint32_t size = 0;
+
+    // Name of File, Bytes 0 - 5
+    fwrite("RLG327", 1, 6, file);
+
+    // File Version Number, Bytes 6 - 9
+    dungeon->version = htobe32(dungeon->version);
+    fwrite(&dungeon->version, 4, 1, file);
+
+    // Size of File, Bytes 10 - 13
+    // size = 1694 + sizeof(dungeon->rooms);
+    size = 1694 + dungeon->num_rooms * 4;
+    size = htobe32(size);
+    fwrite(&size, 4, 1, file);
+
+    // Dungeon Hardness, Bytes 14 - 1693
+    for(int y = 0; y < ROWS; y++) {
+        for(int x = 0; x < COLS; x++) {
+            fwrite(&dungeon->hardness[y][x], 1, 1, file);
+        }
     }
 
-    while(firstY != secondY) {
-      if(firstY > secondY) {
-        firstY--;
-      }
-      else if(firstY < secondY) {
-        firstY++;
-      }
-
-      if(dungeon->hardness[firstX][firstY] != 0) {
-        dungeon->map[firstX][firstY] = '#';
-        dungeon->hardness[firstX][firstY] = 0;
-      }
+    // Location of All Rooms, Bytes 1694 - eof
+    for(int i = 0; i < dungeon->num_rooms; i++) {
+        for(int j = 0; j < 4; j++) {
+            fwrite(&dungeon->rooms[i][j], 1, 1, file);
+        }
     }
-    count++;
-  }
+}
+
+void loadFromFile(dungeon_t *dungeon, FILE *file) {
+    dungeon->version = 0;
+    uint32_t size = 0;
+
+    fseek(file, 6, SEEK_SET);
+
+    // File Version Number, Bytes 6 - 9
+    fread(&dungeon->version, 4, 1, file);
+
+    // Size of File, Bytes 10 - 13
+    fread(&size, 4, 1, file);
+
+    dungeon->version = be32toh(dungeon->version);
+    size = be32toh(size);
+
+    // Dungeon Hardness, Bytes 14 - 1693
+    for(int y = 0; y < ROWS; y++) {
+        for(int x = 0; x < COLS; x++) {
+            fread(&dungeon->hardness[y][x], 1, 1, file);
+        }
+    }
+
+    dungeon->num_rooms = (size - 1694) / 4;
+
+    // Location of All Rooms, Bytes 1694 - eof
+    for(int i = 0; i < dungeon->num_rooms; i++) {
+        for(int j = 0; j < 4; j++) {
+            fread(&dungeon->rooms[i][j], 1, 1, file);
+        }
+    }
+    printf("Number of rooms: %d\n", dungeon->num_rooms);
+
+    setMapFromFile(dungeon);
 }
 
 int main(int argc, char* argv[]) {
-  dungeon_t dungeon;
-  createEmptyMap(&dungeon);
-  generateRooms(&dungeon);
-  generateCorridors(&dungeon);
-  printMap(&dungeon);
+    dungeon_t dungeon;
+    char *saveFlag = "--save";
+    int save = 0;
+    char *loadFlag = "--load";
+    int load = 0;
+    char *customFilePath = NULL;
+    char *setPCFlag = "--p";
+    int setPC = 0;
+    int pcY = 0, pcX = 0;
+    int i = 0;
+    char *home = getenv("HOME");
+    char *filePath = strcat(home, "/.rlg327/");
+    FILE *file;
+
+    for(i = 0; i < argc; i++) {
+        if(!strcmp(argv[i], saveFlag)) {
+            save = 1;
+        }
+        else if(!strcmp(argv[i], loadFlag)) {
+            load = 1;
+        }
+        else if(strstr(argv[i], ".rlg327") != NULL) {
+            customFilePath = malloc(sizeof(argv[i]));
+            customFilePath = argv[i];
+        }
+        else if(!strcmp(argv[i], setPCFlag)) {
+            setPC = 1;
+            pcY = atoi(argv[i + 1]); i++;
+            pcX = atoi(argv[i + 2]); i++;
+        }
+    }
+
+    if(load && (customFilePath != NULL)) {
+        printf("Custom file set\n");
+        strcat(filePath, customFilePath);
+        file = fopen(filePath, "r+");
+    }
+    else {
+        strcat(filePath, "rlg327");
+        file = fopen(filePath, "r+");
+    }
+
+    if(load) {
+        printf("Loading from file\n");
+        loadFromFile(&dungeon, file);
+    }
+
+    if(save && load) {
+        printf("Saving loaded map to file\n");
+        writeToFile(&dungeon, file);
+    }
+    else if(save) {
+        printf("Saving new map to file\n");
+        createEmptyMap(&dungeon);
+        generateRooms(&dungeon);
+        generateCorridors(&dungeon);
+        writeToFile(&dungeon, file);
+    }
+
+    if(!save && !load) {
+        printf("Generating random map\n");
+        createEmptyMap(&dungeon);
+        generateRooms(&dungeon);
+        generateCorridors(&dungeon);
+    }
+
+    if(setPC) {
+        if((pcY < ROWS && pcY > 0) && (pcX < COLS && pcX > 0)) {
+            dungeon.map[pcY][pcX] = '@';
+        }
+        else {
+            printf("PC Coordinates are out of map bounds.\nSetting random.\n");
+            setPC = 0;
+        }
+    }
+
+    if(!setPC) {
+        int set = 0;
+        while(!set) {
+            pcY = generateRandom(ROWS, 0);
+            pcX = generateRandom(COLS, 0);
+
+            if(dungeon.map[pcY][pcX] == '.') {
+                dungeon.map[pcY][pcX] = '@';
+                set = 1;
+            }
+        }
+    }
+
+    if((!save) || (save && load)) {
+        printMap(&dungeon);
+    }
+
+    printf("save = %d, load = %d\n", save, load);
+
+    fclose(file);
+
+    return 0;
 }
