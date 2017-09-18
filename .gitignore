@@ -5,3 +5,4 @@ test_dungeon_files
 .DS_Store
 dungeon
 *.idea
+*.vscode
