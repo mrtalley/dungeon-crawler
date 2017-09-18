@@ -1,3 +1,21 @@
+commit b506cff311f873c55649ee9ffd0baef6e0ebf2e0
+Author: mrtalley <mrtalley@pyrite-n2.cs.iastate.edu>
+Date:   Wed Sep 13 13:41:27 2017 -0500
+
+    write spaces to every spot in map array to get rid of junk
+
+commit 47b9da572e0630ef879ff4d15bca6ec1a790d12d
+Author: mrtalley <mrtalley@iastate.edu>
+Date:   Wed Sep 13 13:33:46 2017 -0500
+
+    change size to num_rooms * 4
+
+commit 8012265d9900eed42fa7f2c32577c9d27f6391ef
+Author: mrtalley <mrtalley@iastate.edu>
+Date:   Wed Sep 13 13:16:26 2017 -0500
+
+    update README, CHANGELOG, and comment out endian.h for system file
+
 commit d10a67d88bcb830ec6f45a2663bb3c6084438976
 Merge: e4c21a0 080c6eb
 Author: Maxwell Talley <max.talley0@gmail.com>
