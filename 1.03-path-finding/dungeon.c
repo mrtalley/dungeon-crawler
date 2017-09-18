@@ -9,6 +9,8 @@
 #include "endian.h"
 #include "heap.h"
 
+#include "endian.h"
+
 #define MAXROOMS 10
 #define COLS 80
 #define ROWS 21
@@ -26,7 +28,7 @@ typedef struct corridor_path {
     num_dims
   } dim_t;
 
-  typedef int16_t pair_t[num_dims];  
+  typedef int16_t pair_t[num_dims];
 
   #define mappair(pair) (d->map[pair[dim_y]][pair[dim_x]])
   #define mapxy(x, y) (d->map[y][x])
@@ -237,7 +239,6 @@ static void generateCorridors(dungeon_t *dungeon) {
 }
 
 void writeToFile(dungeon_t *dungeon, FILE *file) {
-    printf("Saving to file\n");
     dungeon->version = 0;
     uint32_t size = 0;
 
@@ -269,7 +270,6 @@ void writeToFile(dungeon_t *dungeon, FILE *file) {
 }
 
 void loadFromFile(dungeon_t *dungeon, FILE *file) {
-    printf("Loading from file\n");
     dungeon->version = 0;
     uint32_t size = 0;
 
@@ -320,7 +320,7 @@ static void dijkstra_corridor(dungeon_t *d, pair_t from, pair_t to)
     }
     initialized = 1;
   }
-  
+
   for (y = 0; y < ROWS; y++) {
     for (x = 0; x < COLS; x++) {
       path[y][x].cost = INT_MAX;
@@ -400,84 +400,108 @@ static void dijkstra_corridor(dungeon_t *d, pair_t from, pair_t to)
   }
 }
 
-static void placePC(dungeon_t *d, int coordsGiven, int x, int y)
-{
-    if(coordsGiven && (x < COLS && y < ROWS)) {
-        d->map[y][x] = '@';
-    }
-    else {
-        int randRoom = generateRandom(d->num_rooms, 0);
-        int yMin = d->rooms[randRoom][0];
-        int yMax = yMin + d->rooms[randRoom][2];
-        int xMin = d->rooms[randRoom][1];
-        int xMax = xMin + d->rooms[randRoom][3];
+// static void generateTunnelingMapToPC(dungeon_t *d)
+// {
 
-        int yPos = generateRandom(yMax, yMin);
-        int xPos = generateRandom(xMax, xMin);
-        d->map[yPos][xPos] = '@';
-    }
-}
+// }
 
-static void generateTunnelingMapToPC(dungeon_t *d) 
-{
-
-}
-
-int main(int argc, char* argv[])
-{
+int main(int argc, char* argv[]) {
     dungeon_t dungeon;
+    char *saveFlag = "--save";
+    int save = 0;
+    char *loadFlag = "--load";
+    int load = 0;
+    char *customFilePath = NULL;
+    char *setPCFlag = "--p";
+    int setPC = 0;
+    int pcY = 0, pcX = 0;
+    int i = 0;
     char *home = getenv("HOME");
     char *filePath = strcat(home, "/.rlg327/");
     FILE *file;
 
-    if(argc > 1 && argc < 3) {
-        strcat(filePath, "rlg327");
-        if(!strcmp(argv[1], "--save")) {
-            file = fopen(filePath, "w");
-            createEmptyMap(&dungeon);
-            generateRooms(&dungeon);
-            generateCorridors(&dungeon);
-            writeToFile(&dungeon, file);
-            fclose(file);
+    for(i = 0; i < argc; i++) {
+        if(!strcmp(argv[i], saveFlag)) {
+            save = 1;
         }
-        else if(!strcmp(argv[1], "--load")) {
-            file = fopen(filePath, "r");
-            loadFromFile(&dungeon, file);
-            printMap(&dungeon);
-            fclose(file);
+        else if(!strcmp(argv[i], loadFlag)) {
+            load = 1;
+        }
+        else if(strstr(argv[i], ".rlg327") != NULL) {
+            customFilePath = malloc(sizeof(argv[i]));
+            customFilePath = argv[i];
+        }
+        else if(!strcmp(argv[i], setPCFlag)) {
+            setPC = 1;
+            pcY = atoi(argv[i + 1]); i++;
+            pcX = atoi(argv[i + 2]); i++;
         }
     }
-    else if(argc == 3) {
-        if((!strcmp(argv[1], "--save") && !strcmp(argv[2], "--load"))
-            || (!strcmp(argv[1], "--load") && !strcmp(argv[2], "--save"))) {
-                strcat(filePath, "rlg327");
-                printf("File path: %s\n", filePath);
-                file = fopen(filePath, "r+");
 
-                loadFromFile(&dungeon, file);
-                printMap(&dungeon);
-                writeToFile(&dungeon, file);
-                fclose(file);
-        }
-        else if(!strcmp(argv[1], "--load")) {
-            strcat(filePath, argv[2]);
-            if((file = fopen(filePath, "r")) != NULL) {
-                loadFromFile(&dungeon, file);
-                printMap(&dungeon);
-                fclose(file);
-            }
-            else {
-                printf("Please enter a valid file name\n");
-                return 0;
-            }
-        }
+    if(load && (customFilePath != NULL)) {
+        printf("Custom file set\n");
+        strcat(filePath, customFilePath);
+        file = fopen(filePath, "r+");
     }
     else {
+        strcat(filePath, "rlg327");
+        file = fopen(filePath, "r+");
+    }
+
+    if(load) {
+        printf("Loading from file\n");
+        loadFromFile(&dungeon, file);
+    }
+
+    if(save && load) {
+        printf("Saving loaded map to file\n");
+        writeToFile(&dungeon, file);
+    }
+    else if(save) {
+        printf("Saving new map to file\n");
         createEmptyMap(&dungeon);
         generateRooms(&dungeon);
         generateCorridors(&dungeon);
+        writeToFile(&dungeon, file);
+    }
+
+    if(!save && !load) {
+        printf("Generating random map\n");
+        createEmptyMap(&dungeon);
+        generateRooms(&dungeon);
+        generateCorridors(&dungeon);
+    }
+
+    if(setPC) {
+        if((pcY < ROWS && pcY > 0) && (pcX < COLS && pcX > 0)) {
+            dungeon.map[pcY][pcX] = '@';
+        }
+        else {
+            printf("PC Coordinates are out of map bounds.\nSetting random.\n");
+            setPC = 0;
+        }
+    }
+
+    if(!setPC) {
+        int set = 0;
+        while(!set) {
+            pcY = generateRandom(ROWS, 0);
+            pcX = generateRandom(COLS, 0);
+
+            if(dungeon.map[pcY][pcX] == '.') {
+                dungeon.map[pcY][pcX] = '@';
+                set = 1;
+            }
+        }
+    }
+
+    if((!save) || (save && load)) {
         printMap(&dungeon);
     }
+
+    printf("save = %d, load = %d\n", save, load);
+
+    fclose(file);
 
     return 0;
 }
