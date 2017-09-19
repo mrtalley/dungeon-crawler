@@ -101,7 +101,7 @@ void heap_node_delete(heap_t *h, heap_node_t *hn)
   while (hn) {
     if (hn->child) {
       heap_node_delete(h, hn->child);
-    } 
+    }
     next = hn->next;
     if (h->datum_delete) {
       h->datum_delete(hn->datum);
@@ -374,7 +374,7 @@ int main(int argc, char *argv[])
 
   print_heap(&h, print_int);
   printf("------------------------------------\n");
-  
+
   heap_remove_min(&h);
   keys[0] = malloc(sizeof (*keys[0]));
   *keys[0] = 0;

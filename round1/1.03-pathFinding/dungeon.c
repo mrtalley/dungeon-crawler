@@ -10,6 +10,7 @@
 #include "dungeon.h"
 #include "utils.h"
 #include "heap.h"
+#include "endian.h"
 
 typedef struct corridor_path {
   heap_node_t *hn;
