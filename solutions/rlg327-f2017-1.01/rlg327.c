@@ -1,16 +1,22 @@
 #include <stdio.h>
 #include <stdint.h>
-#include <machine/endian.h>
-//#include <endian.h>
+#include <stdlib.h>
+#include <string.h>
+// #include <endian.h>
 #include <sys/stat.h>
-#include <sys/time.h>
+#include <sys/types.h>
 #include <limits.h>
-#include <errno.h>
+#include <sys/time.h>
 
-#include "dungeon.h"
-#include "utils.h"
 #include "heap.h"
-#include "endian.h"
+
+/* Returns true if random float in [0,1] is less than *
+ * numerator/denominator.  Uses only integer math.    */
+# define rand_under(numerator, denominator) \
+  (rand() < ((RAND_MAX / denominator) * numerator))
+
+/* Returns random integer in [min, max]. */
+# define rand_range(min, max) ((rand() % (((max) + 1) - (min))) + (min))
 
 typedef struct corridor_path {
   heap_node_t *hn;
@@ -18,6 +24,57 @@ typedef struct corridor_path {
   uint8_t from[2];
   int32_t cost;
 } corridor_path_t;
+
+typedef enum dim {
+  dim_x,
+  dim_y,
+  num_dims
+} dim_t;
+
+typedef int16_t pair_t[num_dims];
+
+#define DUNGEON_X              80
+#define DUNGEON_Y              21
+#define MIN_ROOMS              5
+#define MAX_ROOMS              9
+#define ROOM_MIN_X             4
+#define ROOM_MIN_Y             2
+#define ROOM_MAX_X             14
+#define ROOM_MAX_Y             8
+
+#define mappair(pair) (d->map[pair[dim_y]][pair[dim_x]])
+#define mapxy(x, y) (d->map[y][x])
+#define hardnesspair(pair) (d->hardness[pair[dim_y]][pair[dim_x]])
+#define hardnessxy(x, y) (d->hardness[y][x])
+
+typedef enum __attribute__ ((__packed__)) terrain_type {
+  ter_debug,
+  ter_wall,
+  ter_wall_immutable,
+  ter_floor,
+  ter_floor_room,
+  ter_floor_hall,
+} terrain_type_t;
+
+typedef struct room {
+  pair_t position;
+  pair_t size;
+} room_t;
+
+typedef struct dungeon {
+  uint32_t num_rooms;
+  room_t rooms[MAX_ROOMS];
+  terrain_type_t map[DUNGEON_Y][DUNGEON_X];
+  /* Since hardness is usually not used, it would be expensive to pull it *
+   * into cache every time we need a map cell, so we store it in a        *
+   * parallel array, rather than using a structure to represent the       *
+   * cells.  We may want a cell structure later, but from a performanace  *
+   * perspective, it would be a bad idea to ever have the map be part of  *
+   * that structure.  Pathfinding will require efficient use of the map,  *
+   * and pulling in unnecessary data with each map cell would add a lot   *
+   * of overhead to the memory system.                                    */
+  uint8_t hardness[DUNGEON_Y][DUNGEON_X];
+} dungeon_t;
 
 static uint32_t in_room(dungeon_t *d, int16_t y, int16_t x)
 {
@@ -333,14 +390,13 @@ static int smooth_hardness(dungeon_t *d)
   int32_t i, x, y;
   int32_t s, t, p, q;
   queue_node_t *head, *tail, *tmp;
-  uint8_t hardness[DUNGEON_Y][DUNGEON_X];
-#ifdef DUMP_HARDNESS_IMAGES
   FILE *out;
-#endif
+  uint8_t hardness[DUNGEON_Y][DUNGEON_X];
+
   memset(&hardness, 0, sizeof (hardness));
 
   /* Seed with some values */
-  for (i = 1; i < 255; i += 5) {
+  for (i = 1; i < 255; i += 20) {
     do {
       x = rand() % DUNGEON_X;
       y = rand() % DUNGEON_Y;
@@ -357,12 +413,10 @@ static int smooth_hardness(dungeon_t *d)
     tail->y = y;
   }
 
-#ifdef DUMP_HARDNESS_IMAGES
   out = fopen("seeded.pgm", "w");
   fprintf(out, "P5\n%u %u\n255\n", DUNGEON_X, DUNGEON_Y);
   fwrite(&hardness, sizeof (hardness), 1, out);
   fclose(out);
-#endif
 
   /* Diffuse the vaules to fill the space */
   while (head) {
@@ -471,7 +525,7 @@ static int smooth_hardness(dungeon_t *d)
     }
   }
 
-#ifdef DUMP_HARDNESS_IMAGES
+
   out = fopen("diffused.pgm", "w");
   fprintf(out, "P5\n%u %u\n255\n", DUNGEON_X, DUNGEON_Y);
   fwrite(&hardness, sizeof (hardness), 1, out);
@@ -481,7 +535,6 @@ static int smooth_hardness(dungeon_t *d)
   fprintf(out, "P5\n%u %u\n255\n", DUNGEON_X, DUNGEON_Y);
   fwrite(&d->hardness, sizeof (d->hardness), 1, out);
   fclose(out);
-#endif
 
   return 0;
 }
@@ -511,20 +564,6 @@ static int place_rooms(dungeon_t *d)
   uint32_t i;
   int success;
   room_t *r;
-  uint8_t hardness[DUNGEON_Y][DUNGEON_X];
-  uint32_t x, y;
-  struct timeval tv, start;
-
-  /* Placing rooms is 2D bin packing.  Bin packing (2D or otherwise) is NP-  *
-   * Complete, meaning (among other things) that there is no known algorithm *
-   * to solve the problem in less than exponential time.  There are          *
-   * hacks and approximation algorithms that can function more efficiently,  *
-   * but we're going to forgoe those in favor of using a timeout.  If we     *
-   * can't place all of our rooms in 1 second (and some change), we'll abort *
-   * this attempt and start over.                                            */
-  gettimeofday(&start, NULL);
-
-  memcpy(&hardness, &d->hardness, sizeof (hardness));
 
   for (success = 0; !success; ) {
     success = 1;
@@ -539,21 +578,8 @@ static int place_rooms(dungeon_t *d)
              success && p[dim_x] < r->position[dim_x] + r->size[dim_x] + 1;
              p[dim_x]++) {
           if (mappair(p) >= ter_floor) {
-            gettimeofday(&tv, NULL);
-            if ((tv.tv_sec - start.tv_sec) > 1) {
-              memcpy(&d->hardness, &hardness, sizeof (hardness));
-              return 1;
-            }
             success = 0;
-            /* empty_dungeon() regenerates the hardness map, which   *
-             * is prohibitively expensive to do in a loop like this, *
-             * so instead, we'll use a copy.                         */
-            memcpy(&d->hardness, &hardness, sizeof (hardness));
-            for (y = 1; y < DUNGEON_Y - 1; y++) {
-              for (x = 1; x < DUNGEON_X - 1; x++) {
-                mapxy(x, y) = ter_wall;
-              }
-            }
+            empty_dungeon(d);
           } else if ((p[dim_y] != r->position[dim_y] - 1)              &&
                      (p[dim_y] != r->position[dim_y] + r->size[dim_y]) &&
                      (p[dim_x] != r->position[dim_x] - 1)              &&
@@ -573,10 +599,11 @@ static int make_rooms(dungeon_t *d)
 {
   uint32_t i;
 
+  memset(d->rooms, 0, sizeof (d->rooms));
+
   for (i = MIN_ROOMS; i < MAX_ROOMS && rand_under(6, 8); i++)
     ;
   d->num_rooms = i;
-  d->rooms = malloc(sizeof (*d->rooms) * d->num_rooms);
 
   for (i = 0; i < d->num_rooms; i++) {
     d->rooms[i].size[dim_x] = ROOM_MIN_X;
@@ -594,6 +621,8 @@ static int make_rooms(dungeon_t *d)
 
 int gen_dungeon(dungeon_t *d)
 {
+  empty_dungeon(d);
+
   do {
     make_rooms(d);
   } while (place_rooms(d));
@@ -608,27 +637,22 @@ void render_dungeon(dungeon_t *d)
 
   for (p[dim_y] = 0; p[dim_y] < DUNGEON_Y; p[dim_y]++) {
     for (p[dim_x] = 0; p[dim_x] < DUNGEON_X; p[dim_x]++) {
-      if (p[dim_x] ==  d->pc.position[dim_x] &&
-          p[dim_y] ==  d->pc.position[dim_y]) {
-        putchar('@');
-      } else {
-        switch (mappair(p)) {
-        case ter_wall:
-        case ter_wall_immutable:
-          putchar(' ');
-          break;
-        case ter_floor:
-        case ter_floor_room:
-          putchar('.');
-          break;
-        case ter_floor_hall:
-          putchar('#');
-          break;
-        case ter_debug:
-          putchar('*');
-          fprintf(stderr, "Debug character at %d, %d\n", p[dim_y], p[dim_x]);
-          break;
-        }
+      switch (mappair(p)) {
+      case ter_wall:
+      case ter_wall_immutable:
+        putchar(' ');
+        break;
+      case ter_floor:
+      case ter_floor_room:
+        putchar('.');
+        break;
+      case ter_floor_hall:
+        putchar('#');
+        break;
+      case ter_debug:
+        putchar('*');
+        fprintf(stderr, "Debug character at %d, %d\n", p[dim_y], p[dim_x]);
+        break;
       }
     }
     putchar('\n');
@@ -637,7 +661,6 @@ void render_dungeon(dungeon_t *d)
 
 void delete_dungeon(dungeon_t *d)
 {
-  free(d->rooms);
 }
 
 void init_dungeon(dungeon_t *d)
@@ -645,381 +668,26 @@ void init_dungeon(dungeon_t *d)
   empty_dungeon(d);
 }
 
-int write_dungeon_map(dungeon_t *d, FILE *f)
+int main(int argc, char *argv[])
 {
-  uint32_t x, y;
+  dungeon_t d;
+  struct timeval tv;
+  uint32_t seed;
 
-  for (y = 0; y < DUNGEON_Y; y++) {
-    for (x = 0; x < DUNGEON_X; x++) {
-      fwrite(&d->hardness[y][x], sizeof (unsigned char), 1, f);
-    }
-  }
-
-  return 0;
-}
-
-int write_rooms(dungeon_t *d, FILE *f)
-{
-  uint32_t i;
-  uint8_t p;
-
-  for (i = 0; i < d->num_rooms; i++) {
-    /* write order is xpos, ypos, width, height */
-    p = d->rooms[i].position[dim_x];
-    fwrite(&p, 1, 1, f);
-    p = d->rooms[i].position[dim_y];
-    fwrite(&p, 1, 1, f);
-    p = d->rooms[i].size[dim_x];
-    fwrite(&p, 1, 1, f);
-    p = d->rooms[i].size[dim_y];
-    fwrite(&p, 1, 1, f);
-  }
-
-  return 0;
-}
-
-uint32_t calculate_dungeon_size(dungeon_t *d)
-{
-  return (20 /* The semantic, version, and size */     +
-          (DUNGEON_X * DUNGEON_Y) /* The hardnesses */ +
-          (d->num_rooms * 4) /* Four bytes per room */);
-}
-
-int write_dungeon(dungeon_t *d, char *file)
-{
-  char *home;
-  char *filename;
-  FILE *f;
-  size_t len;
-  uint32_t be32;
-
-  if (!file) {
-    if (!(home = getenv("HOME"))) {
-      fprintf(stderr, "\"HOME\" is undefined.  Using working directory.\n");
-      home = ".";
-    }
-
-    len = (strlen(home) + strlen(SAVE_DIR) + strlen(DUNGEON_SAVE_FILE) +
-           1 /* The NULL terminator */                                 +
-           2 /* The slashes */);
-
-    filename = malloc(len * sizeof (*filename));
-    sprintf(filename, "%s/%s/", home, SAVE_DIR);
-    makedirectory(filename);
-    strcat(filename, DUNGEON_SAVE_FILE);
-
-    if (!(f = fopen(filename, "w"))) {
-      perror(filename);
-      free(filename);
-
-      return 1;
-    }
-    free(filename);
+  if (argc == 2) {
+    seed = atoi(argv[1]);
   } else {
-    if (!(f = fopen(file, "w"))) {
-      perror(file);
-      exit(-1);
-    }
+    gettimeofday(&tv, NULL);
+    seed = (tv.tv_usec ^ (tv.tv_sec << 20)) & 0xffffffff;
   }
 
-  /* The semantic, which is 12 bytes, 0-11 */
-  fwrite(DUNGEON_SAVE_SEMANTIC, 1, strlen(DUNGEON_SAVE_SEMANTIC), f);
+  printf("Using seed: %u\n", seed);
+  srand(seed);
 
-  /* The version, 4 bytes, 12-15 */
-  be32 = htobe32(DUNGEON_SAVE_VERSION);
-  fwrite(&be32, sizeof (be32), 1, f);
-
-  /* The size of the file, 4 bytes, 16-19 */
-  be32 = htobe32(calculate_dungeon_size(d));
-  fwrite(&be32, sizeof (be32), 1, f);
-
-  /* The dungeon map, 16800 bytes, 20-16819 */
-  write_dungeon_map(d, f);
-
-  /* And the rooms, num_rooms * 4 bytes, 16820-end */
-  write_rooms(d, f);
-
-  fclose(f);
+  init_dungeon(&d);
+  gen_dungeon(&d);
+  render_dungeon(&d);
+  delete_dungeon(&d);
 
   return 0;
-}
-
-int read_dungeon_map(dungeon_t *d, FILE *f)
-{
-  uint32_t x, y;
-
-  for (y = 0; y < DUNGEON_Y; y++) {
-    for (x = 0; x < DUNGEON_X; x++) {
-      fread(&d->hardness[y][x], sizeof (d->hardness[y][x]), 1, f);
-      if (d->hardness[y][x] == 0) {
-        /* Mark it as a corridor.  We can't recognize room cells until *
-         * after we've read the room array, which we haven't done yet. */
-        d->map[y][x] = ter_floor_hall;
-      } else if (d->hardness[y][x] == 255) {
-        d->map[y][x] = ter_wall_immutable;
-      } else {
-        d->map[y][x] = ter_wall;
-      }
-    }
-  }
-
-
-  return 0;
-}
-
-int read_rooms(dungeon_t *d, FILE *f)
-{
-  uint32_t i;
-  uint32_t x, y;
-  uint8_t p;
-
-  for (i = 0; i < d->num_rooms; i++) {
-    fread(&p, 1, 1, f);
-    d->rooms[i].position[dim_x] = p;
-    fread(&p, 1, 1, f);
-    d->rooms[i].position[dim_y] = p;
-    fread(&p, 1, 1, f);
-    d->rooms[i].size[dim_x] = p;
-    fread(&p, 1, 1, f);
-    d->rooms[i].size[dim_y] = p;
-    /* After reading each room, we need to reconstruct them in the dungeon. */
-    for (y = d->rooms[i].position[dim_y];
-         y < d->rooms[i].position[dim_y] + d->rooms[i].size[dim_y];
-         y++) {
-      for (x = d->rooms[i].position[dim_x];
-           x < d->rooms[i].position[dim_x] + d->rooms[i].size[dim_x];
-           x++) {
-        mapxy(x, y) = ter_floor_room;
-      }
-    }
-  }
-
-  return 0;
-}
-
-int calculate_num_rooms(uint32_t dungeon_bytes)
-{
-  return ((dungeon_bytes -
-          (20 /* The semantic, version, and size */       +
-           (DUNGEON_X * DUNGEON_Y) /* The hardnesses */)) /
-          4 /* Four bytes per room */);
-}
-
-int read_dungeon(dungeon_t *d, char *file)
-{
-  char semantic[13];
-  uint32_t be32;
-  FILE *f;
-  char *home;
-  size_t len;
-  char *filename;
-  struct stat buf;
-
-  if (!file) {
-    if (!(home = getenv("HOME"))) {
-      fprintf(stderr, "\"HOME\" is undefined.  Using working directory.\n");
-      home = ".";
-    }
-
-    len = (strlen(home) + strlen(SAVE_DIR) + strlen(DUNGEON_SAVE_FILE) +
-           1 /* The NULL terminator */                                 +
-           2 /* The slashes */);
-
-    filename = malloc(len * sizeof (*filename));
-    sprintf(filename, "%s/%s/%s", home, SAVE_DIR, DUNGEON_SAVE_FILE);
-
-    if (!(f = fopen(filename, "r"))) {
-      perror(filename);
-      free(filename);
-      exit(-1);
-    }
-
-    if (stat(filename, &buf)) {
-      perror(filename);
-      exit(-1);
-    }
-
-    free(filename);
-  } else {
-    if (!(f = fopen(file, "r"))) {
-      perror(file);
-      exit(-1);
-    }
-    if (stat(file, &buf)) {
-      perror(file);
-      exit(-1);
-    }
-  }
-
-  d->num_rooms = 0;
-
-  fread(semantic, sizeof(semantic) - 1, 1, f);
-  semantic[12] = '\0';
-  if (strncmp(semantic, DUNGEON_SAVE_SEMANTIC, 12)) {
-    fprintf(stderr, "Not an RLG327 save file.\n");
-    exit(-1);
-  }
-  fread(&be32, sizeof (be32), 1, f);
-  if (be32toh(be32) != 0) { /* Since we expect zero, be32toh() is a no-op. */
-    fprintf(stderr, "File version mismatch.\n");
-    exit(-1);
-  }
-  fread(&be32, sizeof (be32), 1, f);
-  if (buf.st_size != be32toh(be32)) {
-    fprintf(stderr, "File size mismatch.\n");
-    exit(-1);
-  }
-  read_dungeon_map(d, f);
-  d->num_rooms = calculate_num_rooms(buf.st_size);
-  d->rooms = malloc(sizeof (*d->rooms) * d->num_rooms);
-  read_rooms(d, f);
-
-  fclose(f);
-
-  return 0;
-}
-
-int read_pgm(dungeon_t *d, char *pgm)
-{
-  FILE *f;
-  char s[80];
-  uint8_t gm[103][158];
-  uint32_t x, y;
-  uint32_t i;
-
-  if (!(f = fopen(pgm, "r"))) {
-    perror(pgm);
-    exit(-1);
-  }
-
-  if (!fgets(s, 80, f) || strncmp(s, "P5", 2)) {
-    fprintf(stderr, "Expected P5\n");
-    exit(-1);
-  }
-  if (!fgets(s, 80, f) || s[0] != '#') {
-    fprintf(stderr, "Expected comment\n");
-    exit(-1);
-  }
-  if (!fgets(s, 80, f) || strncmp(s, "158 103", 5)) {
-    fprintf(stderr, "Expected 158 103\n");
-    exit(-1);
-  }
-  if (!fgets(s, 80, f) || strncmp(s, "255", 2)) {
-    fprintf(stderr, "Expected 255\n");
-    exit(-1);
-  }
-
-  fread(gm, 1, 158 * 103, f);
-
-  fclose(f);
-
-  /* In our gray map, treat black (0) as corridor, white (255) as room, *
-   * all other values as a hardness.  For simplicity, treat every white *
-   * cell as its own room, so we have to count white after reading the  *
-   * image in order to allocate the room array.                         */
-  for (d->num_rooms = 0, y = 0; y < 103; y++) {
-    for (x = 0; x < 158; x++) {
-      if (!gm[y][x]) {
-        d->num_rooms++;
-      }
-    }
-  }
-  d->rooms = malloc(sizeof (*d->rooms) * d->num_rooms);
-
-  for (i = 0, y = 0; y < 103; y++) {
-    for (x = 0; x < 158; x++) {
-      if (!gm[y][x]) {
-        d->rooms[i].position[dim_x] = x + 1;
-        d->rooms[i].position[dim_y] = y + 1;
-        d->rooms[i].size[dim_x] = 1;
-        d->rooms[i].size[dim_y] = 1;
-        i++;
-        d->map[y + 1][x + 1] = ter_floor_room;
-        d->hardness[y + 1][x + 1] = 0;
-      } else if (gm[y][x] == 255) {
-        d->map[y + 1][x + 1] = ter_floor_hall;
-        d->hardness[y + 1][x + 1] = 0;
-      } else {
-        d->map[y + 1][x + 1] = ter_wall;
-        d->hardness[y + 1][x + 1] = gm[y][x];
-      }
-    }
-  }
-
-  for (x = 0; x < 160; x++) {
-    d->map[0][x] = ter_wall_immutable;
-    d->hardness[0][x] = 255;
-    d->map[104][x] = ter_wall_immutable;
-    d->hardness[104][x] = 255;
-  }
-  for (y = 1; y < 104; y++) {
-    d->map[y][0] = ter_wall_immutable;
-    d->hardness[y][0] = 255;
-    d->map[y][159] = ter_wall_immutable;
-    d->hardness[y][159] = 255;
-  }
-
-  return 0;
-}
-
-void render_distance_map(dungeon_t *d)
-{
-  pair_t p;
-
-  for (p[dim_y] = 0; p[dim_y] < DUNGEON_Y; p[dim_y]++) {
-    for (p[dim_x] = 0; p[dim_x] < DUNGEON_X; p[dim_x]++) {
-      if (p[dim_x] ==  d->pc.position[dim_x] &&
-          p[dim_y] ==  d->pc.position[dim_y]) {
-        putchar('@');
-      } else {
-        switch (mappair(p)) {
-        case ter_wall:
-        case ter_wall_immutable:
-          putchar(' ');
-          break;
-        case ter_floor:
-        case ter_floor_room:
-        case ter_floor_hall:
-          putchar('0' + d->pc_distance[p[dim_y]][p[dim_x]] % 10);
-          break;
-        case ter_debug:
-          fprintf(stderr, "Debug character at %d, %d\n", p[dim_y], p[dim_x]);
-          putchar('*');
-          break;
-        }
-      }
-    }
-    putchar('\n');
-  }
-}
-
-void render_tunnel_distance_map(dungeon_t *d)
-{
-  pair_t p;
-
-  for (p[dim_y] = 0; p[dim_y] < DUNGEON_Y; p[dim_y]++) {
-    for (p[dim_x] = 0; p[dim_x] < DUNGEON_X; p[dim_x]++) {
-      if (p[dim_x] ==  d->pc.position[dim_x] &&
-          p[dim_y] ==  d->pc.position[dim_y]) {
-        putchar('@');
-      } else {
-        switch (mappair(p)) {
-        case ter_wall_immutable:
-          putchar(' ');
-          break;
-        case ter_wall:
-        case ter_floor:
-        case ter_floor_room:
-        case ter_floor_hall:
-          putchar('0' + d->pc_tunnel[p[dim_y]][p[dim_x]] % 10);
-          break;
-        case ter_debug:
-          fprintf(stderr, "Debug character at %d, %d\n", p[dim_y], p[dim_x]);
-          putchar('*');
-          break;
-        }
-      }
-    }
-    putchar('\n');
-  }
 }

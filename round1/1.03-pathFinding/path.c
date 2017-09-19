@@ -70,13 +70,9 @@ void dijkstra(dungeon_t *d)
 
   while ((c = heap_remove_min(&h))) {
     c->hn = NULL;
-    if ((p[c->pos[dim_y] - 1][c->pos[dim_x] - 1].hn) &&
-        (d->pc_distance[c->pos[dim_y] - 1][c->pos[dim_x] - 1] >
-         d->pc_distance[c->pos[dim_y]][c->pos[dim_x]] + 1)) {
-      d->pc_distance[c->pos[dim_y] - 1][c->pos[dim_x] - 1] =
-        d->pc_distance[c->pos[dim_y]][c->pos[dim_x]] + 1;
-      heap_decrease_key_no_replace(&h,
-                                   p[c->pos[dim_y] - 1][c->pos[dim_x] - 1].hn);
+    if ((p[c->pos[dim_y] - 1][c->pos[dim_x] - 1].hn) && (d->pc_distance[c->pos[dim_y] - 1][c->pos[dim_x] - 1] > d->pc_distance[c->pos[dim_y]][c->pos[dim_x]] + 1)) {
+      d->pc_distance[c->pos[dim_y] - 1][c->pos[dim_x] - 1] = d->pc_distance[c->pos[dim_y]][c->pos[dim_x]] + 1;
+      heap_decrease_key_no_replace(&h, p[c->pos[dim_y] - 1][c->pos[dim_x] - 1].hn);
     }
     if ((p[c->pos[dim_y] - 1][c->pos[dim_x]    ].hn) &&
         (d->pc_distance[c->pos[dim_y] - 1][c->pos[dim_x]    ] >
