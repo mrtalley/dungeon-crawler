@@ -28,10 +28,11 @@ void create_distance_map(dungeon_t *d, int tunneling)
     heap_t h;
     uint32_t x, y;
 
-    // for compare_distance function
-    dungeon = d;
 
     if (!initialized) {
+        // for compare_distance function
+        dungeon = d;
+
         for (y = 0; y < ROWS; y++) {
             for (x = 0; x < COLS; x++) {
                 path[y][x].pos[dim_y] = y;
