@@ -2,7 +2,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
-#include <endian.h>
+//#include <endian.h>
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <limits.h>
@@ -10,6 +10,7 @@
 #include <errno.h>
 
 #include "heap.h"
+#include "endian.h"
 
 #define DUMP_HARDNESS_IMAGES 0
 

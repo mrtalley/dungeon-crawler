@@ -3,13 +3,10 @@
 #include <stdlib.h>
 #include <string.h>
 //#include <endian.h>
-#include <stdint.h>
-#include <limits.h>
 
 #include "dungeon.h"
-#include "endian.h"
-#include "heap.h"
 #include "distance_map.h"
+#include "endian.h"
 
 int generateRandom(int max, int min) {
     return (rand() % (max - min)) + min;

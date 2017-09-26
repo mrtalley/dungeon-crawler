@@ -6,3 +6,5 @@ test_dungeon_files
 dungeon
 *.idea
 *.vscode
+cmake-build-debug
+CMakeLists.txt
