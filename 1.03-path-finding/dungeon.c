@@ -292,9 +292,10 @@ int main(int argc, char* argv[]) {
             customFilePath = argv[i];
         }
         else if(!strcmp(argv[i], setPCFlag)) {
-            setPC = 1;
-            pcY = atoi(argv[i + 1]); i++;
-            pcX = atoi(argv[i + 2]); i++;
+            setPC = 1; i++;
+            pcY = atoi(argv[i]); i++;
+            pcX = atoi(argv[i]);
+            printf("SETPC x: %d, y: %d\n", pcX, pcY);
         }
     }
 
@@ -334,6 +335,7 @@ int main(int argc, char* argv[]) {
 
     if(setPC) {
         if((pcY < ROWS && pcY > 0) && (pcX < COLS && pcX > 0)) {
+            printf("Setting PC @ x: %d, y: %d\n", pcX, pcY);
             dungeon.pc.position[dim_y] = pcY;
             dungeon.pc.position[dim_x] = pcX;
             dungeon.map[pcY][pcX] = '@';
