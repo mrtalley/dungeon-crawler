@@ -40,7 +40,7 @@ typedef struct dungeon {
 int generateRandom(int max, int min);
 void setRoomsFromFile(dungeon_t *d);
 void setMapFromFile(dungeon_t *d);
-void writeToFile(dungeon_t *dungeon, FILE *file);
-void loadFromFile(dungeon_t *dungeon, FILE *file);
+void writeToFile(dungeon_t *dungeon, char *filePath);
+void loadFromFile(dungeon_t *dungeon, char *filePath);
 
 #endif
