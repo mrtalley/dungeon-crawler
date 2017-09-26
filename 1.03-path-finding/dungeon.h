@@ -33,6 +33,7 @@ typedef struct dungeon {
     uint8_t rooms[MAXROOMS][4]; // y, x, y-size, x-size
     uint32_t version;
     uint8_t distance_to_pc[ROWS][COLS];
+    uint8_t tunnel_to_pc[ROWS][COLS];
     pc_t pc;
 } dungeon_t;
 
