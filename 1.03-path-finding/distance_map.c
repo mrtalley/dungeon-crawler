@@ -22,7 +22,7 @@ static int32_t compare_distance(const void *key, const void *with) {
             dungeon->distance_to_pc[((distance_path_t *) with)->pos[dim_y]][((distance_path_t *) with)->pos[dim_x]]);
 }
 
-void create_distance_map(dungeon_t *d, int tunneling)
+void create_distance_map(dungeon_t *d)
 {
     static distance_path_t path[ROWS][COLS], *p;
     static uint32_t initialized = 0;
@@ -57,11 +57,7 @@ void create_distance_map(dungeon_t *d, int tunneling)
     for (y = 0; y < ROWS; y++) {
         for (x = 0; x < COLS; x++) {
             // calc distance for only rooms and tunnels
-            if (hardnessxy(x, y) == 0 && !tunneling) {
-                path[y][x].hn = heap_insert(&h, &path[y][x]);
-            }
-            // calc distance for any that aren't the boundary
-            else if(hardnessxy(x, y) != 255 && tunneling) {
+            if (hardnessxy(x, y) == 0) {
                 path[y][x].hn = heap_insert(&h, &path[y][x]);
             }
             else {
