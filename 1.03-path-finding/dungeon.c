@@ -365,10 +365,10 @@ int main(int argc, char* argv[]) {
     if((!save) || (save && load)) {
         printMap(&dungeon);
         printf("\n\n");
-        create_distance_map(&dungeon, 0);
+        create_distance_map(&dungeon);
         print_distance_map(&dungeon, 0);
         printf("\n\n");
-        create_distance_map(&dungeon, 1);
+        create_tunnel_distance_map(&dungeon);
         print_distance_map(&dungeon, 1);
     }
 
