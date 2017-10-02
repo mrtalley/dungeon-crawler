@@ -1,3 +1,61 @@
+commit 4cf064a0c7833e9f24b80fb1234b4bc158a9004a
+Author: mrtalley <mrtalley@iastate.edu>
+Date:   Wed Sep 27 12:05:24 2017 -0500
+
+    Update readme for 1.03
+
+commit 2af006b5dc2d376e6a0baeb2eb1f07f5637e29d6
+Merge: 48e2090 d43e3c7
+Author: Maxwell Talley <max.talley0@gmail.com>
+Date:   Wed Sep 27 11:53:07 2017 -0500
+
+    Merge pull request #63 from mrtalley/PF-12
+    
+    PF-12 For tunneling monsters, account for rock hardness
+
+commit d43e3c7940cdb0a253e19402449a1d40a1f04b19
+Author: mrtalley <mrtalley@iastate.edu>
+Date:   Wed Sep 27 11:50:47 2017 -0500
+
+    PF-12 Removed unused function params, delete extra files
+
+commit 0b36600fc6b0a38835247292df542a2116159681
+Author: mrtalley <mrtalley@iastate.edu>
+Date:   Tue Sep 26 21:36:24 2017 -0500
+
+    Corrected tunneling distance map to account for hardness
+
+commit debd1cf2480c19ed1c58a769333ee2f5db918624
+Merge: 66eac93 48e2090
+Author: mrtalley <mrtalley@iastate.edu>
+Date:   Tue Sep 26 15:57:39 2017 -0500
+
+    Merge branch 'master' into PF-12
+
+commit 48e2090086c13a806f506cd71c3fc86b0abf613d
+Author: mrtalley <mrtalley@iastate.edu>
+Date:   Tue Sep 26 15:57:01 2017 -0500
+
+    Fixed file size issue by moving open and close to respective functions
+
+commit 66eac939ddfc1f43d09fd1ac0a8666d68738c30d
+Author: mrtalley <mrtalley@iastate.edu>
+Date:   Tue Sep 26 15:08:20 2017 -0500
+
+    PF-12 WIP -- moving to fix error from 1.02
+
+commit 3553a3cce0e23b3c34ec82d9e9430c81aff696de
+Author: mrtalley <mrtalley@iastate.edu>
+Date:   Tue Sep 26 14:23:41 2017 -0500
+
+    Corrected PC placement
+
+commit c8f87cd4f6efc101ddb52d922ea3df32929e67a5
+Author: mrtalley <mrtalley@iastate.edu>
+Date:   Tue Sep 26 13:45:48 2017 -0500
+
+    Added files to .gitignore, update CHANGELOG
+
 commit 7239fc6b1d1b909c14281cd6604cc747719c1426
 Author: mrtalley <mrtalley@iastate.edu>
 Date:   Tue Sep 19 09:37:26 2017 -0500

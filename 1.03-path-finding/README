@@ -9,7 +9,7 @@ purposes
 * Once the PC is set, the distance maps are generated using
 an adapted version of the professor's dijkstra_corridor
 function
-* A second function was created to create the tunneling distance map becuase I
+* A second function was created to create the tunneling distance map because I
 realized that in the tunneling map, you need to account for the hardness of the
 rock. So I created a new function that is similar to the one for rooms, but
 adds a "weight" into the calculation for dijkstra
