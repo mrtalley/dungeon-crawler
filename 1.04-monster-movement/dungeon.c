@@ -7,9 +7,22 @@
 #include "dungeon.h"
 #include "distance_map.h"
 #include "endian.h"
+#include "movement.h"
 
 int generateRandom(int max, int min) {
     return (rand() % (max - min)) + min;
+}
+
+monster_t getMonsterByCoordinates(dungeon_t *d, int y, int x)
+{
+    int i = 0;
+    monster_t monst;
+    for(i = 0; i < d->num_monsters; i++) {
+        if(d->monsters[i].position[dim_y] == y && d->monsters[i].position[dim_x] == x) {
+            monst = d->monsters[i];
+        }
+    }
+    return monst;
 }
 
 static void createEmptyMap(dungeon_t *dungeon) {
@@ -107,9 +120,16 @@ static void generateRooms(dungeon_t *dungeon) {
 
 static void printMap(dungeon_t *dungeon) {
     int y = 0, x = 0;
+    monster_t monst;
+
     for(y = 0; y < ROWS; y++) {
         for(x = 0; x < COLS; x++) {
-            printf("%c", dungeon->map[y][x]);
+            if(dungeon->map[y][x] == 'M') {
+                monst = getMonsterByCoordinates(dungeon, y, x);
+                printf("%x", determineMonsterTraits(monst.code));
+            } else {
+                printf("%c", dungeon->map[y][x]);
+            }
         }
         printf("\n");
     }
@@ -269,6 +289,40 @@ void loadFromFile(dungeon_t *dungeon, char *filePath) {
     fclose(file);
 }
 
+void placeRandom(dungeon_t *d, int *y, int *x)
+{
+    int set = 0;
+    while(!set) {
+        *y = generateRandom(ROWS, 0);
+        *x = generateRandom(COLS, 0);
+
+        if(d->map[*y][*x] == '.') {
+            set = 1;
+        }
+    }
+}
+
+void placeMonster(dungeon_t *d, int i)
+{
+    int y = d->monsters[i].position[dim_y];
+    int x = d->monsters[i].position[dim_x];
+    placeRandom(d, &y, &x);
+    d->monsters[i].position[dim_y] = y;
+    d->monsters[i].position[dim_x] = x;
+    d->map[y][x] = 'M';
+}
+
+void createMonsters(dungeon_t *d)
+{
+    d->num_monsters = generateRandom(MAX_MONSTERS, MIN_MONSTERS);
+    int i = 0;
+    for(i = 0; i < d->num_monsters; i++) {
+        d->monsters[i].code = genMonsterCode();
+        placeMonster(d, i);
+    }
+    printf("Number of monsters: %d\n", d->num_monsters);
+}
+
 int main(int argc, char* argv[]) {
     dungeon_t dungeon;
     char *saveFlag = "--save";
@@ -348,28 +402,17 @@ int main(int argc, char* argv[]) {
     }
 
     if(!setPC) {
-        int set = 0;
-        while(!set) {
-            pcY = generateRandom(ROWS, 0);
-            pcX = generateRandom(COLS, 0);
-
-            if(dungeon.map[pcY][pcX] == '.') {
-                dungeon.pc.position[dim_y] = pcY;
-                dungeon.pc.position[dim_x] = pcX;
-                dungeon.map[pcY][pcX] = '@';
-                set = 1;
-            }
-        }
+        placeRandom(&dungeon, &pcY, &pcX);
+        dungeon.pc.position[dim_y] = pcY;
+        dungeon.pc.position[dim_x] = pcX;
+        dungeon.map[pcY][pcX] = '@';
     }
 
     if((!save) || (save && load)) {
+        createMonsters(&dungeon);
         printMap(&dungeon);
-        printf("\n\n");
         create_distance_map(&dungeon);
-        print_distance_map(&dungeon, 0);
-        printf("\n\n");
         create_tunnel_distance_map(&dungeon);
-        print_distance_map(&dungeon, 1);
     }
 
     return 0;
