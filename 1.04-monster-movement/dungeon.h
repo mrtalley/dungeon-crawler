@@ -10,6 +10,8 @@
 #define MAXROOMS 10
 #define COLS 80
 #define ROWS 21
+#define MAX_MONSTERS 20
+#define MIN_MONSTERS 10
 
 #define mapxy(x, y) (d->map[y][x])
 #define hardnessxy(x, y) (d->hardness[y][x])
@@ -26,6 +28,13 @@ typedef struct pc {
     pair_t position;
 } pc_t;
 
+typedef struct monster {
+    uint16_t code;
+    pair_t position;
+    uint8_t queueNum;
+    uint8_t lineOfSight;
+} monster_t;
+
 typedef struct dungeon {
     uint32_t num_rooms;
     uint8_t hardness[ROWS][COLS];
@@ -35,6 +44,8 @@ typedef struct dungeon {
     uint8_t distance_to_pc[ROWS][COLS];
     uint8_t tunnel_to_pc[ROWS][COLS];
     pc_t pc;
+    monster_t monsters[MAX_MONSTERS];
+    uint32_t num_monsters;
 } dungeon_t;
 
 int generateRandom(int max, int min);

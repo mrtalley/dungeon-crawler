@@ -3,6 +3,8 @@
 #include <time.h>
 #include <math.h>
 
+#include "dungeon.h"
+
 int genMonsterCode()
 {
     int monster = 0000;
@@ -10,65 +12,26 @@ int genMonsterCode()
 
     // Intelligent monsters
     rando = rand() % 2;
-    if(rando == 1) {
+    if(rando) {
         monster += 1;
     }
 
     // Telepathic monsters
     rando = rand() % 2;
-    if(rando == 1) {
+    if(rando) {
         monster += 10;
     }
 
     // Tunneling monsters
     rando = rand() % 2;
-    if(rando == 1) {
+    if(rando) {
         monster += 100;
     }
 
-    // Erratic monsters
+    // // Erratic monsters
     rando = rand() % 2;
-    if(rando == 1) {
+    if(rando) {
         monster += 1000;
-    }
-
-    return monster;
-}
-
-int genRando()
-{
-    return rand() % 2;
-}
-
-int genMonsterCodeFor()
-{
-    int monster = 0000;
-    int rando = 0, i = 0;
-    time_t t;
-    srand((unsigned) time(&t));
-
-    for(i = 0; i < 4; i++) {
-        rando = rand() % 2;
-
-        // Intelligent monsters
-        if(rando == 1 && i == 0) {
-            monster += 1;
-        }
-
-        // Telepathic monsters
-        if(rando == 1 && i == 1) {
-            monster += 10;
-        }
-
-        // Tunneling monsters
-        if(rando == 1 && i == 2) {
-            monster += 100;
-        }
-
-        // Erratic monsters
-        if(rando == 1 && i == 3) {
-            monster += 1000;
-        }
     }
 
     return monster;
@@ -88,10 +51,10 @@ char *intToArray(int intr)
     return array;
 }
 
-void determineMonsterTraits(int monsterCode)
+int determineMonsterTraits(int monsterCode)
 {
     char *code = intToArray(monsterCode);
-    int i = 0, hex = 0;;
+    int hex = 0;;
 
     // Intelligent
     if(code[0]) {
@@ -113,21 +76,28 @@ void determineMonsterTraits(int monsterCode)
         hex += 8;
     }
 
-    printf("\n HEX: %x\n", hex);
+    return hex;
 }
 
-int main(void) {
-    int i = 0;
-    int monsterCode = 0;
-    srand((unsigned) time(NULL));
+void intelligence(monster_t *monster, uint8_t dist_map[ROWS][COLS])
+{
+    int y = monster->position[dim_y], x = monster->position[dim_x];
+    int i = 0, j = 0, min = 255;
+    int newY = 0, newX = 0;
 
-
-
-    for(i = 0; i < 10; i++) {
-        monsterCode = genMonsterCode();
-        determineMonsterTraits(monsterCode);
-        printf("CODE: %d\n\n", monsterCode);
+    if(monster->lineOfSight) {
+        for(j = y - 1; j < y + 1; j++) {
+            for(i = x - 1; i < x + 1; i++) {
+                if(dist_map[j][i] < min) {
+                    min = dist_map[j][i];
+                    newY = j, newX = i;
+                }
+            }
+        }
     }
+}
 
-    return 0;
+void telepathic(monster_t *monster, uint8_t dist_map[ROWS][COLS])
+{
+    monster->lineOfSight = 1;
 }
