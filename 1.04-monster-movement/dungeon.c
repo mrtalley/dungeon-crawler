@@ -13,23 +13,25 @@ int generateRandom(int max, int min) {
     return (rand() % (max - min)) + min;
 }
 
-monster_t getMonsterByCoordinates(dungeon_t *d, int y, int x)
-{
-    int i = 0;
-    monster_t monst;
-    for(i = 0; i < d->num_monsters; i++) {
-        if(d->monsters[i].position[dim_y] == y && d->monsters[i].position[dim_x] == x) {
-            monst = d->monsters[i];
-        }
-    }
-    return monst;
-}
+// test this
+// monster_t getMonsterByCoordinates(dungeon_t *d, int y, int x)
+// {
+//     int i = 0;
+//     monster_t monst;
+//     for(i = 0; i < d->num_monsters; i++) {
+//         if(d->monsters[i].position[dim_y] == y && d->monsters[i].position[dim_x] == x) {
+//             monst = d->monsters[i];
+//         }
+//     }
+//     return monst;
+// }
 
 static void createEmptyMap(dungeon_t *dungeon) {
     srand((unsigned) time(NULL));
     int y = 0, x = 0;
     for(y = 0; y < ROWS; y++) {
         for(x = 0; x < COLS; x++) {
+            // dungeon->npc[y][x]->alive = 0;
             if(x == 0 || x == 79) {
                 dungeon->map[y][x] = '|';
                 dungeon->hardness[y][x] = 255;
@@ -118,18 +120,18 @@ static void generateRooms(dungeon_t *dungeon) {
     printf("Rooms generated in %d tries\n", tries);
 }
 
-static void printMap(dungeon_t *dungeon) {
+// FIXME
+static void printMap(dungeon_t *d) {
     int y = 0, x = 0;
-    monster_t monst;
 
     for(y = 0; y < ROWS; y++) {
         for(x = 0; x < COLS; x++) {
-            if(dungeon->map[y][x] == 'M') {
-                monst = getMonsterByCoordinates(dungeon, y, x);
-                printf("%x", determineMonsterTraits(monst.code));
-            } else {
-                printf("%c", dungeon->map[y][x]);
+            if(d->npc[y][x].alive) {
+                printf("%x", determineMonsterTraits(d->npc[y][x].type));
             }
+            else {
+               printf("%c", d->map[y][x]);
+           }
         }
         printf("\n");
     }
@@ -182,6 +184,8 @@ static void generateCorridors(dungeon_t *dungeon) {
     int count = 1;
     int secondX, secondY, firstX, firstY;
 
+    printf("Generating corridors...");
+
     while(count < dungeon->num_rooms) {
         secondY = dungeon->rooms[count][0] + dungeon->rooms[count][2] / 2;
         secondX = dungeon->rooms[count][1] + dungeon->rooms[count][3] / 2;
@@ -217,6 +221,8 @@ static void generateCorridors(dungeon_t *dungeon) {
         }
         count++;
     }
+
+    printf("done\n");
 }
 
 void writeToFile(dungeon_t *dungeon, char *filePath) {
@@ -302,29 +308,56 @@ void placeRandom(dungeon_t *d, int *y, int *x)
     }
 }
 
-void placeMonster(dungeon_t *d, int i)
+void placeMonster(dungeon_t *d, int *y, int *x)
 {
-    int y = d->monsters[i].position[dim_y];
-    int x = d->monsters[i].position[dim_x];
-    placeRandom(d, &y, &x);
-    d->monsters[i].position[dim_y] = y;
-    d->monsters[i].position[dim_x] = x;
-    d->map[y][x] = 'M';
+
+    placeRandom(d, y, x);
+    printf("monsterY: %d, monsterX: %d\n", *y, *x);
+    d->npc[*y][*x].position[dim_y] = *y;
+    d->npc[*y][*x].position[dim_x] = *x;
+    d->npc[*y][*x].alive = 1;
+    d->npc[*y][*x].speed = generateRandom(20, 5);
+    // d->map[y][x] = 'M';
 }
 
-void createMonsters(dungeon_t *d)
+void createMonsters(dungeon_t *d, heap_t *h)
 {
+    printf("Placing monsters..."); fflush(stdout);
     d->num_monsters = generateRandom(MAX_MONSTERS, MIN_MONSTERS);
-    int i = 0;
-    for(i = 0; i < d->num_monsters; i++) {
-        d->monsters[i].code = genMonsterCode();
-        placeMonster(d, i);
-    }
     printf("Number of monsters: %d\n", d->num_monsters);
+    int i = 0;
+    int y = 0, x = 0;
+    for(i = 0; i < d->num_monsters; i++) {
+        placeMonster(d, &y, &x);
+        d->npc[y][x].type = genMonsterCode();
+        heap_insert(h, &d->npc[y][x]);
+    }
+    printf("done. Number of monsters: %d\n", d->num_monsters);
 }
+
+void initializePC(dungeon_t *d, int pcY, int pcX)
+{
+    d->npc[pcY][pcX].type = PC;
+    d->npc[pcY][pcX].speed = 10;
+    d->npc[pcY][pcX].queueNum = 100;
+    d->npc[pcY][pcX].alive = 1;
+    d->npc[pcY][pcX].position[dim_y] = pcY;
+    d->npc[pcY][pcX].position[dim_x] = pcX;
+    // d->pc.position[dim_y] = pcY;
+    // d->pc.position[dim_x] = pcX;
+
+    d->map[pcY][pcX] = '@';
+    d->pc = d->npc[pcY][pcX];
+}
+
+// might not be correct
+// static int32_t compare_queueNum(const void *firstNPC, const void *secondNPC) {
+//     return (((pc_t *) firstNPC)->queueNum - ((pc_t *) secondNPC)->queueNum);
+// }
 
 int main(int argc, char* argv[]) {
     dungeon_t dungeon;
+    heap_t h;
     char *saveFlag = "--save";
     int save = 0;
     char *loadFlag = "--load";
@@ -391,9 +424,7 @@ int main(int argc, char* argv[]) {
     if(setPC) {
         if((pcY < ROWS && pcY > 0) && (pcX < COLS && pcX > 0)) {
             printf("Setting PC @ x: %d, y: %d\n", pcX, pcY);
-            dungeon.pc.position[dim_y] = pcY;
-            dungeon.pc.position[dim_x] = pcX;
-            dungeon.map[pcY][pcX] = '@';
+            initializePC(&dungeon, pcY, pcX);
         }
         else {
             printf("PC Coordinates are out of map bounds.\nSetting random.\n");
@@ -402,18 +433,25 @@ int main(int argc, char* argv[]) {
     }
 
     if(!setPC) {
+        printf("Placing pc in random location...");
         placeRandom(&dungeon, &pcY, &pcX);
-        dungeon.pc.position[dim_y] = pcY;
-        dungeon.pc.position[dim_x] = pcX;
-        dungeon.map[pcY][pcX] = '@';
+        initializePC(&dungeon, pcY, pcX);
+        printf("done\n");
     }
 
+    // dungeon.npc = *malloc(COLS * ROWS * sizeof(pc_t));
+
     if((!save) || (save && load)) {
-        createMonsters(&dungeon);
+        createMonsters(&dungeon, &h);
         printMap(&dungeon);
         create_distance_map(&dungeon);
         create_tunnel_distance_map(&dungeon);
     }
+
+    // heap_t h;
+    // heap_init(&h, compare_queueNum, NULL);
+
+    // moveCharacter(&dungeon, h);
 
     return 0;
 }
