@@ -1,20 +1,11 @@
-### This assignment fits the required specifications.
-* PC randomly generates on the map if you don't include the --p flag
-* Can specify PC location with `--p y x` flag, where x is
-the col and y is the row you want to spawn in
-* If pc is set on an unavailable location (dungeon boundary), it will be
-randomly generated
-* The pc can be set outside of a room or corridor. This is for testing
-purposes
-* Once the PC is set, the distance maps are generated using
-an adapted version of the professor's dijkstra_corridor
-function
-* A second function was created to create the tunneling distance map because I
-realized that in the tunneling map, you need to account for the hardness of the
-rock. So I created a new function that is similar to the one for rooms, but
-adds a "weight" into the calculation for dijkstra
-* Once the distance map is generated, it is printed with the
-`print_distance_map` function. This takes a `tunneling`
-flag to determine which map to print
-* Each distance map is printed below the actual map, starting
-with the mapped rooms and then the entire dungeon
+### This assignment does not fit all of the required specifications.
+* Can specify number of monsters you want to generate with the --nummon flag.
+* If you do not specify monsters with --nummon, between 10 and 20 monsters will
+be generated.
+* Monsters print in the dungeon with their respective hex representation based
+on their type
+* Monster types are generated, but traits of those types have not been defined.
+* Movement has not been finished. I have created what I see as the functions
+for intelligence and telepathic abilities, but I did not have time to create
+erratic and tunneling abilities. I also did not have time to implement the
+movement with the queue.

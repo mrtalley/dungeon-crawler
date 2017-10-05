@@ -1,3 +1,51 @@
+commit d70fdb4bf580dcf3e73571a9539076b830d61cc0
+Author: mrtalley <mrtalley@iastate.edu>
+Date:   Thu Oct 5 01:43:32 2017 -0500
+
+    Added --nummon flag and dynamic allocation of monster array
+
+commit 50d5f78d3056e75d9bda540d05ff4c9f4355a898
+Merge: 409381b 57def20
+Author: Maxwell Talley <max.talley0@gmail.com>
+Date:   Tue Oct 3 10:51:36 2017 -0500
+
+    Merge pull request #71 from mrtalley/MM-2
+    
+    MM-2 closes #65 closes #66
+
+commit 57def20ec282c8a7aeb1ecf59f1aec5b2c05c125
+Author: mrtalley <mrtalley@iastate.edu>
+Date:   Tue Oct 3 10:49:27 2017 -0500
+
+    MM-2 Added monster creation and intel monst type
+
+commit 409381b59cc795d6a863f571b81f5f05ac8442c8
+Merge: 2f1b297 3446aa8
+Author: Maxwell Talley <max.talley0@gmail.com>
+Date:   Mon Oct 2 08:47:37 2017 -0500
+
+    Merge pull request #70 from mrtalley/MM-1
+    
+    MM-1 Create monster types based on hex code
+
+commit 3446aa8b22e2eda0d5c813178fc46d821896635a
+Author: mrtalley <mrtalley@iastate.edu>
+Date:   Mon Oct 2 08:46:54 2017 -0500
+
+    MM-1 Removed movement binary and added movement to makefile
+
+commit 529f48c3608a5e52aafdaab0ab4cee9b2262ab88
+Author: mrtalley <mrtalley@iastate.edu>
+Date:   Mon Oct 2 08:44:11 2017 -0500
+
+    MM-1 Created random hex codes and way to identify them
+
+commit 2f1b29744d303af63803f3ff0275b52305283e97
+Author: mrtalley <mrtalley@iastate.edu>
+Date:   Sun Oct 1 20:43:57 2017 -0500
+
+    Update CHANGELOG and 1.03 readme
+
 commit 4cf064a0c7833e9f24b80fb1234b4bc158a9004a
 Author: mrtalley <mrtalley@iastate.edu>
 Date:   Wed Sep 27 12:05:24 2017 -0500
