@@ -44,7 +44,7 @@ typedef struct dungeon {
     uint8_t distance_to_pc[ROWS][COLS];
     uint8_t tunnel_to_pc[ROWS][COLS];
     pc_t pc;
-    monster_t monsters[MAX_MONSTERS];
+    monster_t *monsters;
     uint32_t num_monsters;
 } dungeon_t;
 

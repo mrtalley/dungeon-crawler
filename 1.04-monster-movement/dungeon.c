@@ -314,7 +314,7 @@ void placeMonster(dungeon_t *d, int i)
 
 void createMonsters(dungeon_t *d)
 {
-    d->num_monsters = generateRandom(MAX_MONSTERS, MIN_MONSTERS);
+    d->monsters = malloc(sizeof(monster_t) * d->num_monsters);
     int i = 0;
     for(i = 0; i < d->num_monsters; i++) {
         d->monsters[i].code = genMonsterCode();
@@ -333,6 +333,7 @@ int main(int argc, char* argv[]) {
     char *setPCFlag = "--p";
     int setPC = 0;
     int pcY = 0, pcX = 0;
+    int setMonstFlag = 0;
     int i = 0;
     char *home = getenv("HOME");
     char *filePath = strcat(home, "/.rlg327/");
@@ -353,6 +354,11 @@ int main(int argc, char* argv[]) {
             pcY = atoi(argv[i]); i++;
             pcX = atoi(argv[i]);
             printf("SETPC x: %d, y: %d\n", pcX, pcY);
+        }
+        else if(!strcmp(argv[i], "--nummon")) {
+            dungeon.num_monsters = atoi(argv[i + 1]);
+            setMonstFlag = 1;
+            printf("Generating %d monsters\n", dungeon.num_monsters);
         }
     }
 
@@ -408,8 +414,13 @@ int main(int argc, char* argv[]) {
         dungeon.map[pcY][pcX] = '@';
     }
 
+    if(!setMonstFlag) {
+        dungeon.num_monsters = generateRandom(MAX_MONSTERS, MIN_MONSTERS);
+    }
+
+    createMonsters(&dungeon);
+
     if((!save) || (save && load)) {
-        createMonsters(&dungeon);
         printMap(&dungeon);
         create_distance_map(&dungeon);
         create_tunnel_distance_map(&dungeon);
