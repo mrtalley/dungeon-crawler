@@ -8,6 +8,7 @@
 #include "utils.h"
 #include "move.h"
 #include "path.h"
+#include "npc.h"
 
 void pc_delete(pc_t *pc)
 {
@@ -51,9 +52,20 @@ void config_pc(dungeon_t *d)
     dijkstra_tunnel(d);
 }
 
+void take_stairs(dungeon_t *d)
+{
+    if(mappair(d->pc.position) == ter_stairs_down || mappair(d->pc.position) == ter_stairs_up) {
+        delete_dungeon(d);
+        init_dungeon(d);
+        gen_dungeon(d);
+        config_pc(d);
+        gen_monsters(d);
+    }
+}
+
 uint32_t pc_next_pos(dungeon_t *d, pair_t dir)
 {
-    char *valid_keys = "7y8k9u6l3n2j1b4h5 Qm";
+    char *valid_keys = "7y8k9u6l3n2j1b4h5 Qm<>";
     char key;
     int mode = MOVE;
 
@@ -136,6 +148,9 @@ uint32_t pc_next_pos(dungeon_t *d, pair_t dir)
 
             else if(key == 'Q') {
                 d->pc.alive = 0;
+            }
+            else if(key == '>' || key == '<') {
+                take_stairs(d);
             }
         } else {
             while(getch() != KEY_ESC) {
