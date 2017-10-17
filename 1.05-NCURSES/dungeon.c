@@ -1085,6 +1085,7 @@ void render_tunnel_distance_map(dungeon_t *d)
 void generate_monster_list(dungeon_t *d)
 {
     d->monster_list = malloc(d->num_monsters * sizeof(npc_t));
+
     int pc_y = d->pc.position[dim_y], pc_x = d->pc.position[dim_x];
     int i = 0, npc_y = 0, npc_x = 0;
     int y = 0, x = 0;
@@ -1107,14 +1108,14 @@ void print_monster_list(dungeon_t *d)
 {
     int i = 0;
 
-    clear();
     for(i = 0; i < d->num_monsters && i < DUNGEON_Y; i++) {
-        char *y_dir = (d->monster_list[i].pos_from_pc[dim_y] > 0) ? "Units South" : "Units North";
-        char *x_dir = (d->monster_list[i].pos_from_pc[dim_x] > 0) ? "Units East" : "Units West";
+        char *y_dir = (d->monster_list[i].pos_from_pc[dim_y] > 0) ? "Units North" : "Units South";
+        char *x_dir = (d->monster_list[i].pos_from_pc[dim_x] > 0) ? "Units West" : "Units East";
 
-        mvprintw(i, 0, "Type: %c", d->monster_list[i].characteristics);
-        mvprintw(i, 10, "%d %s", abs(d->monster_list[i].pos_from_pc[dim_y]), y_dir);
-        mvprintw(i, 25, "%d %s", abs(d->monster_list[i].pos_from_pc[dim_x]), x_dir);
+        mvprintw(i + 1, 0, "Type: %c", d->monster_list[i].characteristics);
+        mvprintw(i + 1, 10, "%d %s", abs(d->monster_list[i].pos_from_pc[dim_y]), y_dir);
+        mvprintw(i + 1, 25, "%d %s", abs(d->monster_list[i].pos_from_pc[dim_x]), x_dir);
+        mvprintw(i + 1, 50, "%d", i);
     }
     refresh();
 }
