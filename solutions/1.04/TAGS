@@ -26,79 +26,76 @@ typedef enum dim 7,190
 } dim_t;11,238
 typedef int16_t pair_t[pair_t13,248
 
-dungeon.c,1105
-typedef struct corridor_path 17,334
-} corridor_path_t;22,437
-static uint32_t in_room(24,457
-static int32_t corridor_path_cmp(40,848
-static void dijkstra_corridor(44,998
-static void dijkstra_corridor_inv(143,4733
-#define hardnesspair_inv(196,6053
-static int connect_two_rooms(246,8690
-static int create_cycle(265,9342
-static int connect_rooms(307,10907
-int gaussian[gaussian320,11100
-typedef struct queue_node 328,11256
-} queue_node_t;331,11323
-static int smooth_hardness(333,11340
-static int empty_dungeon(491,15616
-static int place_rooms(511,16019
-static int make_rooms(575,18544
-int gen_dungeon(598,19105
-void create_stairs(608,19227
-void render_dungeon(628,19755
-void delete_dungeon(687,21294
-void init_dungeon(694,21428
-int write_dungeon_map(701,21585
-int write_rooms(714,21814
-uint32_t calculate_dungeon_size(734,22233
-int write_dungeon(741,22455
-int read_dungeon_map(800,23840
-int read_rooms(823,24438
-int calculate_num_rooms(853,25207
-int read_dungeon(861,25447
-int read_pgm(935,27148
-void render_distance_map(1018,29273
-void render_tunnel_distance_map(1051,30129
+dungeon.c,1111
+#define DUMP_HARDNESS_IMAGES 15,243
+typedef struct corridor_path 17,275
+} corridor_path_t;22,378
+static uint32_t in_room(24,398
+static int32_t corridor_path_cmp(40,789
+static void dijkstra_corridor(44,939
+static void dijkstra_corridor_inv(143,4676
+#define hardnesspair_inv(196,5998
+static int connect_two_rooms(246,8635
+static int create_cycle(265,9287
+static int connect_rooms(307,10852
+int gaussian[gaussian320,11045
+typedef struct queue_node 328,11201
+} queue_node_t;331,11268
+static int smooth_hardness(333,11285
+static int empty_dungeon(492,15554
+static int place_rooms(511,15930
+static int make_rooms(548,17117
+int gen_dungeon(571,17678
+void render_dungeon(583,17821
+void delete_dungeon(617,18582
+void init_dungeon(624,18716
+int write_dungeon_map(631,18873
+int write_rooms(644,19102
+uint32_t calculate_dungeon_size(664,19521
+int write_dungeon(671,19743
+int read_dungeon_map(730,21126
+int read_rooms(753,21724
+int calculate_num_rooms(807,23541
+int read_dungeon(815,23781
+int read_pgm(890,25595
+void render_distance_map(975,27998
+void render_tunnel_distance_map(1011,28963
 
-dungeon.h,1043
+dungeon.h,935
 # define DUNGEON_H2,18
 #define DUNGEON_X 9,122
-#define DUNGEON_Y 10,157
-#define MIN_ROOMS 11,192
-#define MAX_ROOMS 12,226
-#define ROOM_MIN_X 13,260
-#define ROOM_MIN_Y 14,293
-#define ROOM_MAX_X 15,326
-#define ROOM_MAX_Y 16,360
-#define VISUAL_RANGE 17,394
-#define PC_SPEED 18,428
-#define MAX_MONSTERS 19,462
-#define SAVE_DIR 20,496
-#define DUNGEON_SAVE_FILE 21,537
-#define DUNGEON_SAVE_SEMANTIC 22,578
-#define DUNGEON_SAVE_VERSION 23,624
-#define mappair(25,659
-#define mapxy(26,716
-#define hardnesspair(27,751
-#define hardnessxy(28,818
-#define charpair(29,863
-#define charxy(30,927
-typedef enum __attribute__ ((__packed__)) terrain_type 32,970
-  ter_debug,33,1027
-  ter_wall,34,1040
-  ter_wall_immutable,35,1052
-  ter_floor,36,1074
-  ter_floor_room,37,1087
-  ter_floor_hall,38,1105
-  ter_floor_stair_up,39,1123
-  ter_floor_stair_down,40,1145
-} terrain_type_t;41,1169
-typedef struct room 43,1188
-} room_t;46,1244
-typedef struct character character_t;48,1255
-typedef struct dungeon 50,1294
-} dungeon_t;78,2736
+#define DUNGEON_Y 10,156
+#define MIN_ROOMS 11,190
+#define MAX_ROOMS 12,223
+#define ROOM_MIN_X 13,256
+#define ROOM_MIN_Y 14,289
+#define ROOM_MAX_X 15,322
+#define ROOM_MAX_Y 16,356
+#define VISUAL_RANGE 17,389
+#define PC_SPEED 18,423
+#define MAX_MONSTERS 19,457
+#define SAVE_DIR 20,491
+#define DUNGEON_SAVE_FILE 21,532
+#define DUNGEON_SAVE_SEMANTIC 22,573
+#define DUNGEON_SAVE_VERSION 23,613
+#define mappair(25,648
+#define mapxy(26,705
+#define hardnesspair(27,740
+#define hardnessxy(28,807
+#define charpair(29,852
+#define charxy(30,916
+typedef enum __attribute__ ((__packed__)) terrain_type 32,959
+  ter_debug,33,1016
+  ter_wall,34,1029
+  ter_wall_immutable,35,1041
+  ter_floor,36,1063
+  ter_floor_room,37,1076
+  ter_floor_hall,38,1094
+} terrain_type_t;39,1112
+typedef struct room 41,1131
+} room_t;44,1187
+typedef struct dungeon 46,1198
+} dungeon_t;73,2619
 
 endian.h,334
 #define __FINK_ENDIANDEV_PKG_ENDIAN_H__ 2,40
@@ -207,29 +204,29 @@ npc.c,980
 void npc_delete(12,173
 static uint32_t max_monster_cells(19,232
 void gen_monsters(33,479
-void npc_next_pos_rand_tunnel(75,1853
-void npc_next_pos_rand(120,2712
-void npc_next_pos_line_of_sight(152,3277
-void npc_next_pos_line_of_sight_tunnel(176,3977
-void npc_next_pos_gradient(211,4796
-static void npc_next_pos_00(334,9488
-static void npc_next_pos_01(346,9885
-static void npc_next_pos_02(364,10510
-static void npc_next_pos_03(372,10820
-static void npc_next_pos_04(378,10995
-static void npc_next_pos_05(390,11399
-static void npc_next_pos_06(408,12031
-static void npc_next_pos_07(416,12348
-static void npc_next_pos_08(422,12523
-static void npc_next_pos_09(432,12764
-static void npc_next_pos_0a(442,13005
-static void npc_next_pos_0b(452,13246
-static void npc_next_pos_0c(462,13487
-static void npc_next_pos_0d(472,13735
-static void npc_next_pos_0e(482,13983
-static void npc_next_pos_0f(492,14231
-void npc_next_pos(525,15131
-uint32_t dungeon_has_npcs(533,15337
+void npc_next_pos_rand_tunnel(76,1896
+void npc_next_pos_rand(121,2755
+void npc_next_pos_line_of_sight(153,3320
+void npc_next_pos_line_of_sight_tunnel(177,4020
+void npc_next_pos_gradient(212,4839
+static void npc_next_pos_00(335,9531
+static void npc_next_pos_01(347,9928
+static void npc_next_pos_02(365,10553
+static void npc_next_pos_03(373,10863
+static void npc_next_pos_04(379,11038
+static void npc_next_pos_05(391,11442
+static void npc_next_pos_06(409,12074
+static void npc_next_pos_07(417,12391
+static void npc_next_pos_08(423,12566
+static void npc_next_pos_09(433,12807
+static void npc_next_pos_0a(443,13048
+static void npc_next_pos_0b(453,13289
+static void npc_next_pos_0c(463,13530
+static void npc_next_pos_0d(473,13778
+static void npc_next_pos_0e(483,14026
+static void npc_next_pos_0f(493,14274
+void npc_next_pos(526,15174
+uint32_t dungeon_has_npcs(534,15380
 
 npc.h,1112
 # define NPC_H2,14
@@ -279,23 +276,21 @@ typedef struct path 14,661
 static int32_t dist_cmp(19,731
 static int32_t tunnel_cmp(26,1085
 void dijkstra(33,1433
-#define tunnel_movement_cost(143,5925
-void dijkstra_tunnel(146,6062
+#define tunnel_movement_cost(140,5791
+void dijkstra_tunnel(143,5883
 
-path.h,60
+path.h,93
 # define PATH_H2,15
-typedef struct dungeon dungeon_t;4,32
+# define HARDNESS_PER_TURN 4,32
+typedef struct dungeon dungeon_t;6,63
 
-pc.c,241
-void pc_delete(12,156
-uint32_t pc_is_alive(19,216
-void place_pc(24,278
-void config_pc(34,705
-void look_mode_true(54,1123
-uint32_t pc_next_pos(113,2712
-    #define ESC 169,4648
-    #define LOOK 170,4667
-uint32_t pc_in_room(378,11095
+pc.c,157
+void pc_delete(11,135
+uint32_t pc_is_alive(18,195
+void place_pc(23,257
+void config_pc(33,684
+uint32_t pc_next_pos(53,1102
+uint32_t pc_in_room(151,5123
 
 pc.h,99
 # define PC_H2,13
@@ -303,12 +298,11 @@ typedef struct dungeon dungeon_t;8,70
 typedef struct pc 10,105
 } pc_t;11,125
 
-rlg327.c,146
-const char *victory victory13,177
-const char *tombstone tombstone44,1748
-void usage(65,2799
-void io_init_terminal(76,3073
-int main(85,3181
+rlg327.c,115
+const char *victory victory11,155
+const char *tombstone tombstone42,1726
+void usage(63,2777
+int main(74,3051
 
 utils.c,25
 int makedirectory(9,124
