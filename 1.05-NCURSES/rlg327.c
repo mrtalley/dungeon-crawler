@@ -227,7 +227,6 @@ int main(int argc, char *argv[])
     }
     srand(seed);
 
-    printf("About to start NCURSES");
     io_init_terminal();
 
     init_dungeon(&d);
@@ -248,7 +247,6 @@ int main(int argc, char *argv[])
     while (pc_is_alive(&d) && dungeon_has_npcs(&d)) {
         render_dungeon(&d);
         do_moves(&d);
-        usleep(33000);
     }
 
     render_dungeon(&d);

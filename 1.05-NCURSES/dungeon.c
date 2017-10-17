@@ -570,6 +570,24 @@ static int make_rooms(dungeon_t *d)
     return 0;
 }
 
+static int place_stairs(dungeon_t *d)
+{
+    srand((unsigned) time(NULL));
+    int num_stairs = d->num_rooms / 3;
+    int random = 0, count = 0;
+
+    while(count != num_stairs) {
+        random = rand() % (d->num_rooms - 1);
+
+        d->map[d->rooms[random].position[dim_y] + ((d->rooms[random].size[dim_y] - 1) / 2)]
+                [d->rooms[random].position[dim_x] + ((d->rooms[random].size[dim_x]) / 2)]
+                = (rand() % 2) ? ter_stairs_down : ter_stairs_up;
+        count++;
+    }
+
+    return 0;
+}
+
 int gen_dungeon(dungeon_t *d)
 {
     empty_dungeon(d);
@@ -578,6 +596,7 @@ int gen_dungeon(dungeon_t *d)
         make_rooms(d);
     } while (place_rooms(d));
     connect_rooms(d);
+    place_stairs(d);
 
     return 0;
 }
@@ -605,6 +624,12 @@ void render_dungeon(dungeon_t *d)
                         break;
                     case ter_floor_hall:
                         mvaddch(y_pos, x_pos, '#');
+                        break;
+                    case ter_stairs_down:
+                        mvaddch(y_pos, x_pos, '>');
+                        break;
+                    case ter_stairs_up:
+                        mvaddch(y_pos, x_pos, '<');
                         break;
                     case ter_debug:
                         mvaddch(y_pos, x_pos, '*');
@@ -994,6 +1019,8 @@ void render_distance_map(dungeon_t *d)
                         putchar(' ');
                         break;
                     case ter_floor:
+                    case ter_stairs_up:
+                    case ter_stairs_down:
                     case ter_floor_room:
                     case ter_floor_hall:
                         if (d->pc_distance[p[dim_y]][p[dim_x]] == 255) {
@@ -1030,6 +1057,8 @@ void render_tunnel_distance_map(dungeon_t *d)
                         break;
                     case ter_wall:
                     case ter_floor:
+                    case ter_stairs_up:
+                    case ter_stairs_down:
                     case ter_floor_room:
                     case ter_floor_hall:
                         if (d->pc_tunnel[p[dim_y]][p[dim_x]] == 255) {
