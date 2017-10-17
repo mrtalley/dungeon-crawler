@@ -7,12 +7,14 @@
 #include <sys/time.h>
 #include <limits.h>
 #include <errno.h>
+#include <math.h>
 
 #include "dungeon.h"
 #include "utils.h"
 #include "heap.h"
 #include "event.h"
 #include "endian.h"
+#include "npc.h"
 
 #define DUMP_HARDNESS_IMAGES 0
 
@@ -1077,4 +1079,43 @@ void render_tunnel_distance_map(dungeon_t *d)
         }
         putchar('\n');
     }
+}
+
+/* This function fills the pos_from_pc field on the npc struct */
+void generate_monster_list(dungeon_t *d)
+{
+    d->monster_list = malloc(d->num_monsters * sizeof(npc_t));
+
+    int pc_y = d->pc.position[dim_y], pc_x = d->pc.position[dim_x];
+    int i = 0, npc_y = 0, npc_x = 0;
+    int y = 0, x = 0;
+
+    for(y = 0; y < DUNGEON_Y; y++) {
+        for(x = 0; x < DUNGEON_X; x++) {
+            if(charxy(x, y) != NULL && (x != pc_x || y != pc_y)) {
+                npc_y = charxy(x, y)->position[dim_y];
+                npc_x = charxy(x, y)->position[dim_x];
+                d->monster_list[i].pos_from_pc[dim_y] = pc_y - npc_y;
+                d->monster_list[i].pos_from_pc[dim_x] = pc_x - npc_x;
+                d->monster_list[i].characteristics = charxy(x, y)->symbol;
+                i++;
+            }
+        }
+    }
+}
+
+void print_monster_list(dungeon_t *d)
+{
+    int i = 0;
+
+    for(i = 0; i < d->num_monsters && i < DUNGEON_Y; i++) {
+        char *y_dir = (d->monster_list[i].pos_from_pc[dim_y] > 0) ? "Units North" : "Units South";
+        char *x_dir = (d->monster_list[i].pos_from_pc[dim_x] > 0) ? "Units West" : "Units East";
+
+        mvprintw(i + 1, 0, "Type: %c", d->monster_list[i].characteristics);
+        mvprintw(i + 1, 10, "%d %s", abs(d->monster_list[i].pos_from_pc[dim_y]), y_dir);
+        mvprintw(i + 1, 25, "%d %s", abs(d->monster_list[i].pos_from_pc[dim_x]), x_dir);
+        mvprintw(i + 1, 50, "%d", i);
+    }
+    refresh();
 }

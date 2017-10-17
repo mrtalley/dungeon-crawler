@@ -102,8 +102,8 @@ void do_moves(dungeon_t *d)
         event_delete(e);
         pc_next_pos(d, next);
 
-        if((next[dim_x] + c->position[dim_x] < DUNGEON_X - 1 && next[dim_x] + c->position[dim_x] > 1)
-           && (next[dim_y] + c->position[dim_y] < DUNGEON_Y - 1 && next[dim_y] + c->position[dim_y] > 1)) {
+        if((next[dim_x] + c->position[dim_x] < DUNGEON_X - 1 && next[dim_x] + c->position[dim_x] > 0)
+           && (next[dim_y] + c->position[dim_y] < DUNGEON_Y - 1 && next[dim_y] + c->position[dim_y] > 0)) {
             next[dim_x] += c->position[dim_x];
             next[dim_y] += c->position[dim_y];
             if (mappair(next) <= ter_floor) {

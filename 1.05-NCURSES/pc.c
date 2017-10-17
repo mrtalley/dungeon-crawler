@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <ncurses.h>
+#include <unistd.h>
 
 #include "string.h"
 
@@ -67,7 +68,7 @@ uint32_t pc_next_pos(dungeon_t *d, pair_t dir)
 {
     char *valid_keys = "7y8k9u6l3n2j1b4h5 Qm<>";
     char key;
-    int mode = MOVE;
+    static int mode = MOVE;
 
     dir[dim_y] = dir[dim_x] = 0;
 
@@ -93,12 +94,20 @@ uint32_t pc_next_pos(dungeon_t *d, pair_t dir)
         dir[dim_y] = 1;
         dir[dim_x] = 1;
     } else {
+        mvprintw(0, 0, "MODE: %s", (mode == MOVE) ? "MOVE" : "VIEW MONSTERS");
+
         do {
             key = getch();
         } while(!strchr(valid_keys, key));
 
-        if(key == KEY_ESC || key == 'm') {
-            mode = (key == KEY_ESC) ? MOVE : VIEW_MONSTERS;
+        /* Move mode -- let the pc move */
+        if(key == KEY_ESC) {
+            mode = MOVE;
+        }
+
+        /* View Monsters mode -- show the list */
+        else if(key == 'm') {
+            mode = VIEW_MONSTERS;
         }
 
         if(mode == MOVE) {
@@ -152,15 +161,27 @@ uint32_t pc_next_pos(dungeon_t *d, pair_t dir)
             else if(key == '>' || key == '<') {
                 take_stairs(d);
             }
-        } else {
-            while(getch() != KEY_ESC) {
-                if(getch() == 'Q') {
+        } else if(mode == VIEW_MONSTERS) {
+            generate_monster_list(d);
+            clear();
+
+            do {
+
+                mvprintw(0, 0, "MODE: %s", (mode == MOVE) ? "MOVE" : "VIEW MONSTERS"); refresh();
+                print_monster_list(d);
+
+                key = getch();
+
+                if (key == 'Q') {
                     d->pc.alive = 0;
                     break;
                 }
 
-                // insert monster viewing code here
-            }
+                if(key == KEY_ESC) break;
+
+            } while(key != KEY_ESC);
+
+            mode = MOVE;
         }
     }
 
