@@ -153,14 +153,18 @@ uint32_t pc_next_pos(dungeon_t *d, pair_t dir)
                 take_stairs(d);
             }
         } else {
+            generate_monster_list(d);
+
             while(getch() != KEY_ESC) {
                 if(getch() == 'Q') {
                     d->pc.alive = 0;
                     break;
                 }
 
-                // insert monster viewing code here
+                print_monster_list(d);
             }
+
+            free(d->monster_list);
         }
     }
 
