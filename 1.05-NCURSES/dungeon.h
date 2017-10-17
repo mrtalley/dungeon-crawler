@@ -21,6 +21,9 @@
 #define DUNGEON_SAVE_FILE      "dungeon"
 #define DUNGEON_SAVE_SEMANTIC  "RLG327"
 #define DUNGEON_SAVE_VERSION   0U
+#define MOVE 1
+#define VIEW_MONSTERS 0
+#define KEY_ESC 27
 
 #define mappair(pair) (d->map[pair[dim_y]][pair[dim_x]])
 #define mapxy(x, y) (d->map[y][x])
