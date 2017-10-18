@@ -177,11 +177,11 @@ uint32_t pc_next_pos(dungeon_t *d, pair_t dir)
                     break;
                 }
 
-                if(key == KEY_ESC) break;
+                if(key == KEY_ESC) {
+                    mode = MOVE;
+                }
 
-            } while(key != KEY_ESC);
-
-            mode = MOVE;
+            } while(mode == VIEW_MONSTERS);
         }
     }
 
