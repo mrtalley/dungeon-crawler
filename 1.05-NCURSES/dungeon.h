@@ -87,7 +87,7 @@ int read_dungeon(dungeon_t *d, char *file);
 int read_pgm(dungeon_t *d, char *pgm);
 void render_distance_map(dungeon_t *d);
 void render_tunnel_distance_map(dungeon_t *d);
-void print_monster_list(dungeon_t *d);
+void print_monster_list(dungeon_t *d, int offset);
 void generate_monster_list(dungeon_t *d);
 
 #endif
