@@ -113,7 +113,7 @@ uint32_t pc_next_pos(dungeon_t *d, pair_t dir)
                 generate_monster_list(d);
                 clear();
     
-                mvprintw(0, 0, "MODE: %s, OFFSET: %d, NUM_MONSTERS: %d", (mode == MOVE) ? "MOVE" : "VIEW MONSTERS", offset, d->num_monsters); refresh();
+                mvprintw(0, 0, "MODE: %s, NUM_MONSTERS: %d", (mode == MOVE) ? "MOVE" : "VIEW MONSTERS", d->num_monsters); refresh();
                 
                 if(key == KEY_UP && offset > 0) {
                     offset--;

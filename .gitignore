@@ -1,5 +1,3 @@
-*.tar.gz
-talley_maxwell*
 test_dungeon_files
 *.dSYM
 .DS_Store

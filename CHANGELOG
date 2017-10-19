@@ -1,3 +1,114 @@
+commit f408062e8d5efd534ea2f55fd4465619631b559b
+Merge: 3c087cf 88e5ab0
+Author: Maxwell Talley <max.talley0@gmail.com>
+Date:   Thu Oct 19 01:17:48 2017 -0500
+
+    Merge pull request #77 from mrtalley/NC-8
+    
+    NC-8 Add scrolling while in VIEW_MONSTERS
+
+commit 88e5ab0496dbb5abcd8d966c76017415f5ed1c74
+Author: Maxwell Talley <max.talley0@gmail.com>
+Date:   Thu Oct 19 06:12:48 2017 +0000
+
+    NC-8 Scrolling works in monster list, all other bugs presumed fixed
+
+commit b62c180ce039c48f4cba6c948492f3d6e598bd98
+Author: mrtalley <mrtalley@iastate.edu>
+Date:   Wed Oct 18 18:00:20 2017 -0500
+
+    NC-8 desperation push because I'm getting my computer fixed
+
+commit 3c087cfcfdd0b85cf6238b3908f3258825cee7c6
+Merge: b060e02 0134e6a
+Author: Maxwell Talley <max.talley0@gmail.com>
+Date:   Tue Oct 17 15:58:19 2017 -0500
+
+    Merge pull request #76 from mrtalley/NC-4
+    
+    NC-4 Add m key functionality
+
+commit 0134e6ae2fbef51485fbcb92ecd1876b43b26690
+Author: mrtalley <mrtalley@iastate.edu>
+Date:   Tue Oct 17 15:55:41 2017 -0500
+
+    NC-4 Displays monster list when pressing the m key
+
+commit 24d9e9056e02000a9e7aa9e109989eff72fe8268
+Author: mrtalley <mrtalley@iastate.edu>
+Date:   Tue Oct 17 04:40:03 2017 -0500
+
+    NC-4 WIP error w malloc and free
+
+commit b060e02f65e1979dc51d6d9ed3c01ff63e474fb2
+Merge: a4b7180 f6ced51
+Author: Maxwell Talley <max.talley0@gmail.com>
+Date:   Tue Oct 17 03:50:03 2017 -0500
+
+    Merge pull request #75 from mrtalley/NC-2
+    
+    NC-2 Add staircases to map
+
+commit f6ced51cdbaa622405a4f0e62be87ccaacbd5d9f
+Author: mrtalley <mrtalley@iastate.edu>
+Date:   Tue Oct 17 03:49:03 2017 -0500
+
+    NC-2 Added stairs to map & pc can take them
+
+commit a4b71809535c351973f508e76a0b92b346854860
+Author: mrtalley <mrtalley@iastate.edu>
+Date:   Tue Oct 17 02:59:33 2017 -0500
+
+    Accidentally checked out code for NC-3, rewrote it here
+
+commit 305460f2092ff0129bb6fe9aad1e3827490f1aff
+Merge: 37c4671 6af96e2
+Author: Maxwell Talley <max.talley0@gmail.com>
+Date:   Tue Oct 17 02:31:25 2017 -0500
+
+    Merge pull request #74 from mrtalley/NC-3
+    
+    NC-3 Move pc with keyboard input
+
+commit 6af96e2712704c1fcdeae7e008f89d0e4da394a2
+Author: mrtalley <mrtalley@iastate.edu>
+Date:   Tue Oct 17 02:30:25 2017 -0500
+
+    NC-3 Renamed solution files
+
+commit 9a0bf2878ffc489275a977c8024019abf0f8a2bb
+Author: mrtalley <mrtalley@iastate.edu>
+Date:   Tue Oct 17 02:28:03 2017 -0500
+
+    NC-3 Added PC movement via keyboard feature
+
+commit 37c4671dbe44d540e531cbf9ed06f951a1588cd9
+Merge: dfc9dc0 dc35fc7
+Author: Maxwell Talley <max.talley0@gmail.com>
+Date:   Tue Oct 17 00:03:28 2017 -0500
+
+    Merge pull request #73 from mrtalley/NC-1
+    
+    NC-1 Print dungeon using NCURSES
+
+commit dc35fc7674c0d50d4119f613968f580b2cd9d88e
+Author: mrtalley <mrtalley@iastate.edu>
+Date:   Tue Oct 17 00:01:13 2017 -0500
+
+    NC-1 Added ncurses to project and print dungeon with it
+
+commit f4c43d707008e9cb78e7cbbe1980dddf97be427c
+Author: mrtalley <mrtalley@iastate.edu>
+Date:   Mon Oct 16 12:31:42 2017 -0500
+
+    NC-1 Created assignment folder
+
+commit dfc9dc0495470d3d11d1472f217687e060542287
+Author: mrtalley <mrtalley@iastate.edu>
+Date:   Thu Oct 5 01:49:31 2017 -0500
+
+    Update 1.04 readme and project changelog
+
 commit d70fdb4bf580dcf3e73571a9539076b830d61cc0
 Author: mrtalley <mrtalley@iastate.edu>
 Date:   Thu Oct 5 01:43:32 2017 -0500
