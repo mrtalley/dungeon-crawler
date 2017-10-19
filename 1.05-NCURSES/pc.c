@@ -61,14 +61,16 @@ void take_stairs(dungeon_t *d)
         gen_dungeon(d);
         config_pc(d);
         gen_monsters(d);
+        render_dungeon(d);
     }
 }
 
 uint32_t pc_next_pos(dungeon_t *d, pair_t dir)
 {
-    char *valid_keys = "7y8k9u6l3n2j1b4h5 Qm<>";
-    char key;
+    char *valid_keys = "7y8k9u6l3n2j1b4h5 Q";
+    int key;
     static int mode = MOVE;
+    static int offset = 0;
 
     dir[dim_y] = dir[dim_x] = 0;
 
@@ -94,21 +96,50 @@ uint32_t pc_next_pos(dungeon_t *d, pair_t dir)
         dir[dim_y] = 1;
         dir[dim_x] = 1;
     } else {
-        mvprintw(0, 0, "MODE: %s", (mode == MOVE) ? "MOVE" : "VIEW MONSTERS");
+        mvprintw(0, 0, "MODE: %s", (mode == MOVE) ? "MOVE" : "VIEW MONSTERS"); refresh();
 
         do {
+            mvprintw(0, 0, "MODE: %s", (mode == MOVE) ? "MOVE" : "VIEW MONSTERS"); refresh();
+            
             key = getch();
-        } while(!strchr(valid_keys, key));
 
-        /* Move mode -- let the pc move */
-        if(key == KEY_ESC) {
-            mode = MOVE;
-        }
+            // Attempt to take stairs
+            if(key == '>' || key == '<') {
+                take_stairs(d);
+            }
 
-        /* View Monsters mode -- show the list */
-        else if(key == 'm') {
-            mode = VIEW_MONSTERS;
-        }
+            if(key == 'm' || mode == VIEW_MONSTERS) {
+                mode = VIEW_MONSTERS;
+                generate_monster_list(d);
+                clear();
+    
+                mvprintw(0, 0, "MODE: %s, OFFSET: %d, NUM_MONSTERS: %d", (mode == MOVE) ? "MOVE" : "VIEW MONSTERS", offset, d->num_monsters); refresh();
+                
+                if(key == KEY_UP && offset > 0) {
+                    offset--;
+                }
+                
+                // Scroll down, if possible
+                if(key == KEY_DOWN && offset < d->num_monsters - DUNGEON_Y) {
+                    offset++;
+                }
+                
+                print_monster_list(d, offset);
+                
+                // Switch back to dungeon view
+                if(key == KEY_ESC) {
+                    mode = MOVE;
+                    clear();
+                    render_dungeon(d);
+                }
+                
+                // Quit
+                if (key == 'Q') {
+                    d->pc.alive = 0;
+                    break;
+                }
+            }
+        } while(!strchr(valid_keys, key) || mode == VIEW_MONSTERS);
 
         if(mode == MOVE) {
             // Up + Left
@@ -154,34 +185,11 @@ uint32_t pc_next_pos(dungeon_t *d, pair_t dir)
             else if(key == '4' || key == 'h') {
                 dir[dim_x]--;
             }
-
+            
+            // Quit
             else if(key == 'Q') {
                 d->pc.alive = 0;
-            }
-            else if(key == '>' || key == '<') {
-                take_stairs(d);
-            }
-        } else if(mode == VIEW_MONSTERS) {
-            generate_monster_list(d);
-            clear();
-
-            do {
-
-                mvprintw(0, 0, "MODE: %s", (mode == MOVE) ? "MOVE" : "VIEW MONSTERS"); refresh();
-                print_monster_list(d);
-
-                key = getch();
-
-                if (key == 'Q') {
-                    d->pc.alive = 0;
-                    break;
                 }
-
-                if(key == KEY_ESC) {
-                    mode = MOVE;
-                }
-
-            } while(mode == VIEW_MONSTERS);
         }
     }
 

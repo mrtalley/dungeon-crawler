@@ -1,10 +1,10 @@
 #include <stdio.h>
 #include <stdint.h>
-//#include <endian.h>
+#include <endian.h>
 #include <ncurses.h>
 
 #include <sys/stat.h>
-#include <sys/time.h>
+#include <time.h>
 #include <limits.h>
 #include <errno.h>
 #include <math.h>
@@ -13,7 +13,7 @@
 #include "utils.h"
 #include "heap.h"
 #include "event.h"
-#include "endian.h"
+// #include "endian.h"
 #include "npc.h"
 
 #define DUMP_HARDNESS_IMAGES 0
@@ -1092,7 +1092,7 @@ void generate_monster_list(dungeon_t *d)
 
     for(y = 0; y < DUNGEON_Y; y++) {
         for(x = 0; x < DUNGEON_X; x++) {
-            if(charxy(x, y) != NULL && (x != pc_x || y != pc_y)) {
+            if(charxy(x, y) != NULL && i < d->num_monsters && charxy(x, y)->symbol != '@') {
                 npc_y = charxy(x, y)->position[dim_y];
                 npc_x = charxy(x, y)->position[dim_x];
                 d->monster_list[i].pos_from_pc[dim_y] = pc_y - npc_y;
@@ -1104,18 +1104,18 @@ void generate_monster_list(dungeon_t *d)
     }
 }
 
-void print_monster_list(dungeon_t *d)
+void print_monster_list(dungeon_t *d, int offset)
 {
-    int i = 0;
+    int i = 0, j = 0;
 
-    for(i = 0; i < d->num_monsters && i < DUNGEON_Y; i++) {
+    for(i = 0 + offset, j = 0; i < d->num_monsters && j < DUNGEON_Y; i++, j++) {
         char *y_dir = (d->monster_list[i].pos_from_pc[dim_y] > 0) ? "Units North" : "Units South";
         char *x_dir = (d->monster_list[i].pos_from_pc[dim_x] > 0) ? "Units West" : "Units East";
 
-        mvprintw(i + 1, 0, "Type: %c", d->monster_list[i].characteristics);
-        mvprintw(i + 1, 10, "%d %s", abs(d->monster_list[i].pos_from_pc[dim_y]), y_dir);
-        mvprintw(i + 1, 25, "%d %s", abs(d->monster_list[i].pos_from_pc[dim_x]), x_dir);
-        mvprintw(i + 1, 50, "%d", i);
+        mvprintw(j + 1, 0, "Type: %c", d->monster_list[i].characteristics);
+        mvprintw(j + 1, 10, "%d %s", abs(d->monster_list[i].pos_from_pc[dim_y]), y_dir);
+        mvprintw(j + 1, 30, "%d %s", abs(d->monster_list[i].pos_from_pc[dim_x]), x_dir);
+        mvprintw(j + 1, 50, "%d", i);
     }
     refresh();
 }
