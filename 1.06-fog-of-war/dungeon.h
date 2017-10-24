@@ -48,35 +48,36 @@ typedef struct room {
     pair_t size;
 } room_t;
 
-typedef struct dungeon {
-    uint32_t num_rooms;
-    room_t *rooms;
-    terrain_type_t map[DUNGEON_Y][DUNGEON_X];
-    /* Since hardness is usually not used, it would be expensive to pull it *
-     * into cache every time we need a map cell, so we store it in a        *
-     * parallel array, rather than using a structure to represent the       *
-     * cells.  We may want a cell structure later, but from a performanace  *
-     * perspective, it would be a bad idea to ever have the map be part of  *
-     * that structure.  Pathfinding will require efficient use of the map,  *
-     * and pulling in unnecessary data with each map cell would add a lot   *
-     * of overhead to the memory system.                                    */
-    uint8_t hardness[DUNGEON_Y][DUNGEON_X];
-    uint8_t pc_distance[DUNGEON_Y][DUNGEON_X];
-    uint8_t pc_tunnel[DUNGEON_Y][DUNGEON_X];
-    character_t *character[DUNGEON_Y][DUNGEON_X];
-    character_t pc;
-    heap_t events;
-    uint16_t num_monsters;
-    uint16_t max_monsters;
-    uint32_t character_sequence_number;
-    /* Game time isn't strictly necessary.  It's implicit in the turn number *
-     * of the most recent thing removed from the event queue; however,       *
-     * including it here--and keeping it up to date--provides a measure of   *
-     * convenience, e.g., the ability to create a new event without explicit *
-     * information from the current event.                                   */
-    uint32_t time;
-    npc_t *monster_list;
-} dungeon_t;
+class dungeon {
+    public:
+        uint32_t num_rooms;
+        room_t *rooms;
+        terrain_type_t map[DUNGEON_Y][DUNGEON_X];
+        /* Since hardness is usually not used, it would be expensive to pull it *
+         * into cache every time we need a map cell, so we store it in a        *
+         * parallel array, rather than using a structure to represent the       *
+         * cells.  We may want a cell structure later, but from a performanace  *
+         * perspective, it would be a bad idea to ever have the map be part of  *
+         * that structure.  Pathfinding will require efficient use of the map,  *
+         * and pulling in unnecessary data with each map cell would add a lot   *
+         * of overhead to the memory system.                                    */
+        uint8_t hardness[DUNGEON_Y][DUNGEON_X];
+        uint8_t pc_distance[DUNGEON_Y][DUNGEON_X];
+        uint8_t pc_tunnel[DUNGEON_Y][DUNGEON_X];
+        character_t *character[DUNGEON_Y][DUNGEON_X];
+        character_t pc;
+        heap_t events;
+        uint16_t num_monsters;
+        uint16_t max_monsters;
+        uint32_t character_sequence_number;
+        /* Game time isn't strictly necessary.  It's implicit in the turn number *
+         * of the most recent thing removed from the event queue; however,       *
+         * including it here--and keeping it up to date--provides a measure of   *
+         * convenience, e.g., the ability to create a new event without explicit *
+         * information from the current event.                                   */
+        uint32_t time;
+        npc_t *monster_list;
+};
 
 void init_dungeon(dungeon_t *d);
 void delete_dungeon(dungeon_t *d);
