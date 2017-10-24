@@ -1,0 +1,13 @@
+Assignment 1.05
+* This assignment meets all the required specifications.
+* The functionality of each of the required keys is as specified
+in the assignment doc.
+* I believe this is normal behavior (was reading about it online)
+but there is a delay in the escape key -- it takes 1000 ms to
+register that it was pressed.
+* While in the dungeon view, it displays MOVE at the top of the screen
+* While in the monster list mode, it displays VIEW_MONSTERS and how many
+monsters are in the map.
+* For ease of debugging and code-correctness checking, the list of
+monsters is indexed at the right of the type and position relative 
+to pc
