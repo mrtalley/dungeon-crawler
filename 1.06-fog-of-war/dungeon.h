@@ -5,6 +5,7 @@
 # include "macros.h"
 # include "dims.h"
 # include "character.h"
+# include "npc.h"
 
 #define DUNGEON_X              80
 #define DUNGEON_Y              21
@@ -31,6 +32,9 @@
 #define hardnessxy(x, y) (d->hardness[y][x])
 #define charpair(pair) (d->character[pair[dim_y]][pair[dim_x]])
 #define charxy(x, y) (d->character[y][x])
+
+typedef struct character character_t;
+typedef struct npc npc_t;
 
 typedef enum __attribute__ ((__packed__)) terrain_type {
     ter_debug,
