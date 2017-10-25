@@ -629,15 +629,16 @@ void render_dungeon(dungeon_t *d)
 {
     pair_t p;
     int y_pos = 1, x_pos = 0;
-    int mode = 0;
 
     clear();
 
     for (p[dim_y] = 0; p[dim_y] < DUNGEON_Y; p[dim_y]++) {
         for (p[dim_x] = 0; p[dim_x] < DUNGEON_X; p[dim_x]++) {
-            if (charpair(p) && in_pc_light(d, charpair(p))) {
+            if (charpair(p) && in_pc_light(d, charpair(p)) && !d->mode) {
                 mvaddch(y_pos, x_pos, charpair(p)->symbol);
-            } else if(mode) {
+            } else if(charpair(p) && d->mode) {
+                mvaddch(y_pos, x_pos, charpair(p)->symbol);
+            }else if(d->mode) {
                 switch (mappair(p)) {
                     case ter_wall:
                     case ter_wall_immutable:
@@ -661,7 +662,7 @@ void render_dungeon(dungeon_t *d)
                         fprintf(stderr, "Debug character at %d, %d\n", p[dim_y], p[dim_x]);
                         break;
                 }
-            } else if(!mode) {
+            } else if(!d->mode) {
                 switch (seenmappair(p)) {
                     case ter_wall:
                     case ter_wall_immutable:
@@ -717,6 +718,7 @@ void init_dungeon(dungeon_t *d)
     memset(&d->events, 0, sizeof (d->events));
     heap_init(&d->events, compare_events, event_delete);
     set_seen_map(d);
+    d->mode = 0;
 }
 
 int write_dungeon_map(dungeon_t *d, FILE *f)
