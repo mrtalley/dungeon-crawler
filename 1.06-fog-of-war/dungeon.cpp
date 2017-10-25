@@ -603,6 +603,28 @@ int gen_dungeon(dungeon_t *d)
     return 0;
 }
 
+int in_pc_light(dungeon_t *d, character_t *monster)
+{
+    int pc_y = d->pc.position[dim_y];
+    int pc_x = d->pc.position[dim_x];
+    
+    int y, x;
+    
+    for(y = pc_y - 2; y <= pc_y + 2; y++) {
+        if(y <= 0 || y >= DUNGEON_Y) break;
+        
+        for(x = pc_x - 2; x <= pc_x + 2; x++) {
+            if(x <= 0 || x >= DUNGEON_X) break;
+        
+            if(monster->position[dim_x] == x && monster->position[dim_y] == y) {
+                return 1;
+            }
+        } 
+    }
+     
+    return 0;
+}
+
 void render_dungeon(dungeon_t *d)
 {
     pair_t p;
@@ -613,7 +635,7 @@ void render_dungeon(dungeon_t *d)
 
     for (p[dim_y] = 0; p[dim_y] < DUNGEON_Y; p[dim_y]++) {
         for (p[dim_x] = 0; p[dim_x] < DUNGEON_X; p[dim_x]++) {
-            if (charpair(p)) { // add something here to detect 3x3 grid
+            if (charpair(p) && in_pc_light(d, charpair(p))) {
                 mvaddch(y_pos, x_pos, charpair(p)->symbol);
             } else if(mode) {
                 switch (mappair(p)) {
@@ -1159,7 +1181,7 @@ void print_monster_list(dungeon_t *d, int offset)
 void update_visible_map(dungeon_t *d)
 {
     /* 
-     *  This function will add the 3 spaces around the pc to seen_map 
+     *  This function will add the 5x5 grid around the pc to seen_map 
      *  This will allow seen_map to be printed instead of the entire map array
      */
      int pc_y = d->pc.position[dim_y];
@@ -1167,10 +1189,10 @@ void update_visible_map(dungeon_t *d)
      
      int y, x;
      
-     for(y = pc_y - 1; y <= pc_y + 1; y++) {
+     for(y = pc_y - 2; y <= pc_y + 2; y++) {
         if(y <= 0 || y >= DUNGEON_Y) break;
         
-        for(x = pc_x - 1; x <= pc_x + 1; x++) {
+        for(x = pc_x - 2; x <= pc_x + 2; x++) {
             if(x <= 0 || x >= DUNGEON_X) break;
         
             d->seen_map[y][x] = d->map[y][x];
