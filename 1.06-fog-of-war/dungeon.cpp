@@ -25,7 +25,7 @@ typedef struct corridor_path {
     int32_t cost;
 } corridor_path_t;
 
-static uint32_t in_room(dungeon_t *d, int16_t y, int16_t x)
+uint32_t in_room(dungeon_t *d, int16_t y, int16_t x)
 {
     uint32_t i;
 
@@ -642,7 +642,9 @@ void render_dungeon(dungeon_t *d)
 
     for (p[dim_y] = 0; p[dim_y] < DUNGEON_Y; p[dim_y]++) {
         for (p[dim_x] = 0; p[dim_x] < DUNGEON_X; p[dim_x]++) {
-            if (charpair(p) && in_pc_light(d, charpair(p)) && !d->mode) {
+            if(d->mode && (targetpos(dim_x) == x_pos) && (targetpos(dim_y) + 1 == y_pos)) {
+                mvaddch(y_pos, x_pos, d->target.symbol);
+            } else if (charpair(p) && in_pc_light(d, charpair(p)) && !d->mode) {
                 mvaddch(y_pos, x_pos, charpair(p)->symbol);
             } else if(charpair(p) && d->mode) {
                 mvaddch(y_pos, x_pos, charpair(p)->symbol);
@@ -727,7 +729,9 @@ void init_dungeon(dungeon_t *d)
     heap_init(&d->events, compare_events, event_delete);
     set_seen_map(d);
     d->mode = 0;
-}
+    d->target.position[dim_x] = -2;
+    d->target.position[dim_y] = -2
+;}
 
 int write_dungeon_map(dungeon_t *d, FILE *f)
 {
