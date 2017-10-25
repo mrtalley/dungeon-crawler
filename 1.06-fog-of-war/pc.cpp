@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <ncurses.h>
 #include <unistd.h>
+#include <time.h>
 
 #include "string.h"
 
@@ -65,6 +66,108 @@ void take_stairs(dungeon_t *d)
     }
 }
 
+void teleport_pc(dungeon_t *d)
+{
+    int key = 0;
+    d->target.symbol = '*';
+    int target_x = d->pc.position[dim_x], target_y = d->pc.position[dim_y];
+    srand(time(NULL));
+
+    do {
+        clear();
+        d->mode = 1;
+        render_dungeon(d);
+        mvprintw(0, 0, "Teleport Mode - x: %d, y: %d -- PC - x: %d, y: %d", target_x, target_y, d->pc.position[dim_x], d->pc.position[dim_y]);
+        refresh();
+        key = getch();
+        
+        if(key == 'r') {
+            // set teleport target to random room location
+            do {
+                target_y = rand() % (DUNGEON_Y - 2) + 2;
+                target_x = rand() % (DUNGEON_X - 1) + 1;
+            } while(!in_room(d, target_y, target_x) && !charxy(target_x, target_y));
+            key = 't';
+        }
+        
+        // Up + Left
+        if(key == '7' || key == 'y') {
+            target_y--;
+            target_x--;
+        }
+
+        // Up
+        else if(key == '8' || key == 'k') {
+            target_y--;
+        }
+
+        // Up + Right
+        else if(key == '9' || key == 'u') {
+            target_y--;
+            target_x++;
+        }
+
+        // Right
+        else if(key == '6' || key == 'l') {
+            target_x++;
+        }
+
+        // Down + Right
+        else if(key == '3' || key == 'n') {
+            target_y++;
+            target_x++;
+        }
+
+        // Down
+        else if(key == '2' || key == 'j') {
+            target_y++;
+        }
+
+        // Down + Left
+        else if(key == '1' || key == 'b') {
+            target_y++;
+            target_x--;
+        }
+
+        // Left
+        else if(key == '4' || key == 'h') {
+            target_x--;
+        }
+            
+        if(target_x <= 0) {
+            target_x++;
+        } else if(target_x >= DUNGEON_X) {
+            target_x--;
+        }
+        
+        if(target_y <= 0) {
+            target_y++;
+        } else if(target_y >= DUNGEON_Y) {
+            target_y--;
+        }
+        
+        d->target.position[dim_x] = target_x;
+        d->target.position[dim_y] = target_y;
+        render_dungeon(d);
+        
+    } while(key != 't');
+    
+    // send pc to targeted location
+    // call update_visible_map function on new location
+    if((target_x > 0 && target_x < DUNGEON_X) && (target_y > 0 && target_y < DUNGEON_Y)
+        && !charxy(target_x, target_y)) {
+        d->character[d->pc.position[dim_y]][d->pc.position[dim_x]] = NULL;
+        d->pc.position[dim_y] = target_y;
+        d->pc.position[dim_x] = target_x;
+        d->character[d->pc.position[dim_y]][d->pc.position[dim_x]] = &d->pc;
+    }
+    d->target.position[dim_x] = -2;
+    d->target.position[dim_y] = -2;
+    d->mode = 0;
+    update_visible_map(d);
+    render_dungeon(d);
+}
+
 uint32_t pc_next_pos(dungeon_t *d, pair_t dir)
 {
     const char *valid_keys = "7y8k9u6l3n2j1b4h5 Q";
@@ -96,9 +199,8 @@ uint32_t pc_next_pos(dungeon_t *d, pair_t dir)
         dir[dim_y] = 1;
         dir[dim_x] = 1;
     } else {
-        mvprintw(0, 0, "MODE: %s", (mode == MOVE) ? "MOVE" : "VIEW MONSTERS"); refresh();
-
         do {
+            mvprintw(0, 0, "                           "); refresh();
             mvprintw(0, 0, "MODE: %s", (mode == MOVE) ? "MOVE" : "VIEW MONSTERS"); refresh();
             
             key = getch();
@@ -111,6 +213,10 @@ uint32_t pc_next_pos(dungeon_t *d, pair_t dir)
             if(key == 'f') {
                 d->mode = !d->mode;
                 render_dungeon(d);
+            }
+            
+            if(key == 't') {
+                teleport_pc(d);
             }
 
             if(key == 'm' || mode == VIEW_MONSTERS) {

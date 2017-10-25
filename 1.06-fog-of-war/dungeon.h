@@ -33,6 +33,7 @@
 #define hardnessxy(x, y) (d->hardness[y][x])
 #define charpair(pair) (d->character[pair[dim_y]][pair[dim_x]])
 #define charxy(x, y) (d->character[y][x])
+#define targetpos(i) (d->target.position[i])
 
 typedef struct character character_t;
 typedef struct npc npc_t;
@@ -54,6 +55,11 @@ typedef struct room {
     pair_t size;
 } room_t;
 
+typedef struct target_point {
+    pair_t position;
+    char symbol;
+} target_point_t;
+
 class dungeon {
     public:
         uint32_t num_rooms;
@@ -73,6 +79,7 @@ class dungeon {
         uint8_t pc_tunnel[DUNGEON_Y][DUNGEON_X];
         character_t *character[DUNGEON_Y][DUNGEON_X];
         character_t pc;
+        target_point_t target;
         heap_t events;
         uint16_t num_monsters;
         uint16_t max_monsters;
@@ -90,6 +97,7 @@ class dungeon {
         int mode;
 };
 
+uint32_t in_room(dungeon_t *d, int16_t y, int16_t x);
 void init_dungeon(dungeon_t *d);
 void delete_dungeon(dungeon_t *d);
 int gen_dungeon(dungeon_t *d);
