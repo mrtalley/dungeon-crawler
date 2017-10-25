@@ -608,13 +608,21 @@ int in_pc_light(dungeon_t *d, character_t *monster)
     int pc_y = d->pc.position[dim_y];
     int pc_x = d->pc.position[dim_x];
     
+    if(monster->position[dim_x] == pc_x && monster->position[dim_y] == pc_y) {
+        return 1;
+    }
+    
     int y, x;
     
     for(y = pc_y - 2; y <= pc_y + 2; y++) {
-        if(y <= 0 || y >= DUNGEON_Y) break;
+        if(y <= 0) {
+            y++;
+        } else if(y >= DUNGEON_Y) break;
         
         for(x = pc_x - 2; x <= pc_x + 2; x++) {
-            if(x <= 0 || x >= DUNGEON_X) break;
+            if(x <= 0) {
+                x++;
+            } else if(x >= DUNGEON_X) break;
         
             if(monster->position[dim_x] == x && monster->position[dim_y] == y) {
                 return 1;
@@ -638,7 +646,7 @@ void render_dungeon(dungeon_t *d)
                 mvaddch(y_pos, x_pos, charpair(p)->symbol);
             } else if(charpair(p) && d->mode) {
                 mvaddch(y_pos, x_pos, charpair(p)->symbol);
-            }else if(d->mode) {
+            } else if(d->mode) {
                 switch (mappair(p)) {
                     case ter_wall:
                     case ter_wall_immutable:
@@ -1192,10 +1200,14 @@ void update_visible_map(dungeon_t *d)
      int y, x;
      
      for(y = pc_y - 2; y <= pc_y + 2; y++) {
-        if(y <= 0 || y >= DUNGEON_Y) break;
+        if(y <= 0) {
+            y++;
+        } else if(y >= DUNGEON_Y) break;
         
         for(x = pc_x - 2; x <= pc_x + 2; x++) {
-            if(x <= 0 || x >= DUNGEON_X) break;
+            if(x <= 0) {
+                x++;
+            } else if(x >= DUNGEON_X) break;
         
             d->seen_map[y][x] = d->map[y][x];
         } 
