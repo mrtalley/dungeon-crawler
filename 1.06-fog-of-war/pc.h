@@ -3,8 +3,7 @@
 
 # include <stdint.h>
 
-# include "dims.h"
-# include "character.h"
+# include "dungeon.h"
 
 typedef struct dungeon dungeon_t;
 

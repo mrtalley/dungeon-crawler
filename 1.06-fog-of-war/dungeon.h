@@ -27,6 +27,7 @@
 #define KEY_ESC 27
 
 #define mappair(pair) (d->map[pair[dim_y]][pair[dim_x]])
+#define seenmappair(pair) (d->seen_map[pair[dim_y]][pair[dim_x]])
 #define mapxy(x, y) (d->map[y][x])
 #define hardnesspair(pair) (d->hardness[pair[dim_y]][pair[dim_x]])
 #define hardnessxy(x, y) (d->hardness[y][x])
@@ -35,6 +36,7 @@
 
 typedef struct character character_t;
 typedef struct npc npc_t;
+typedef struct pc pc_t;
 
 typedef enum __attribute__ ((__packed__)) terrain_type {
     ter_debug,
@@ -57,6 +59,7 @@ class dungeon {
         uint32_t num_rooms;
         room_t *rooms;
         terrain_type_t map[DUNGEON_Y][DUNGEON_X];
+        terrain_type_t seen_map[DUNGEON_Y][DUNGEON_X];
         /* Since hardness is usually not used, it would be expensive to pull it *
          * into cache every time we need a map cell, so we store it in a        *
          * parallel array, rather than using a structure to represent the       *
@@ -94,5 +97,6 @@ void render_distance_map(dungeon_t *d);
 void render_tunnel_distance_map(dungeon_t *d);
 void print_monster_list(dungeon_t *d, int offset);
 void generate_monster_list(dungeon_t *d);
+void update_visible_map(dungeon_t *d);
 
 #endif
