@@ -84,6 +84,10 @@ class dungeon {
          * information from the current event.                                   */
         uint32_t time;
         npc_t *monster_list;
+        /* 0 = Only display what's remembered or in the pc light *
+         * 1 = Display what's in the entire dungeon, including   *
+         * monsters                                              */
+        int mode;
 };
 
 void init_dungeon(dungeon_t *d);

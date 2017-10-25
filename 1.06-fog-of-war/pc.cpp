@@ -107,6 +107,11 @@ uint32_t pc_next_pos(dungeon_t *d, pair_t dir)
             if(key == '>' || key == '<') {
                 take_stairs(d);
             }
+            
+            if(key == 'f') {
+                d->mode = !d->mode;
+                render_dungeon(d);
+            }
 
             if(key == 'm' || mode == VIEW_MONSTERS) {
                 mode = VIEW_MONSTERS;
@@ -189,7 +194,7 @@ uint32_t pc_next_pos(dungeon_t *d, pair_t dir)
             // Quit
             else if(key == 'Q') {
                 d->pc.alive = 0;
-                }
+            }
         }
     }
 
