@@ -607,15 +607,40 @@ void render_dungeon(dungeon_t *d)
 {
     pair_t p;
     int y_pos = 1, x_pos = 0;
+    int mode = 0;
 
     clear();
 
     for (p[dim_y] = 0; p[dim_y] < DUNGEON_Y; p[dim_y]++) {
         for (p[dim_x] = 0; p[dim_x] < DUNGEON_X; p[dim_x]++) {
-            if (charpair(p)) {
+            if (charpair(p)) { // add something here to detect 3x3 grid
                 mvaddch(y_pos, x_pos, charpair(p)->symbol);
-            } else {
+            } else if(mode) {
                 switch (mappair(p)) {
+                    case ter_wall:
+                    case ter_wall_immutable:
+                        mvaddch(y_pos, x_pos, ' ');
+                        break;
+                    case ter_floor:
+                    case ter_floor_room:
+                        mvaddch(y_pos, x_pos, '.');
+                        break;
+                    case ter_floor_hall:
+                        mvaddch(y_pos, x_pos, '#');
+                        break;
+                    case ter_stairs_down:
+                        mvaddch(y_pos, x_pos, '>');
+                        break;
+                    case ter_stairs_up:
+                        mvaddch(y_pos, x_pos, '<');
+                        break;
+                    case ter_debug:
+                        mvaddch(y_pos, x_pos, '*');
+                        fprintf(stderr, "Debug character at %d, %d\n", p[dim_y], p[dim_x]);
+                        break;
+                }
+            } else if(!mode) {
+                switch (seenmappair(p)) {
                     case ter_wall:
                     case ter_wall_immutable:
                         mvaddch(y_pos, x_pos, ' ');
@@ -654,11 +679,22 @@ void delete_dungeon(dungeon_t *d)
     memset(d->character, 0, sizeof (d->character));
 }
 
+void set_seen_map(dungeon_t *d)
+{
+    int x, y;
+    for(y = 0; y < DUNGEON_Y; y++) {
+        for(x = 0; x < DUNGEON_X; x++) {
+            d->seen_map[y][x] = ter_wall;
+        }
+    }
+}
+
 void init_dungeon(dungeon_t *d)
 {
     empty_dungeon(d);
     memset(&d->events, 0, sizeof (d->events));
     heap_init(&d->events, compare_events, event_delete);
+    set_seen_map(d);
 }
 
 int write_dungeon_map(dungeon_t *d, FILE *f)
@@ -1008,7 +1044,7 @@ int read_pgm(dungeon_t *d, char *pgm)
 void render_distance_map(dungeon_t *d)
 {
     pair_t p;
-
+    
     for (p[dim_y] = 0; p[dim_y] < DUNGEON_Y; p[dim_y]++) {
         for (p[dim_x] = 0; p[dim_x] < DUNGEON_X; p[dim_x]++) {
             if (p[dim_x] ==  d->pc.position[dim_x] &&
@@ -1118,4 +1154,26 @@ void print_monster_list(dungeon_t *d, int offset)
         mvprintw(j + 1, 50, "%d", i);
     }
     refresh();
+}
+
+void update_visible_map(dungeon_t *d)
+{
+    /* 
+     *  This function will add the 3 spaces around the pc to seen_map 
+     *  This will allow seen_map to be printed instead of the entire map array
+     */
+     int pc_y = d->pc.position[dim_y];
+     int pc_x = d->pc.position[dim_x];
+     
+     int y, x;
+     
+     for(y = pc_y - 1; y <= pc_y + 1; y++) {
+        if(y <= 0 || y >= DUNGEON_Y) break;
+        
+        for(x = pc_x - 1; x <= pc_x + 1; x++) {
+            if(x <= 0 || x >= DUNGEON_X) break;
+        
+            d->seen_map[y][x] = d->map[y][x];
+        } 
+     }
 }

@@ -243,10 +243,12 @@ int main(int argc, char *argv[])
     gen_monsters(&d);
 
     render_dungeon(&d);
+    update_visible_map(&d);
 
     while (pc_is_alive(&d) && dungeon_has_npcs(&d)) {
         render_dungeon(&d);
         do_moves(&d);
+        update_visible_map(&d);
     }
 
     render_dungeon(&d);
