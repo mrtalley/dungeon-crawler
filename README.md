@@ -85,7 +85,7 @@ These may be combined in any order or combination
 * `--p x y`
     * Specifies the span location of the player character (pc)
     * Where x and y are positions on the map and (x < 80) && (y < 21)
-* '--nummon i'
+* `--nummon i`
 	* Specifies the number of monsters to spawn in the dungeon
 	* Where i is the number of monsters
 
