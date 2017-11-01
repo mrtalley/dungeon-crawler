@@ -1,11 +1,15 @@
 #ifndef DUNGEON_H
 # define DUNGEON_H
 
+#include <vector>
+
 # include "heap.h"
-# include "macros.h"
+// # include "macros.h"
 # include "dims.h"
 # include "character.h"
 # include "npc.h"
+
+using namespace std;
 
 #define DUNGEON_X              80
 #define DUNGEON_Y              21
@@ -35,9 +39,10 @@
 #define charxy(x, y) (d->character[y][x])
 #define targetpos(i) (d->target.position[i])
 
-typedef struct character character_t;
-typedef struct npc npc_t;
-typedef struct pc pc_t;
+typedef class character character_t;
+typedef class npc_type npc_type_t;
+typedef class npc npc_t;
+typedef class pc pc_t;
 
 typedef enum __attribute__ ((__packed__)) terrain_type {
     ter_debug,
@@ -95,6 +100,7 @@ class dungeon {
          * 1 = Display what's in the entire dungeon, including   *
          * monsters                                              */
         int mode;
+        vector<npc_type> monst_desc;
 };
 
 uint32_t in_room(dungeon_t *d, int16_t y, int16_t x);

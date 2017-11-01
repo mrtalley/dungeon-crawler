@@ -1,10 +1,16 @@
 #ifndef NPC_H
 # define NPC_H
 
-# include <stdint.h>
+#include <stdint.h>
+#include <string>
+#include <vector>
+#include <cstring>
 
 # include "dims.h"
+#include "macros.h"
 # include "character.h"
+
+using namespace std;
 
 # define NPC_SMART         0x00000001
 # define NPC_TELEPATH      0x00000002
@@ -42,7 +48,7 @@
 # define has_characteristic(character, bit)              \
   ((character)->npc->characteristics & NPC_##bit)
 
-typedef struct dungeon dungeon_t;
+typedef class dungeon dungeon_t;
 typedef uint32_t npc_characteristics_t;
 
 class npc : public character {
@@ -51,6 +57,27 @@ class npc : public character {
         uint32_t have_seen_pc;
         pair_t pc_last_known_position;
         pair_t pos_from_pc;
+};
+
+class npc_type {
+    public:
+        string name;
+        string desc;
+        vector<int> color;
+        int speed[3];
+        vector<npc_characteristics_t> abil;
+        int hp[3];
+        int dam[3];
+        inline npc_type()
+        {
+            name = "";
+            desc = "";
+            color.clear();
+            memset(speed, 0, sizeof(speed));
+            abil.clear();
+            memset(hp, 0, sizeof(hp));
+            memset(dam, 0, sizeof(dam));
+        }
 };
 
 void gen_monsters(dungeon_t *d);

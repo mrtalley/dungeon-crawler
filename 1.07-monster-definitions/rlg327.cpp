@@ -217,7 +217,10 @@ int main(int argc, char *argv[])
     }
 
     /* Parse monster_defs.txt */
+    parse_monster_file(&d);
+
     /* Print list of monsters */
+    return 0;
 
     if (do_seed) {
         /* Allows me to generate more than one dungeon *

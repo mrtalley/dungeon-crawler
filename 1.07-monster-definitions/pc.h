@@ -5,7 +5,7 @@
 
 # include "dungeon.h"
 
-typedef struct dungeon dungeon_t;
+typedef class dungeon dungeon_t;
 
 class pc : public character {
 };
