@@ -208,6 +208,7 @@ void parse_abil(npc_type *monst, string line)
 void parse_monster_file(dungeon_t *d)
 {
     string home = getenv("HOME");
+    string path = home + "/.rlg327/monster_desc.txt";
     string meta;
     string meta_actual = "RLG327 MONSTER DESCRIPTION 1";
     string begin = "BEGIN MONSTER";
@@ -221,15 +222,20 @@ void parse_monster_file(dungeon_t *d)
     string dam_actual = "DAM";
     string end = "END";
 
-    ifstream f(home + "/.rlg327/monster_desc.txt");
+    ifstream f(path.c_str());
     string line;
     npc_type *new_monster;
+
+    if(f == NULL) {
+         cout << "FILE IS NULL" << endl;
+    }
 
     /* Get first line in file */
     getline(f, meta);
 
     /* If first line isn't the expected meta, exit */
     if(meta.compare(meta_actual) != 0) {
+        cout << "FILE NOT CORRECT FORMAT" << endl;
         return;
     }
 
@@ -309,13 +315,13 @@ void print_monster_descriptions(dungeon_t *d)
 {
     npc_type monster;
 
-    for(int i = 0; i < d->monst_desc.size(); i++) {
+    for(int i = 0; i < (int) d->monst_desc.size(); i++) {
         monster = d->monst_desc.at(i);
         cout << monster.name << endl;
         cout << monster.desc << endl;
         cout << monster.symb << endl;
 
-        for(int j = 0; j < monster.color.size(); j++) {
+        for(int j = 0; j < (int) monster.color.size(); j++) {
             cout << int_to_str_color(monster.color.at(j)) << " ";
         }
         cout << endl;
@@ -324,7 +330,7 @@ void print_monster_descriptions(dungeon_t *d)
         cout << monster.speed[dice] << "d";
         cout << monster.speed[sides] << endl;
 
-        for(int j = 0; j < monster.abil.size(); j++) {
+        for(int j = 0; j < (int) monster.abil.size(); j++) {
             cout << int_to_str_abil(monster.abil.at(j)) << " ";
         }
         cout << endl;
