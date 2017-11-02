@@ -220,6 +220,8 @@ int main(int argc, char *argv[])
     parse_monster_file(&d);
 
     /* Print list of monsters */
+    print_monster_descriptions(&d);
+
     return 0;
 
     if (do_seed) {

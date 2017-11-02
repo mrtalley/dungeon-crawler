@@ -6,9 +6,9 @@
 #include <vector>
 #include <cstring>
 
-# include "dims.h"
+#include "dims.h"
 #include "macros.h"
-# include "character.h"
+#include "character.h"
 
 using namespace std;
 
@@ -16,10 +16,10 @@ using namespace std;
 # define NPC_TELEPATH      0x00000002
 # define NPC_TUNNEL        0x00000004
 # define NPC_ERRATIC       0x00000008
-# define NPC_BIT04         0x00000010
-# define NPC_BIT05         0x00000020
-# define NPC_BIT06         0x00000040
-# define NPC_BIT07         0x00000080
+# define NPC_PASS          0x00000010
+# define NPC_PICKUP        0x00000020
+# define NPC_DESTROY       0x00000040
+# define NPC_UNIQ          0x00000080
 # define NPC_BIT08         0x00000100
 # define NPC_BIT09         0x00000200
 # define NPC_BIT10         0x00000400
@@ -63,6 +63,7 @@ class npc_type {
     public:
         string name;
         string desc;
+        char symb;
         vector<int> color;
         int speed[3];
         vector<npc_characteristics_t> abil;
@@ -72,6 +73,7 @@ class npc_type {
         {
             name = "";
             desc = "";
+            symb = '\0';
             color.clear();
             memset(speed, 0, sizeof(speed));
             abil.clear();
