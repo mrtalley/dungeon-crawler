@@ -1,1 +1,13 @@
 Assignment 1.07
+    * This assignment meets all required guidelines
+    * fileio.cpp is where all the new code is
+    * Parses the file monster_desc.txt stored in getenv("HOME")/.rlg327
+    * After parsing, prints out all parsed data (in same order that prof does
+    in the assignment doc)
+    * While parsing, stores the data in a vector called monst_desc that's
+    stored in the dungeon class
+        * Color is stored in a vector as an int (b/c the ncurses colors are enums)
+        * Speed, hp, and damage are stored in arrays with 3 elements,
+        accessed with enums base, dice, and sides
+        * Abilities are stored in a vector as npc_characteristics_t -- adding onto
+        the functionality the prof had in place beforehand

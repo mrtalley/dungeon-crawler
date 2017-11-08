@@ -228,6 +228,7 @@ void parse_monster_file(dungeon_t *d)
 
     if(f == NULL) {
          cout << "FILE IS NULL" << endl;
+         return;
     }
 
     /* Get first line in file */
