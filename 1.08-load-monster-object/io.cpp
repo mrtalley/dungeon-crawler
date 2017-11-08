@@ -178,8 +178,15 @@ void io_display(dungeon_t *d)
                   character_get_pos(d->PC),
                   character_get_pos(d->character_map[y][x]),
                   1)) {
-        mvaddch(y + 1, x,
-                character_get_symbol(d->character_map[y][x]));
+        if(d->character_map[y][x]->symbol != '@') {
+            attron(COLOR_PAIR(static_cast<npc*>(d->character_map[y][x])->color.at(0)));
+            mvaddch(y + 1, x,
+                    character_get_symbol(d->character_map[y][x]));
+            attroff(COLOR_PAIR(static_cast<npc*>(d->character_map[y][x])->color.at(0)));
+        } else {
+            mvaddch(y + 1, x,
+                    character_get_symbol(d->character_map[y][x]));
+        }
       } else {
         switch (pc_learned_terrain(d->PC, y, x)) {
         case ter_wall:
@@ -324,7 +331,7 @@ uint32_t io_teleport_pc(dungeon_t *d)
         break;
       default:
         break;
-      }      
+      }
     }
 
     mvaddch(dest[dim_y] + 1, dest[dim_x], actual);
@@ -413,7 +420,7 @@ uint32_t io_teleport_pc(dungeon_t *d)
 
   if (charpair(dest) && charpair(dest) != d->PC) {
     io_queue_message("Teleport failed.  Destination occupied.");
-  } else {  
+  } else {
     d->character_map[d->PC->position[dim_y]][d->PC->position[dim_x]] = NULL;
     d->character_map[dest[dim_y]][dest[dim_x]] = d->PC;
 
