@@ -1,3 +1,156 @@
+commit e3f24c207030fc1d3848ca3f319d14c32d513c07
+Author: mrtalley <mrtalley@pyrite-n1.cs.iastate.edu>
+Date:   Thu Nov 2 00:21:47 2017 -0500
+
+    Made changes in fileio.cpp to make it work on pyrite/linux
+
+commit e296062ef751fdd4e1c737507a9915e832478b8d
+Merge: 512ed0c 224007d
+Author: Maxwell Talley <max.talley0@gmail.com>
+Date:   Thu Nov 2 00:07:33 2017 -0500
+
+    Merge pull request #84 from mrtalley/MD-3
+    
+    MD-3 Basically did everything here -- all parsing and printing
+
+commit 224007d29f56e0046e215b34e85eb334d572a47b
+Author: mrtalley <mrtalley@iastate.edu>
+Date:   Thu Nov 2 00:06:35 2017 -0500
+
+    MD-3 Basically did everything here -- all parsing and printing
+
+commit 512ed0ce9c83f42e968afa16d45f86ecda75c3d2
+Merge: 90d25ca 974d99e
+Author: Maxwell Talley <max.talley0@gmail.com>
+Date:   Wed Nov 1 12:45:53 2017 -0500
+
+    Merge pull request #83 from mrtalley/MD-1
+    
+    MD-1 MD-2 Parse meta, name, & desc
+
+commit 974d99eaaafd0daafcfe8f97bdb4e19e69fae2bb
+Author: mrtalley <mrtalley@iastate.edu>
+Date:   Wed Nov 1 12:44:37 2017 -0500
+
+    MD-1 & MD-2 Parse meta, name, & desc
+
+commit 1d826c7a2b0f52d86340a29610b4e5dcd5067c92
+Author: mrtalley <mrtalley@iastate.edu>
+Date:   Tue Oct 31 21:36:13 2017 -0500
+
+    Initial commit of 1.07
+
+commit 90d25cafb13314684a03380e27e826ef92559001
+Author: mrtalley <mrtalley@iastate.edu>
+Date:   Thu Oct 26 10:21:54 2017 -0500
+
+    Update README
+
+commit 198e23aa02bbcf8b19d0d069d3f75cc142b3ad92
+Author: mrtalley <mrtalley@iastate.edu>
+Date:   Thu Oct 26 10:18:34 2017 -0500
+
+    Update readme for repo and 1.06
+
+commit c622c0b25eeaf4ee3f9e61b87523c9451c1af0b1
+Merge: 190fd61 5a00887
+Author: Maxwell Talley <max.talley0@gmail.com>
+Date:   Wed Oct 25 17:50:19 2017 -0500
+
+    Merge pull request #82 from mrtalley/FOW-8
+    
+    FOW-8 Teleport feature added - both random and targeted
+
+commit 5a00887304b768f659199c6b20a0c759633c712b
+Author: Maxwell Talley <max.talley0@gmail.com>
+Date:   Wed Oct 25 22:47:33 2017 +0000
+
+    FOW-8 Teleport feature added - both random and targeted
+
+commit 190fd61f18bd069bbec97ad22f1b956d61fa4fea
+Merge: 93fe4db 1cead67
+Author: Maxwell Talley <max.talley0@gmail.com>
+Date:   Wed Oct 25 11:04:47 2017 -0500
+
+    Merge pull request #81 from mrtalley/FOW-7
+    
+    FOW-7 Added fog of war toggle
+
+commit 1cead679b859d14d09ad546582571f14fbb0ae3e
+Author: Maxwell Talley <max.talley0@gmail.com>
+Date:   Wed Oct 25 16:02:54 2017 +0000
+
+    FOW-7 Added check for pc in fow functions, fixed bug relating to updating seen_map
+
+commit fedae87c208e540a760cc07a6e1e0867314c6d5a
+Author: Maxwell Talley <max.talley0@gmail.com>
+Date:   Wed Oct 25 15:37:23 2017 +0000
+
+    FOW-7 Added support for a toggling f switch to turn on/off fog of war
+
+commit 93fe4db185a139598be2bbf3abb343c82a0d0f74
+Merge: 34770c4 df2117f
+Author: Maxwell Talley <max.talley0@gmail.com>
+Date:   Wed Oct 25 10:17:12 2017 -0500
+
+    Merge pull request #80 from mrtalley/FOW-5
+    
+    FOW-5 Add terrain map and display seen_map only
+
+commit df2117f864247f23e1a7252a1fe31058ad669e84
+Author: Maxwell Talley <max.talley0@gmail.com>
+Date:   Wed Oct 25 15:15:32 2017 +0000
+
+    FOW-5 add seen_map to dungeon and only display what has been seen or is in the pc light (5x5 grid)
+
+commit 434ee27abae1be7e2c2a29e33f974cb8a877d60e
+Author: Maxwell Talley <max.talley0@gmail.com>
+Date:   Wed Oct 25 04:15:10 2017 +0000
+
+    WIP - 3x3 grid renders around pc, have remembered map, need to only print monsters in grid
+
+commit 34770c401894ec3e2449e6c061eebde42c37afa3
+Merge: cfa8406 f127880
+Author: Maxwell Talley <max.talley0@gmail.com>
+Date:   Tue Oct 24 21:45:41 2017 -0500
+
+    Merge pull request #79 from mrtalley/FOW-3
+    
+    FOW-3 Change structs to classes
+
+commit f127880332e9146bf29a368ff07ffd96637d164f
+Author: Maxwell Talley <max.talley0@gmail.com>
+Date:   Wed Oct 25 02:43:53 2017 +0000
+
+    FOW-3 Converted dungeon, pc, npc, and character to classes and added inheritance to pc and npc
+
+commit 842194f4b9dc14b9a9821d9314de3a5c2663ceb4
+Author: Maxwell Talley <max.talley0@gmail.com>
+Date:   Tue Oct 24 23:41:34 2017 +0000
+
+    FOW-3 Change dungeon from struct to class
+
+commit cfa8406dc5f10afceef88d6ad0a316fd1b2bd678
+Merge: ebf50d1 30632f2
+Author: Maxwell Talley <max.talley0@gmail.com>
+Date:   Tue Oct 24 18:30:54 2017 -0500
+
+    Merge pull request #78 from mrtalley/FOW-1
+    
+    FOW-1 Rename all files with cpp excluding heap.c
+
+commit 30632f273296875e0d125a3ad3e4f75402c00c5f
+Author: Maxwell Talley <max.talley0@gmail.com>
+Date:   Tue Oct 24 19:24:25 2017 +0000
+
+    FOW-1 Add 1.06 folder + convert all files to C++
+
+commit ebf50d1be83760df612d64eba56e8b512217cb93
+Author: mrtalley <mrtalley@pyrite-n1.cs.iastate.edu>
+Date:   Thu Oct 19 01:33:05 2017 -0500
+
+    Create README, update CHANGELOG, commit .tar.gz for submission
+
 commit f408062e8d5efd534ea2f55fd4465619631b559b
 Merge: 3c087cf 88e5ab0
 Author: Maxwell Talley <max.talley0@gmail.com>
