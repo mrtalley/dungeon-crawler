@@ -2,6 +2,7 @@
 # define NPC_H
 
 # include <stdint.h>
+#include <vector>
 
 # include "dims.h"
 # include "character.h"
@@ -45,10 +46,13 @@
 typedef uint32_t npc_characteristics_t;
 
 class npc : public character {
- public:
-  npc_characteristics_t characteristics;
-  uint32_t have_seen_pc;
-  pair_t pc_last_known_position;
+public:
+    npc_characteristics_t characteristics;
+    uint32_t have_seen_pc;
+    pair_t pc_last_known_position;
+    std::string name, description;
+    std::vector<uint32_t> color;
+    uint32_t abilities;
 };
 
 void gen_monsters(dungeon *d);

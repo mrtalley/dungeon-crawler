@@ -50,11 +50,11 @@ void do_combat(dungeon_t *d, character *atk, character *def)
     "ear",
     "subcutaneous tissue"
   };
-  
+
   if (def->alive) {
     def->alive = 0;
     charpair(def->position) = NULL;
-    
+
     if (def != d->PC) {
       d->num_monsters--;
     } else {
@@ -62,6 +62,7 @@ void do_combat(dungeon_t *d, character *atk, character *def)
                        "you wonder if there is an afterlife.",
                        atk->symbol, organs[rand() % (sizeof (organs) /
                                                      sizeof (organs[0]))]);
+
       /* Queue an empty message, otherwise the game will not pause for *
        * player to see above.                                          */
       io_queue_message("");

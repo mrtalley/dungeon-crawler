@@ -353,38 +353,38 @@ uint32_t io_teleport_pc(dungeon_t *d)
       if (dest[dim_y] != 1) {
         dest[dim_y]--;
       }
-      if (dest[dim_x] != DUNGEON_X - 1) {
+      if (dest[dim_x] != DUNGEON_X - 2) {
         dest[dim_x]++;
       }
       break;
     case '6':
     case 'l':
     case KEY_RIGHT:
-      if (dest[dim_x] != DUNGEON_X - 1) {
+      if (dest[dim_x] != DUNGEON_X - 2) {
         dest[dim_x]++;
       }
       break;
     case '3':
     case 'n':
     case KEY_NPAGE:
-      if (dest[dim_y] != DUNGEON_Y - 1) {
+      if (dest[dim_y] != DUNGEON_Y - 2) {
         dest[dim_y]++;
       }
-      if (dest[dim_x] != DUNGEON_X - 1) {
+      if (dest[dim_x] != DUNGEON_X - 2) {
         dest[dim_x]++;
       }
       break;
     case '2':
     case 'j':
     case KEY_DOWN:
-      if (dest[dim_y] != DUNGEON_Y - 1) {
+      if (dest[dim_y] != DUNGEON_Y - 2) {
         dest[dim_y]++;
       }
       break;
     case '1':
     case 'b':
     case KEY_END:
-      if (dest[dim_y] != DUNGEON_Y - 1) {
+      if (dest[dim_y] != DUNGEON_Y - 2) {
         dest[dim_y]++;
       }
       if (dest[dim_x] != 1) {
@@ -394,7 +394,7 @@ uint32_t io_teleport_pc(dungeon_t *d)
     case '4':
     case 'h':
     case KEY_LEFT:
-      if (dest[dim_x] != DUNGEON_X - 1) {
+      if (dest[dim_x] != 1) {
         dest[dim_x]--;
       }
       break;
