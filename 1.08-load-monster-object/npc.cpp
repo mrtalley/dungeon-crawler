@@ -64,8 +64,17 @@ void gen_monsters(dungeon *d)
         m->kills[kill_direct] = m->kills[kill_avenged] = 0;
 
         monst_desc = rand() % d->monster_descriptions.size();
-        d->monster_descriptions.at(monst_desc).gen_monst_from_desc(m);
 
+        if(d->monster_descriptions.at(monst_desc).get_abilities() & NPC_UNIQ) {
+            if(d->monster_descriptions.at(monst_desc).get_rendered() == 1) {
+                i--;
+                continue;
+            }
+        }
+
+        d->monster_descriptions.at(monst_desc).gen_monst_from_desc(m);
+        d->monster_descriptions.at(monst_desc).set_rendered(1);
+        
         d->character_map[p[dim_y]][p[dim_x]] = m;
 
 

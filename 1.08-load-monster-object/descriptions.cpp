@@ -498,6 +498,9 @@ static uint32_t parse_monster_description(std::ifstream &f,
     f >> *lookahead;
 
     m.set(name, desc, symb, color, speed, abil, hp, dam);
+    m.set_rendered(0);
+    m.set_killed(0);
+    
     v->push_back(m);
 
     return 0;

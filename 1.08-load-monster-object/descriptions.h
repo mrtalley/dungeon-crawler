@@ -48,6 +48,7 @@ private:
     std::vector<uint32_t> color;
     uint32_t abilities;
     dice speed, hitpoints, damage;
+    int rendered, killed;
 public:
     monster_description() : name(),       description(), symbol(0),   color(0),
                             abilities(0), speed(),       hitpoints(), damage()
@@ -61,8 +62,13 @@ public:
              const uint32_t abilities,
              const dice &hitpoints,
              const dice &damage);
+    void set_rendered(int value) { rendered = value; }
+    void set_killed(int value) { killed = value; }
     std::ostream &print(std::ostream &o);
     char get_symbol() { return symbol; }
+    uint32_t get_abilities() { return abilities; }
+    int get_rendered() { return rendered; }
+    int get_killed() { return killed; }
     inline npc gen_monst_from_desc()
     {
         npc new_mon;
