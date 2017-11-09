@@ -24,7 +24,7 @@ typedef struct corridor_path {
   int32_t cost;
 } corridor_path_t;
 
-static uint32_t in_room(dungeon_t *d, int16_t y, int16_t x)
+uint32_t in_room(dungeon_t *d, int16_t y, int16_t x)
 {
   uint32_t i;
 
@@ -60,7 +60,7 @@ static void dijkstra_corridor(dungeon_t *d, pair_t from, pair_t to)
     }
     initialized = 1;
   }
-  
+
   for (y = 0; y < DUNGEON_Y; y++) {
     for (x = 0; x < DUNGEON_X; x++) {
       path[y][x].cost = INT_MAX;
@@ -159,7 +159,7 @@ static void dijkstra_corridor_inv(dungeon_t *d, pair_t from, pair_t to)
     }
     initialized = 1;
   }
-  
+
   for (y = 0; y < DUNGEON_Y; y++) {
     for (x = 0; x < DUNGEON_X; x++) {
       path[y][x].cost = INT_MAX;
@@ -589,7 +589,7 @@ static void place_stairs(dungeon_t *d)
            (p[dim_x] = rand_range(1, DUNGEON_X - 2)) &&
            ((mappair(p) < ter_floor)                 ||
             (mappair(p) > ter_stairs)))
-      
+
       ;
     mappair(p) = ter_stairs_up;
   } while (rand_under(2, 4));
@@ -613,6 +613,7 @@ void delete_dungeon(dungeon_t *d)
   free(d->rooms);
   heap_delete(&d->events);
   memset(d->character_map, 0, sizeof (d->character_map));
+  memset(d->object_map, 0, sizeof (d->object_map));
 }
 
 void init_dungeon(dungeon_t *d)
@@ -781,7 +782,7 @@ int read_rooms(dungeon_t *d, FILE *f)
 
       exit(-1);
     }
-        
+
 
     /* After reading each room, we need to reconstruct them in the dungeon. */
     for (y = d->rooms[i].position[dim_y];
@@ -976,6 +977,7 @@ void new_dungeon(dungeon_t *d)
 
   init_dungeon(d);
   gen_dungeon(d);
+  gen_objects(d);
   d->character_sequence_number = sequence_number;
 
   place_pc(d);

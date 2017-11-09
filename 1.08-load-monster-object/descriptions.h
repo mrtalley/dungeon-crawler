@@ -7,7 +7,8 @@
 # include <string>
 
 # include "dice.h"
-#include "npc.h"
+# include "npc.h"
+# include "object.h"
 
 typedef class dungeon dungeon_t;
 
@@ -131,6 +132,40 @@ public:
     inline const dice &get_speed() const { return speed; }
     inline const dice &get_attribute() const { return attribute; }
     inline const dice &get_value() const { return value; }
+    inline object create_object_instance()
+    {
+        object o;
+
+        o.name = name;
+        o.description = description;
+        o.type = object_symbol[type];
+        o.color = color;
+        o.hit = hit.roll();
+        o.dodge = dodge.roll();
+        o.defence = defence.roll();
+        o.weight = weight.roll();
+        o.speed = speed.roll();
+        o.attribute = attribute.roll();
+        o.value = value.roll();
+        o.damage = damage;
+
+        return o;
+    }
+    inline void create_object_instance(object *o)
+    {
+        o->name = name;
+        o->description = description;
+        o->type = object_symbol[type];
+        o->color = color;
+        o->hit = hit.roll();
+        o->dodge = dodge.roll();
+        o->defence = defence.roll();
+        o->weight = weight.roll();
+        o->speed = speed.roll();
+        o->attribute = attribute.roll();
+        o->value = value.roll();
+        o->damage = damage;
+    }
 };
 
 std::ostream &operator<<(std::ostream &o, monster_description &m);

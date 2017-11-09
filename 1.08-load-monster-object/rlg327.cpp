@@ -9,6 +9,7 @@
 #include "move.h"
 #include "io.h"
 #include "descriptions.h"
+#include "object.h"
 
 const char *victory =
         "\n                                       o\n"
@@ -89,7 +90,7 @@ int main(int argc, char *argv[])
     memset(&d, 0, sizeof (d));
 
     parse_descriptions(&d);
-    print_descriptions(&d);
+    // print_descriptions(&d);
 
     /* Default behavior: Seed with the time, generate a new dungeon, *
      * and don't write to disk.                                      */
@@ -229,12 +230,13 @@ int main(int argc, char *argv[])
         gen_dungeon(&d);
     }
 
-
     config_pc(&d);
     gen_monsters(&d);
+    gen_objects(&d);
 
     io_display(&d);
-    io_queue_message("Seed is %u.", seed);
+    // io_queue_message("Seed is %u.", seed);
+    io_queue_message("%d", d.num_objects);
 
     while (pc_is_alive(&d) && dungeon_has_npcs(&d) && !d.quit) {
         do_moves(&d);

@@ -170,10 +170,31 @@ void io_display(dungeon_t *d)
   clear();
   for (y = 0; y < 21; y++) {
     for (x = 0; x < 80; x++) {
+        pair_t pair;
+        pair[dim_x] = x;
+        pair[dim_y] = y;
+
       if ((illuminated = is_illuminated(d->PC, y, x))) {
         attron(A_BOLD);
       }
-      if (d->character_map[y][x] &&
+      if(d->object_map[y][x].type && can_see(d, character_get_pos(d->PC), pair, 1)
+        && d->character_map[y][x] && can_see(d, character_get_pos(d->PC), character_get_pos(d->character_map[y][x]), 1)) {
+            if(d->character_map[y][x]->symbol != '@') {
+                attron(COLOR_PAIR(static_cast<npc*>(d->character_map[y][x])->color.at(0)));
+                mvaddch(y + 1, x,
+                        character_get_symbol(d->character_map[y][x]));
+                attroff(COLOR_PAIR(static_cast<npc*>(d->character_map[y][x])->color.at(0)));
+            } else {
+                mvaddch(y + 1, x,
+                        character_get_symbol(d->character_map[y][x]));
+            }
+        } else if(d->object_map[y][x].type && can_see(d,
+              character_get_pos(d->PC),
+              pair, 1)) {
+          attron(COLOR_PAIR(d->object_map[y][x].color));
+          mvaddch(y + 1, x, d->object_map[y][x].type);
+          attroff(COLOR_PAIR(d->object_map[y][x].color));
+      } else if (d->character_map[y][x] &&
           can_see(d,
                   character_get_pos(d->PC),
                   character_get_pos(d->character_map[y][x]),
@@ -237,36 +258,61 @@ void io_display_no_fog(dungeon_t *d)
   clear();
   for (y = 0; y < 21; y++) {
     for (x = 0; x < 80; x++) {
-      if (d->character_map[y][x]) {
-        mvaddch(y + 1, x, d->character_map[y][x]->symbol);
-      } else {
-        switch (mapxy(x, y)) {
-        case ter_wall:
-        case ter_wall_immutable:
-          mvaddch(y + 1, x, ' ');
-          break;
-        case ter_floor:
-        case ter_floor_room:
-          mvaddch(y + 1, x, '.');
-          break;
-        case ter_floor_hall:
-          mvaddch(y + 1, x, '#');
-          break;
-        case ter_debug:
-          mvaddch(y + 1, x, '*');
-          break;
-        case ter_stairs_up:
-          mvaddch(y + 1, x, '<');
-          break;
-        case ter_stairs_down:
-          mvaddch(y + 1, x, '>');
-          break;
-        default:
- /* Use zero as an error symbol, since it stands out somewhat, and it's *
-  * not otherwise used.                                                 */
-          mvaddch(y + 1, x, '0');
+        pair_t pair;
+        pair[dim_x] = x;
+        pair[dim_y] = y;
+        
+        if(d->object_map[y][x].type && can_see(d, character_get_pos(d->PC), pair, 1)
+          && d->character_map[y][x] && can_see(d, character_get_pos(d->PC), character_get_pos(d->character_map[y][x]), 1)) {
+              if(d->character_map[y][x]->symbol != '@') {
+                  attron(COLOR_PAIR(static_cast<npc*>(d->character_map[y][x])->color.at(0)));
+                  mvaddch(y + 1, x,
+                          character_get_symbol(d->character_map[y][x]));
+                  attroff(COLOR_PAIR(static_cast<npc*>(d->character_map[y][x])->color.at(0)));
+              } else {
+                  mvaddch(y + 1, x,
+                          character_get_symbol(d->character_map[y][x]));
+              }
+          } else if(d->object_map[y][x].type) {
+            attron(COLOR_PAIR(d->object_map[y][x].color));
+            mvaddch(y + 1, x, d->object_map[y][x].type);
+            attroff(COLOR_PAIR(d->object_map[y][x].color));
+        } else if (d->character_map[y][x]) {
+            if (d->character_map[y][x]->symbol != '@') {
+                attron(COLOR_PAIR(static_cast<npc*>(d->character_map[y][x])->color.at(0)));
+                mvaddch(y + 1, x, character_get_symbol(d->character_map[y][x]));
+                attroff(COLOR_PAIR(static_cast<npc*>(d->character_map[y][x])->color.at(0)));
+            } else {
+                mvaddch(y + 1, x, character_get_symbol(d->character_map[y][x]));
+            }
+        } else {
+            switch (mapxy(x, y)) {
+                case ter_wall:
+                case ter_wall_immutable:
+                    mvaddch(y + 1, x, ' ');
+                    break;
+                case ter_floor:
+                case ter_floor_room:
+                    mvaddch(y + 1, x, '.');
+                    break;
+                case ter_floor_hall:
+                    mvaddch(y + 1, x, '#');
+                    break;
+                case ter_debug:
+                    mvaddch(y + 1, x, '*');
+                    break;
+                case ter_stairs_up:
+                    mvaddch(y + 1, x, '<');
+                    break;
+                case ter_stairs_down:
+                    mvaddch(y + 1, x, '>');
+                    break;
+                default:
+     /* Use zero as an error symbol, since it stands out somewhat, and it's *
+      * not otherwise used.                                                 */
+                mvaddch(y + 1, x, '0');
+            }
         }
-      }
     }
   }
 
