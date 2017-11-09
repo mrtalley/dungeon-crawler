@@ -70,10 +70,12 @@ class dungeon {
   uint8_t pc_distance[DUNGEON_Y][DUNGEON_X];
   uint8_t pc_tunnel[DUNGEON_Y][DUNGEON_X];
   character *character_map[DUNGEON_Y][DUNGEON_X];
+  object object_map[DUNGEON_Y][DUNGEON_X];
   pc *PC;
   heap_t events;
   uint16_t num_monsters;
   uint16_t max_monsters;
+  uint16_t num_objects;
   uint32_t character_sequence_number;
   /* Game time isn't strictly necessary.  It's implicit in the turn number *
    * of the most recent thing removed from the event queue; however,       *
@@ -86,6 +88,7 @@ class dungeon {
   std::vector<object_description> object_descriptions;
 };
 
+uint32_t in_room(dungeon_t *d, int16_t y, int16_t x);
 void init_dungeon(dungeon *d);
 void new_dungeon(dungeon *d);
 void delete_dungeon(dungeon *d);
