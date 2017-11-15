@@ -257,3 +257,36 @@ void pc_see_object(character *the_pc, object *o)
     o->has_been_seen();
   }
 }
+
+object *pc::get_equipment(char key)
+{
+  switch(key) {
+    case 'A':
+      return &equipment[0];
+    case 'B':
+      return &equipment[1];
+    case 'C':
+      return &equipment[2];
+    case 'D':
+      return &equipment[3];
+    case 'E':
+      return &equipment[4];
+    case 'F':
+      return &equipment[5];
+    case 'G':
+      return &equipment[6];
+    case 'H':
+      return &equipment[7];
+    case 'I':
+      return &equipment[8];
+    case 'J':
+      return &equipment[9];
+    case 'K':
+      return &equipment[10];
+    case 'L':
+      return &equipment[11];
+    default:
+      break;
+  }
+  return NULL;
+}
