@@ -5,8 +5,6 @@
 #include <sys/time.h>
 #include <limits.h>
 #include <errno.h>
-#include <stdlib.h>
-#include <string.h>
 
 #include "dungeon.h"
 #include "utils.h"
@@ -15,6 +13,7 @@
 #include "pc.h"
 #include "npc.h"
 #include "io.h"
+#include "object.h"
 #include "endian.h"
 
 #define DUMP_HARDNESS_IMAGES 0
@@ -26,7 +25,7 @@ typedef struct corridor_path {
   int32_t cost;
 } corridor_path_t;
 
-uint32_t in_room(dungeon_t *d, int16_t y, int16_t x)
+static uint32_t in_room(dungeon_t *d, int16_t y, int16_t x)
 {
   uint32_t i;
 
@@ -615,7 +614,7 @@ void delete_dungeon(dungeon_t *d)
   free(d->rooms);
   heap_delete(&d->events);
   memset(d->character_map, 0, sizeof (d->character_map));
-  memset(d->object_map, 0, sizeof (d->object_map));
+  destroy_objects(d);
 }
 
 void init_dungeon(dungeon_t *d)
@@ -979,11 +978,11 @@ void new_dungeon(dungeon_t *d)
 
   init_dungeon(d);
   gen_dungeon(d);
-  gen_objects(d);
   d->character_sequence_number = sequence_number;
 
   place_pc(d);
   d->character_map[d->PC->position[dim_y]][d->PC->position[dim_x]] = d->PC;
 
   gen_monsters(d);
+  gen_objects(d);
 }
