@@ -1,0 +1,5 @@
+This assignment fits almost all of the guidelines
+* It fits all of them except for the unique monster generation
+    * As of now, the map has no checks for unique monsters and if
+    they've already been rendered
+* All other features have been implemented.

@@ -1,3 +1,54 @@
+commit 095205bd6d90d6eb8291d7a567d8f9d88c40b711
+Merge: 53c36b6 d3e4776
+Author: Maxwell Talley <max.talley0@gmail.com>
+Date:   Thu Nov 9 01:02:49 2017 -0600
+
+    Merge pull request #87 from mrtalley/LMO-5
+    
+    LMO-5 Added objects to the map
+
+commit d3e477633168fcaa2cc017d6c8f44954466324e7
+Author: mrtalley <mrtalley@iastate.edu>
+Date:   Thu Nov 9 01:01:57 2017 -0600
+
+    LMO-5 Added objects to the map
+
+commit 53c36b6e010c92a150f43896be94533cab4d1442
+Merge: b3489ff 1886654
+Author: Maxwell Talley <max.talley0@gmail.com>
+Date:   Wed Nov 8 13:18:04 2017 -0600
+
+    Merge pull request #86 from mrtalley/LMO-4
+    
+    LMO-4 Added color to NPCs
+
+commit 1886654cc0cde68119f501d6f3633ccfbd2a36da
+Author: mrtalley <mrtalley@iastate.edu>
+Date:   Wed Nov 8 13:17:18 2017 -0600
+
+    LMO-4 Added color to NPCs
+
+commit b3489ff594709db9b8692b31e15c8d3072c36fb1
+Merge: e3f24c2 a73e950
+Author: Maxwell Talley <max.talley0@gmail.com>
+Date:   Wed Nov 8 12:47:22 2017 -0600
+
+    Merge pull request #85 from mrtalley/LMO-1
+    
+    LMO-1 & LMO-2
+
+commit a73e950eeef321e22308bfbcc6a2b471988caff9
+Author: mrtalley <mrtalley@iastate.edu>
+Date:   Wed Nov 8 12:46:32 2017 -0600
+
+    LMO-1 LMO-2 Gen npcs from descriptions
+
+commit d9173369f58d5490c2dbb88c5073f2adcecd13e8
+Author: mrtalley <mrtalley@iastate.edu>
+Date:   Tue Nov 7 22:43:47 2017 -0600
+
+    LMO-1 Init 1.08 folder
+
 commit e3f24c207030fc1d3848ca3f319d14c32d513c07
 Author: mrtalley <mrtalley@pyrite-n1.cs.iastate.edu>
 Date:   Thu Nov 2 00:21:47 2017 -0500
