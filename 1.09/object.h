@@ -18,6 +18,7 @@ class object {
   bool seen;
   object *next;
  public:
+  object();
   object(const object_description &o, pair_t p, object *next);
   ~object();
   inline int32_t get_damage_base() const

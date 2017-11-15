@@ -50,6 +50,8 @@ void config_pc(dungeon_t *d)
 
   d->character_map[character_get_y(d->PC)][character_get_x(d->PC)] = d->PC;
 
+  memset(d->PC->equipment, 0, sizeof(d->PC->equipment));
+
   dijkstra(d);
   dijkstra_tunnel(d);
 }
@@ -203,6 +205,8 @@ void pc_init_known_terrain(pc *p)
       p->visible[y][x] = 0;
     }
   }
+
+  memset(p->equipment, 0, sizeof(p->equipment));
 }
 
 void pc_observe_terrain(pc *p, dungeon_t *d)
