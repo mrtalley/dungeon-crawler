@@ -46,6 +46,7 @@ void config_pc(dungeon_t *d)
   d->PC->color.push_back(COLOR_WHITE);
   d->PC->damage = &pc_dice;
   d->PC->name = "Isabella Garcia-Shapiro";
+  d->PC->hp = 100;
 
   d->character_map[character_get_y(d->PC)][character_get_x(d->PC)] = d->PC;
 
@@ -238,7 +239,7 @@ void pc_observe_terrain(pc *p, dungeon_t *d)
     can_see(d, p->position, where, 1, 1);
     where[dim_y] = y_max;
     can_see(d, p->position, where, 1, 1);
-  }       
+  }
 }
 
 int32_t is_illuminated(pc *p, int16_t y, int16_t x)
