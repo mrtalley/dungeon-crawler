@@ -4,6 +4,24 @@
 #include "object.h"
 #include "dungeon.h"
 #include "utils.h"
+#include "dice.h"
+
+class dice;
+
+const std::string empty = "EMPTY";
+static dice pc_dice(0, 1, 4);
+
+object::object() : name(empty), description(empty), damage(pc_dice)
+{
+  static dice pc_dice(0, 1, 4);
+
+  type = objtype_no_type;
+  color = 0;
+  position[dim_y] = position[dim_x] = 0;
+  hit = dodge = defence = weight = speed = attribute = value = 0;
+  seen = 0;
+  next = NULL;
+}
 
 object::object(const object_description &o, pair_t p, object *next) :
   name(o.get_name()),
@@ -52,7 +70,7 @@ void gen_object(dungeon_t *d)
 
   o = new object(od, p, d->objmap[p[dim_y]][p[dim_x]]);
 
-  d->objmap[p[dim_y]][p[dim_x]] = o;  
+  d->objmap[p[dim_y]][p[dim_x]] = o;
 }
 
 void gen_objects(dungeon_t *d)

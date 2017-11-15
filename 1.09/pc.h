@@ -6,12 +6,19 @@
 # include "dims.h"
 # include "character.h"
 # include "dungeon.h"
+# include "object.h"
+
+#define NUMEQUIPSLOTS 12
+
+class object;
 
 class pc : public character {
  public:
-  ~pc() {}
-  terrain_type_t known_terrain[DUNGEON_Y][DUNGEON_X];
-  uint8_t visible[DUNGEON_Y][DUNGEON_X];
+   ~pc() {}
+   terrain_type_t known_terrain[DUNGEON_Y][DUNGEON_X];
+   uint8_t visible[DUNGEON_Y][DUNGEON_X];
+   object equipment[NUMEQUIPSLOTS];
+   object *get_equipment(char key);
 };
 
 void pc_delete(pc *pc);

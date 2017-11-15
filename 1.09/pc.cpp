@@ -50,6 +50,8 @@ void config_pc(dungeon_t *d)
 
   d->character_map[character_get_y(d->PC)][character_get_x(d->PC)] = d->PC;
 
+  memset(d->PC->equipment, 0, sizeof(d->PC->equipment));
+
   dijkstra(d);
   dijkstra_tunnel(d);
 }
@@ -203,6 +205,8 @@ void pc_init_known_terrain(pc *p)
       p->visible[y][x] = 0;
     }
   }
+
+  memset(p->equipment, 0, sizeof(p->equipment));
 }
 
 void pc_observe_terrain(pc *p, dungeon_t *d)
@@ -252,4 +256,37 @@ void pc_see_object(character *the_pc, object *o)
   if (o) {
     o->has_been_seen();
   }
+}
+
+object *pc::get_equipment(char key)
+{
+  switch(key) {
+    case 'A':
+      return &equipment[0];
+    case 'B':
+      return &equipment[1];
+    case 'C':
+      return &equipment[2];
+    case 'D':
+      return &equipment[3];
+    case 'E':
+      return &equipment[4];
+    case 'F':
+      return &equipment[5];
+    case 'G':
+      return &equipment[6];
+    case 'H':
+      return &equipment[7];
+    case 'I':
+      return &equipment[8];
+    case 'J':
+      return &equipment[9];
+    case 'K':
+      return &equipment[10];
+    case 'L':
+      return &equipment[11];
+    default:
+      break;
+  }
+  return NULL;
 }

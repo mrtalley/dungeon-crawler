@@ -17,7 +17,9 @@ class object {
   int32_t hit, dodge, defence, weight, speed, attribute, value;
   bool seen;
   object *next;
+  bool with_pc;
  public:
+  object();
   object(const object_description &o, pair_t p, object *next);
   ~object();
   inline int32_t get_damage_base() const
@@ -41,6 +43,7 @@ class object {
   bool have_seen() { return seen; }
   void has_been_seen() { seen = true; }
   int16_t *get_position() { return position; }
+  bool is_with_pc() { return with_pc; }
 };
 
 void gen_objects(dungeon_t *d);
