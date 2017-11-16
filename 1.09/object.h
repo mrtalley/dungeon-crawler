@@ -20,7 +20,9 @@ class object {
  public:
   object();
   object(const object_description &o, pair_t p, object *next);
+  // object(object *o);
   ~object();
+  bool equipped;
   inline int32_t get_damage_base() const
   {
     return damage.get_base();
@@ -33,16 +35,21 @@ class object {
   {
     return damage.get_sides();
   }
+  inline object *get_next() { return next; }
   char get_symbol();
   uint32_t get_color();
   const char *get_name();
+  inline const char *get_desc()
+  {
+    return description.c_str();
+  }
   int32_t get_speed();
   int32_t roll_dice();
   int32_t get_type();
+  inline object_type_t get_o_type() { return type; }
   bool have_seen() { return seen; }
   void has_been_seen() { seen = true; }
   int16_t *get_position() { return position; }
-  bool is_with_pc() { return with_pc; }
 };
 
 void gen_objects(dungeon_t *d);

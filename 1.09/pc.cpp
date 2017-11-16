@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <ncurses.h>
 #include <string>
+#include <stdlib.h>
 
 #include "dungeon.h"
 #include "pc.h"
@@ -49,8 +50,6 @@ void config_pc(dungeon_t *d)
   d->PC->hp = 100;
 
   d->character_map[character_get_y(d->PC)][character_get_x(d->PC)] = d->PC;
-
-  memset(d->PC->equipment, 0, sizeof(d->PC->equipment));
 
   dijkstra(d);
   dijkstra_tunnel(d);
@@ -290,51 +289,80 @@ object *pc::get_equipment(char key)
   }
 }
 
-// TODO: Make sure this works
+void swap_equip_carry(object *o_carry, object *o_equip)
+{
+  object *o_temp = o_carry;
+  o_carry = o_equip;
+  o_equip = o_temp;
+}
+
+void pc::del_carry(dungeon_t *d, char key)
+{
+  // int pc_x = d->PC->position[dim_x], pc_y = d->PC->position[dim_y];
+  object o = remove_carry(key);
+  // d->objmap[pc_y][pc_x] = new object(&o);
+  // std::memcpy(&d->objmap[pc_y][pc_x], &o, sizeof(o));
+  io_display(d);
+}
+
 void pc::set_equipment(object *o)
 {
+  o->equipped = true;
+  int index = -1;
+
   switch (o->get_type())
   {
     case objtype_WEAPON:
-      std::memcpy(&equipment[0], o, sizeof(equipment[0]));
+      index = 0;
       break;
     case objtype_OFFHAND:
-      std::memcpy(&equipment[1], o, sizeof(equipment[1]));
+      index = 1;
       break;
     case objtype_RANGED:
-      std::memcpy(&equipment[2], o, sizeof(equipment[2]));
+      index = 2;
       break;
     case objtype_ARMOR:
-      std::memcpy(&equipment[3], o, sizeof(equipment[3]));
+      index = 3;
       break;
     case objtype_HELMET:
-      std::memcpy(&equipment[4], o, sizeof(equipment[4]));
+      index = 4;
       break;
     case objtype_CLOAK:
-      std::memcpy(&equipment[5], o, sizeof(equipment[5]));
+      index = 5;
       break;
     case objtype_GLOVES:
-      std::memcpy(&equipment[6], o, sizeof(equipment[6]));
+      index = 6;
       break;
     case objtype_BOOTS:
-      std::memcpy(&equipment[7], o, sizeof(equipment[7]));
+      index = 7;
       break;
     case objtype_AMULET:
-      std::memcpy(&equipment[8], o, sizeof(equipment[8]));
+      index = 8;
       break;
     case objtype_LIGHT:
-      std::memcpy(&equipment[9], o, sizeof(equipment[9]));
+      index = 9;
       break;
     case objtype_RING:
-      if(!&equipment[10]) {
-        std::memcpy(&equipment[10], o, sizeof(equipment[10]));
-      } else if(!&equipment[11]) {
-        std::memcpy(&equipment[11], o, sizeof(equipment[11]));
+      if(!equipment[10].equipped) {
+        index = 10;
+      } else if(!equipment[11].equipped) {
+        index = 11;
       }
       break;
     default:
       break;
   }
+
+  // if (index >= 0 && index <= 11 && equipment[index].equipped)
+  // {
+  //   swap_equip_carry(o, &equipment[index]);
+  //   return o;
+  // }
+  if(index >= 0 && index <= 11) {
+    std::memcpy(&equipment[index], o, sizeof(equipment[index]));
+  }
+  // equipment[index].equipped = true;
+  // return NULL;
 }
 
 object *pc::get_carry(char key)
@@ -363,6 +391,19 @@ object *pc::get_carry(char key)
     default:
       return NULL;
   }
+}
+
+object pc::remove_carry(char key)
+{
+  const char *thing = &key;
+  int num = std::atoi(thing);
+  object o = carry.at(num);
+
+  if(num >= 0 && num < 10) {
+    carry.erase(carry.begin() + num);
+  }
+
+  return o;
 }
 
 bool pc::has_open_carry_slots()

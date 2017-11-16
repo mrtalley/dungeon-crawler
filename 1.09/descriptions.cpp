@@ -74,13 +74,13 @@ static const struct {
   type_lu_entry(WEAPON),
   type_lu_entry(OFFHAND),
   type_lu_entry(RANGED),
-  type_lu_entry(LIGHT),
   type_lu_entry(ARMOR),
   type_lu_entry(HELMET),
   type_lu_entry(CLOAK),
   type_lu_entry(GLOVES),
   type_lu_entry(BOOTS),
   type_lu_entry(AMULET),
+  type_lu_entry(LIGHT),
   type_lu_entry(RING),
   type_lu_entry(SCROLL),
   type_lu_entry(BOOK),
@@ -987,4 +987,19 @@ npc *monster_description::generate_monster(dungeon *d)
   heap_insert(&d->events, new_event(d, event_character_turn, n, 0));
 
   return n;
+}
+
+char *get_object_type_name(object_type_t t)
+{
+  for(int i = 0; types_lookup[i].name; i++) {
+    if(t == types_lookup[i].value) {
+      return (char *) types_lookup[i].name;
+    }
+  }
+  return (char *) "";
+}
+
+char *get_object_type_name_by_index(int t)
+{
+  return (char *) types_lookup[t].name;
 }

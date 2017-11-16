@@ -28,7 +28,9 @@ class pc : public character {
     // add function here to set an equipment slot
     bool has_open_carry_slots();
     object *get_carry(char key);
+    object remove_carry(char key);
     int set_carry(object *o);
+    void del_carry(dungeon_t *d, char key);
 };
 
 void pc_delete(pc *pc);
