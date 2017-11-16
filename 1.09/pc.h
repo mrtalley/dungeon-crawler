@@ -2,23 +2,33 @@
 # define PC_H
 
 # include <stdint.h>
+# include <vector>
 
 # include "dims.h"
 # include "character.h"
 # include "dungeon.h"
 # include "object.h"
 
-#define NUMEQUIPSLOTS 12
+#define EQUIPSLOTS 12
+#define CARRYSLOTS 10
 
 class object;
 
 class pc : public character {
- public:
-   ~pc() {}
-   terrain_type_t known_terrain[DUNGEON_Y][DUNGEON_X];
-   uint8_t visible[DUNGEON_Y][DUNGEON_X];
-   object equipment[NUMEQUIPSLOTS];
-   object *get_equipment(char key);
+  public:
+    ~pc() {}
+    terrain_type_t known_terrain[DUNGEON_Y][DUNGEON_X];
+    uint8_t visible[DUNGEON_Y][DUNGEON_X];
+    /* equipment is what the pc is wearing / weilding  */
+    object equipment[EQUIPSLOTS];
+    /* carry is the inventory  */
+    std::vector<object> carry;
+    object *get_equipment(char key);
+    void set_equipment(object *o);
+    // add function here to set an equipment slot
+    bool has_open_carry_slots();
+    object *get_carry(char key);
+    int set_carry(object *o);
 };
 
 void pc_delete(pc *pc);
