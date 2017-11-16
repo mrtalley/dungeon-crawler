@@ -11,6 +11,7 @@
 #include "dungeon.h"
 #include "object.h"
 #include "npc.h"
+#include "descriptions.h"
 
 /* Same ugly hack we did in path.c */
 static dungeon *the_dungeon;
@@ -788,6 +789,37 @@ static void io_list_monsters(dungeon *d)
   io_display(d);
 }
 
+void display_carry(dungeon_t *d)
+{
+  int count = d->PC->carry.size();
+
+  char(*s)[50]; /* pointer to array of 40 char */
+
+  s = (char(*)[50])malloc((count + 1) * sizeof(*s));
+
+  mvprintw(2, 19, " %-50s ", "Inventory");
+  mvprintw(3, 19, " %-s %-d %-s ", "You have", count, "items in inventory");
+  mvprintw(4, 19, " %-30s %-10s %-6s ", "Name", "Type", "Speed");
+  mvprintw(5, 19, " %-50s ", "");
+
+  for(int i = 0; i < count; i++) {
+    snprintf(s[i], 50, "%-30s %-10s %-6d",
+             d->PC->carry.at(i).get_name(),
+             get_object_type_name(d->PC->carry.at(i).get_o_type()),
+             d->PC->carry.at(i).get_speed());
+
+    mvprintw(i + 6, 19, " %-50s ", s[i]);
+  }
+
+  mvprintw(count + 6, 19, " %-50s ", "");
+  mvprintw(count + 7, 19, " %-50s ", "Hit escape to continue.");
+  while (getch() != 27 /* escape */)
+    ;
+
+  free(s);
+  io_display(d);
+}
+
 void io_handle_input(dungeon *d)
 {
   uint32_t fail_code;
@@ -896,7 +928,7 @@ void io_handle_input(dungeon *d)
       fog_off = 1;
       fail_code = 1;
       break;
-    case 't':
+    case 'g':
       /* Teleport the PC to a random place in the dungeon.              */
       io_teleport_pc(d);
       fail_code = 1;
@@ -925,6 +957,34 @@ void io_handle_input(dungeon *d)
                        "be no \"more\" prompt.");
       io_queue_message("Have fun!  And happy printing!");
       fail_code = 0;
+      break;
+    case 'w':
+      // wear an item. prompts user for a carry slot. if an item exists there already, the items are swapped
+      break;
+    case 't':
+      // take off an item. prompts for equipment slot. item goes to an open carry slot
+      break;
+    case 'd':
+      // drop an item. prompts the user for a carry slot then item goes to floor
+      break;
+    case 'x':
+      // permanently remove an item from the game. prompts user for a carry slot
+      break;
+    case 'i':
+      display_carry(d);
+      break;
+    case 'e':
+      // list pc equipment
+      break;
+    case 'I':
+      // inspect item. prompts user for carry slot. item's description is displayed
+      break;
+    case 'L':
+      /*
+        Look at a monster -- enter a targeting mode similar to controlled teleport.
+        select a visible monster with t for abort with escape (no random). when a
+        monster is selected, display description
+      */
       break;
     default:
       /* Also not in the spec.  It's not always easy to figure out what *

@@ -988,3 +988,13 @@ npc *monster_description::generate_monster(dungeon *d)
 
   return n;
 }
+
+char *get_object_type_name(object_type_t t)
+{
+  for(int i = 0; types_lookup[i].name; i++) {
+    if(t == types_lookup[i].value) {
+      return (char *) types_lookup[i].name;
+    }
+  }
+  return (char *) "";
+}

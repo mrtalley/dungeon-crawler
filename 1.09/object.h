@@ -39,10 +39,10 @@ class object {
   int32_t get_speed();
   int32_t roll_dice();
   int32_t get_type();
+  inline object_type_t get_o_type() { return type; }
   bool have_seen() { return seen; }
   void has_been_seen() { seen = true; }
   int16_t *get_position() { return position; }
-  bool is_with_pc() { return with_pc; }
 };
 
 void gen_objects(dungeon_t *d);

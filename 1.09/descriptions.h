@@ -41,6 +41,8 @@ typedef enum object_type {
 extern const char object_symbol[];
 class npc;
 
+char *get_object_type_name(object_type_t t);
+
 class monster_description {
  private:
   std::string name, description;
