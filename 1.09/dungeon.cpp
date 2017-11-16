@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdint.h>
-// #include <endian.h>
+#include <endian.h>
 #include <sys/stat.h>
 #include <sys/time.h>
 #include <limits.h>
@@ -14,7 +14,7 @@
 #include "npc.h"
 #include "io.h"
 #include "object.h"
-#include "endian.h"
+// #include "endian.h"
 
 #define DUMP_HARDNESS_IMAGES 0
 

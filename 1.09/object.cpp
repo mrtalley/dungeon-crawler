@@ -45,6 +45,27 @@ object::object(const object_description &o, pair_t p, object *next) :
   position[dim_y] = p[dim_y];
 }
 
+/*object::object(object *o) :
+  name(o->get_name()),
+  description(o->get_description()),
+  type(o->get_type()),
+  color(o->get_color()),
+  damage(o->get_damage()),
+  hit(o->get_hit().roll()),
+  dodge(o->get_dodge().roll()),
+  defence(o->get_defence().roll()),
+  weight(o->get_weight().roll()),
+  speed(o->get_speed().roll()),
+  attribute(oget_attribute().roll()),
+  value(o->get_value().roll()),
+  seen(false),
+  next(o->get_next()),
+  equipped(false)
+{
+  position[dim_x] = p[dim_x];
+  position[dim_y] = p[dim_y];
+}*/
+
 object::~object()
 {
   if (next) {

@@ -789,41 +789,62 @@ static void io_list_monsters(dungeon *d)
   io_display(d);
 }
 
-void display_carry(dungeon_t *d)
+bool valid_carry_key(char input) {
+  char key[] = "0123456789";
+
+  for(int i = 0; i < 10; i++) {
+    if(input == key[i]) {
+      return true;
+    }
+  }
+  return false;
+}
+
+char display_carry(dungeon_t *d, bool change)
 {
   int count = d->PC->carry.size();
+  char ret;
+  char key[] = "0123456789";
 
-  char(*s)[50]; /* pointer to array of 40 char */
+  char(*s)[60]; /* pointer to array of 40 char */
 
-  s = (char(*)[50])malloc((count + 1) * sizeof(*s));
+  s = (char(*)[60])malloc((count + 1) * sizeof(*s));
 
-  mvprintw(2, 19, " %-50s ", "Inventory");
+  mvprintw(2, 19, " %-60s ", "Inventory");
   mvprintw(3, 19, " %-s %-d %-s ", "You have", count, "items in inventory");
-  mvprintw(4, 19, " %-30s %-10s %-6s ", "Name", "Type", "Speed");
-  mvprintw(5, 19, " %-50s ", "");
+  mvprintw(4, 19, "%-60s", "");
+  mvprintw(5, 19, " %-3s %-30s %-10s %-6s ", "Key", "Name", "Type", "Speed");
+  mvprintw(6, 19, " %-60s ", "");
 
   for(int i = 0; i < count; i++) {
-    snprintf(s[i], 50, "%-30s %-10s %-6d",
+    snprintf(s[i], 60, "%-3c %-30s %-10s %-6d",
+             key[i],
              d->PC->carry.at(i).get_name(),
              get_object_type_name(d->PC->carry.at(i).get_o_type()),
              d->PC->carry.at(i).get_speed());
 
-    mvprintw(i + 6, 19, " %-50s ", s[i]);
+    mvprintw(i + 7, 19, " %-60s ", s[i]);
   }
 
-  mvprintw(count + 6, 19, " %-50s ", "");
-  mvprintw(count + 7, 19, " %-50s ", "Hit escape to continue.");
-  while (getch() != 27 /* escape */)
-    ;
+  mvprintw(count + 7, 19, " %-60s ", "");
+  mvprintw(count + 8, 19, " %-60s ", "Hit escape to continue.");
+  while (1) {
+    ret = getch();
+    if (ret == 27 /* escape */ && !change) break;
+    if(valid_carry_key(ret) && change) break;
+  }
 
   free(s);
   io_display(d);
+
+  return ret;
 }
 
-void display_equipment(dungeon_t *d)
+char display_equipment(dungeon_t *d)
 {
   int count = EQUIPSLOTS;
   char key[] = "ABCDEFGHIJKL";
+  char ret;
 
   char(*s)[60]; /* pointer to array of 40 char */
 
@@ -839,7 +860,7 @@ void display_equipment(dungeon_t *d)
     if(d->PC->equipment[i].equipped) {
       snprintf(s[i], 60, "%-3c %-10s %-30s %-d+%-dd%-3d %-6d",
                key[i],
-               i != count - 1 ? get_object_type_name(d->PC->equipment[i - 1].get_o_type()) : get_object_type_name(d->PC->equipment[i].get_o_type()),
+               i != count - 1 ? get_object_type_name(d->PC->equipment[i].get_o_type()) : get_object_type_name(d->PC->equipment[i - 1].get_o_type()),
                d->PC->equipment[i].get_name(),
                d->PC->equipment[i].get_damage_base(),
                d->PC->equipment[i].get_damage_number(),
@@ -855,11 +876,29 @@ void display_equipment(dungeon_t *d)
 
   mvprintw(count + 6, 19, " %-60s ", "");
   mvprintw(count + 7, 19, " %-60s ", "Hit escape to continue.");
-  while (getch() != 27 /* escape */)
-    ;
+  while (1)
+  {
+    ret = getch();
+    if (ret == 27 /* escape */)
+      break;
+  }
 
   free(s);
   io_display(d);
+
+  return ret;
+}
+
+void wear_item(dungeon_t *d, char key)
+{
+  object *o = d->PC->get_carry(key);
+  d->PC->remove_carry(key);
+  d->PC->set_equipment(o);
+
+  // if(swapped->equipped) {
+  //   swapped->equipped = false;
+  //   d->PC->set_carry(swapped);
+  // }
 }
 
 void io_handle_input(dungeon *d)
@@ -1002,32 +1041,34 @@ void io_handle_input(dungeon *d)
       break;
     case 'w':
       // wear an item. prompts user for a carry slot. if an item exists there already, the items are swapped
-      break;
-    case 't':
-      // take off an item. prompts for equipment slot. item goes to an open carry slot
-      break;
-    case 'd':
-      // drop an item. prompts the user for a carry slot then item goes to floor
-      break;
-    case 'x':
-      // permanently remove an item from the game. prompts user for a carry slot
+      wear_item(d, display_carry(d, true));
       break;
     case 'i':
-      display_carry(d);
+      display_carry(d, false);
       break;
     case 'e':
       display_equipment(d);
       break;
+    case 'x':
+      // permanently remove an item from the game. prompts user for a carry slot
+      d->PC->del_carry(d, display_carry(d, true));
+      break;
+    case 'd':
+      // drop an item. prompts the user for a carry slot then item goes to floor
+      break;
+    case 't':
+      // take off an item. prompts for equipment slot. item goes to an open carry slot
+      // break;
     case 'I':
       // inspect item. prompts user for carry slot. item's description is displayed
-      break;
+      // break;
     case 'L':
       /*
         Look at a monster -- enter a targeting mode similar to controlled teleport.
         select a visible monster with t for abort with escape (no random). when a
         monster is selected, display description
       */
-      break;
+      // break;
     default:
       /* Also not in the spec.  It's not always easy to figure out what *
        * key code corresponds with a given keystroke.  Print out any    *
