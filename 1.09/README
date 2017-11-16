@@ -6,3 +6,13 @@ that ended up being extremely simple and it put me way behind.
 * You can view the inventory and the equipment that's being held
 * You can delete an item from the game with the x key
 * I wasn't able to get any of the combat completed
+
+NOTE:
+* When I was developing (on my Mac) I had no compile errors and no runtime
+errors that I knew of. When I went to test my code on pyrite, I was suddenly
+getting an error relating to 'non-static reference member can't use default
+assignment operator.' At this point, it's extremely late (or early) and I'm
+just going to turn it in. If you do happen to own a Mac and would be able to
+run my code there, you'll have to uncomment the header file "endian.h" in
+dungeon.h and comment out <endian.h>. Then it should run with all functionality
+described above.

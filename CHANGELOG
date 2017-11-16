@@ -1,3 +1,87 @@
+commit cac3b7e2e75569699c5652fc8bc4635fa456031b
+Merge: 0c0085a 56d6341
+Author: Maxwell Talley <max.talley0@gmail.com>
+Date:   Thu Nov 16 04:48:37 2017 -0600
+
+    Merge pull request #99 from mrtalley/EUC-4
+    
+    Euc 4
+
+commit 56d63418d3b6b320c9e8a5fff01061a7d9c8b4e7
+Author: mrtalley <mrtalley@iastate.edu>
+Date:   Thu Nov 16 04:48:05 2017 -0600
+
+    EUC-4 Gotten as much done as I can
+
+commit 34ed63b3de8b3fd2dd592e7056a1dde0e9745ca5
+Author: mrtalley <mrtalley@iastate.edu>
+Date:   Thu Nov 16 02:01:37 2017 -0600
+
+    EUC-4 Added display of equipment
+
+commit a6d1d45203ed023296e7dd0057adbad068e9fd58
+Author: mrtalley <mrtalley@iastate.edu>
+Date:   Thu Nov 16 01:10:52 2017 -0600
+
+    EUC-4 List PC inventory
+
+commit 0c0085a5bbae21c703d46d423942d55f9cbe7bcd
+Merge: 21c341a 0eedd68
+Author: Maxwell Talley <max.talley0@gmail.com>
+Date:   Wed Nov 15 23:25:49 2017 -0600
+
+    Merge pull request #98 from mrtalley/EUC-3
+    
+    EUC-3 Carry if walked over w empty inventory
+
+commit 0eedd6829456429a0c544690a0931e9e35cd3008
+Author: mrtalley <mrtalley@iastate.edu>
+Date:   Wed Nov 15 23:24:00 2017 -0600
+
+    EUC-3 Carry if walked over w empty inventory
+
+commit 21c341ab71e955e383d27d4f902d8642390b55b6
+Merge: e31c333 b669d2c
+Author: Maxwell Talley <max.talley0@gmail.com>
+Date:   Wed Nov 15 11:53:46 2017 -0600
+
+    Merge pull request #97 from mrtalley/EUC-2
+    
+    Euc 2
+
+commit b669d2ce1b70bbbb4d514673b006cd6792587ef9
+Author: mrtalley <mrtalley@iastate.edu>
+Date:   Wed Nov 15 11:52:24 2017 -0600
+
+    EUC-2 Added function to get equipment by a character
+
+commit 2f1554fd9862dc8bcf2e6ea9a21c9aebc9c9b06b
+Author: mrtalley <mrtalley@iastate.edu>
+Date:   Wed Nov 15 11:13:26 2017 -0600
+
+    EUC-2 PC has equipment slots in array form
+
+commit e31c333053bc46997f7b4640b9b8ec9512159783
+Merge: 095205b aef29eb
+Author: Maxwell Talley <max.talley0@gmail.com>
+Date:   Wed Nov 15 03:55:33 2017 -0600
+
+    Merge pull request #96 from mrtalley/EUC-1
+    
+    Euc 1
+
+commit aef29ebed8f086aec26e3fd503190397c1460725
+Author: mrtalley <mrtalley@iastate.edu>
+Date:   Wed Nov 15 03:54:49 2017 -0600
+
+    EUC-1 Remove object files and make pc defaults
+
+commit ffc71dc58966863a0f30843187725a4ec06df037
+Author: mrtalley <mrtalley@iastate.edu>
+Date:   Wed Nov 15 03:50:32 2017 -0600
+
+    EUC-1 Add 1.09 directory
+
 commit 095205bd6d90d6eb8291d7a567d8f9d88c40b711
 Merge: 53c36b6 d3e4776
 Author: Maxwell Talley <max.talley0@gmail.com>
