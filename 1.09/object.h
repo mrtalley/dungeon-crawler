@@ -20,9 +20,10 @@ class object {
  public:
   object();
   object(const object_description &o, pair_t p, object *next);
-  // object(object *o);
+  object(object *o);
   ~object();
   bool equipped;
+  inline const dice &get_damage() const { return damage; }
   inline int32_t get_damage_base() const
   {
     return damage.get_base();
@@ -39,13 +40,16 @@ class object {
   char get_symbol();
   uint32_t get_color();
   const char *get_name();
-  inline const char *get_desc()
-  {
-    return description.c_str();
-  }
+  const char *get_desc();
   int32_t get_speed();
   int32_t roll_dice();
   int32_t get_type();
+  inline int32_t get_hit() { return hit; }
+  inline int32_t get_dodge() { return dodge; }
+  inline int32_t get_defence() { return defence; }
+  inline int32_t get_weight() { return weight; }
+  inline int32_t get_attribute() { return attribute;}
+  inline int32_t get_value() { return value; }
   inline object_type_t get_o_type() { return type; }
   bool have_seen() { return seen; }
   void has_been_seen() { seen = true; }

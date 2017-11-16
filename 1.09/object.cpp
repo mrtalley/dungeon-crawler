@@ -45,7 +45,7 @@ object::object(const object_description &o, pair_t p, object *next) :
   position[dim_y] = p[dim_y];
 }
 
-/*object::object(object *o) :
+object::object(object *o) :
   name(o->get_name()),
   description(o->get_description()),
   type(o->get_type()),
@@ -64,7 +64,7 @@ object::object(const object_description &o, pair_t p, object *next) :
 {
   position[dim_x] = p[dim_x];
   position[dim_y] = p[dim_y];
-}*/
+}
 
 object::~object()
 {
@@ -122,6 +122,11 @@ uint32_t object::get_color()
 const char *object::get_name()
 {
   return name.c_str();
+}
+
+const char *object::get_desc()
+{
+  return description.c_str();
 }
 
 int32_t object::get_speed()
