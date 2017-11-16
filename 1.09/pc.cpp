@@ -286,7 +286,99 @@ object *pc::get_equipment(char key)
     case 'L':
       return &equipment[11];
     default:
+      return NULL;
+  }
+}
+
+// TODO: Make sure this works
+void pc::set_equipment(object *o)
+{
+  switch (o->get_type())
+  {
+    case objtype_WEAPON:
+      std::memcpy(&equipment[0], o, sizeof(equipment[0]));
+      break;
+    case objtype_OFFHAND:
+      std::memcpy(&equipment[1], o, sizeof(equipment[1]));
+      break;
+    case objtype_RANGED:
+      std::memcpy(&equipment[2], o, sizeof(equipment[2]));
+      break;
+    case objtype_ARMOR:
+      std::memcpy(&equipment[3], o, sizeof(equipment[3]));
+      break;
+    case objtype_HELMET:
+      std::memcpy(&equipment[4], o, sizeof(equipment[4]));
+      break;
+    case objtype_CLOAK:
+      std::memcpy(&equipment[5], o, sizeof(equipment[5]));
+      break;
+    case objtype_GLOVES:
+      std::memcpy(&equipment[6], o, sizeof(equipment[6]));
+      break;
+    case objtype_BOOTS:
+      std::memcpy(&equipment[7], o, sizeof(equipment[7]));
+      break;
+    case objtype_AMULET:
+      std::memcpy(&equipment[8], o, sizeof(equipment[8]));
+      break;
+    case objtype_LIGHT:
+      std::memcpy(&equipment[9], o, sizeof(equipment[9]));
+      break;
+    case objtype_RING:
+      if(!&equipment[10]) {
+        std::memcpy(&equipment[10], o, sizeof(equipment[10]));
+      } else if(!&equipment[11]) {
+        std::memcpy(&equipment[11], o, sizeof(equipment[11]));
+      }
+      break;
+    default:
       break;
   }
-  return NULL;
+}
+
+object *pc::get_carry(char key)
+{
+  switch(key) {
+    case '0':
+      return &carry[0];
+    case '1':
+      return &carry[1];
+    case '2':
+      return &carry[2];
+    case '3':
+      return &carry[3];
+    case '4':
+      return &carry[4];
+    case '5':
+      return &carry[5];
+    case '6':
+      return &carry[6];
+    case '7':
+      return &carry[7];
+    case '8':
+      return &carry[8];
+    case '9':
+      return &carry[9];
+    default:
+      return NULL;
+  }
+}
+
+bool pc::has_open_carry_slots()
+{
+  if (carry.size() < CARRYSLOTS)
+  {
+    return true;
+  }
+  return false;
+}
+
+int pc::set_carry(object *o)
+{
+  if(has_open_carry_slots()) {
+    carry.push_back(*o);
+    return 0;
+  }
+  return -1;
 }

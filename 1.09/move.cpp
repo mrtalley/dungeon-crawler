@@ -51,11 +51,11 @@ void do_combat(dungeon_t *d, character *atk, character *def)
     "ear",
     "subcutaneous tissue"
   };
-  
+
   if (def->alive) {
     def->alive = 0;
     charpair(def->position) = NULL;
-    
+
     if (def != d->PC) {
       d->num_monsters--;
     } else {
@@ -301,6 +301,13 @@ uint32_t move_pc(dungeon_t *d, uint32_t dir)
 
   if ((dir != '>') && (dir != '<') && (mappair(next) >= ter_floor)) {
     move_character(d, d->PC, next);
+
+    if(d->objmap[next[dim_y]][next[dim_x]] && d->PC->has_open_carry_slots())
+    {
+      d->PC->set_carry(d->objmap[next[dim_y]][next[dim_x]]);
+      d->objmap[next[dim_y]][next[dim_x]] = NULL;
+    }
+
     dijkstra(d);
     dijkstra_tunnel(d);
 

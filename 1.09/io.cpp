@@ -215,14 +215,19 @@ static void io_redisplay_visible_monsters(dungeon *d)
                                                      [d->PC->position[dim_x] +
                                                       pos[dim_x]]));
         attroff(COLOR_PAIR(color));
-      } else if (d->objmap[d->PC->position[dim_y] + pos[dim_y]]
-                          [d->PC->position[dim_x] + pos[dim_x]] &&
-                 (can_see(d, d->PC->position,
-                          d->objmap[d->PC->position[dim_y] + pos[dim_y]]
-                                   [d->PC->position[dim_x] +
-                                    pos[dim_x]]->get_position(), 1, 0) ||
-                 d->objmap[d->PC->position[dim_y] + pos[dim_y]]
-                          [d->PC->position[dim_x] + pos[dim_x]]->have_seen())) {
+      }
+      else if (d->objmap[d->PC->position[dim_y] + pos[dim_y]]
+                        [d->PC->position[dim_x] + pos[dim_x]] &&
+               (can_see(d, d->PC->position,
+                        d->objmap[d->PC->position[dim_y] + pos[dim_y]]
+                                 [d->PC->position[dim_x] +
+                                  pos[dim_x]]
+                                     ->get_position(),
+                        1, 0) ||
+                d->objmap[d->PC->position[dim_y] + pos[dim_y]]
+                         [d->PC->position[dim_x] + pos[dim_x]]
+                             ->have_seen()))
+      {
         attron(COLOR_PAIR(d->objmap[d->PC->position[dim_y] + pos[dim_y]]
                                    [d->PC->position[dim_x] +
                                     pos[dim_x]]->get_color()));
@@ -286,7 +291,8 @@ void io_display(dungeon *d)
   uint32_t color;
 
   clear();
-  for (pos[dim_y] = 0; pos[dim_y] < DUNGEON_Y; pos[dim_y]++) {
+  for (pos[dim_y] = 0; pos[dim_y] < DUNGEON_Y; pos[dim_y]++)
+  {
     for (pos[dim_x] = 0; pos[dim_x] < DUNGEON_X; pos[dim_x]++) {
       if ((illuminated = is_illuminated(d->PC,
                                         pos[dim_y],
@@ -306,11 +312,14 @@ void io_display(dungeon *d)
                 character_get_symbol(d->character_map[pos[dim_y]]
                                                      [pos[dim_x]]));
         attroff(COLOR_PAIR(color));
-      } else if (d->objmap[pos[dim_y]]
-                          [pos[dim_x]] &&
-                 (d->objmap[pos[dim_y]]
-                           [pos[dim_x]]->have_seen() ||
-                  can_see(d, character_get_pos(d->PC), pos, 1, 0))) {
+      }
+      else if (d->objmap[pos[dim_y]]
+                        [pos[dim_x]] &&
+               (d->objmap[pos[dim_y]]
+                         [pos[dim_x]]
+                             ->have_seen() ||
+                can_see(d, character_get_pos(d->PC), pos, 1, 0)))
+      {
         attron(COLOR_PAIR(d->objmap[pos[dim_y]]
                                    [pos[dim_x]]->get_color()));
         mvaddch(pos[dim_y] + 1, pos[dim_x],
@@ -318,7 +327,8 @@ void io_display(dungeon *d)
                          [pos[dim_x]]->get_symbol());
         attroff(COLOR_PAIR(d->objmap[pos[dim_y]]
                                     [pos[dim_x]]->get_color()));
-      } else {
+      }
+      else {
         switch (pc_learned_terrain(d->PC,
                                    pos[dim_y],
                                    pos[dim_x])) {
@@ -601,7 +611,7 @@ uint32_t io_teleport_pc(dungeon *d)
 
   if (charpair(dest) && charpair(dest) != d->PC) {
     io_queue_message("Teleport failed.  Destination occupied.");
-  } else {  
+  } else {
     d->character_map[d->PC->position[dim_y]][d->PC->position[dim_x]] = NULL;
     d->character_map[dest[dim_y]][dest[dim_x]] = d->PC;
 
