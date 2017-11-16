@@ -74,13 +74,13 @@ static const struct {
   type_lu_entry(WEAPON),
   type_lu_entry(OFFHAND),
   type_lu_entry(RANGED),
-  type_lu_entry(LIGHT),
   type_lu_entry(ARMOR),
   type_lu_entry(HELMET),
   type_lu_entry(CLOAK),
   type_lu_entry(GLOVES),
   type_lu_entry(BOOTS),
   type_lu_entry(AMULET),
+  type_lu_entry(LIGHT),
   type_lu_entry(RING),
   type_lu_entry(SCROLL),
   type_lu_entry(BOOK),
@@ -997,4 +997,9 @@ char *get_object_type_name(object_type_t t)
     }
   }
   return (char *) "";
+}
+
+char *get_object_type_name_by_index(int t)
+{
+  return (char *) types_lookup[t].name;
 }

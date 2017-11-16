@@ -21,6 +21,7 @@ object::object() : name(empty), description(empty), damage(pc_dice)
   hit = dodge = defence = weight = speed = attribute = value = 0;
   seen = 0;
   next = NULL;
+  equipped = false;
 }
 
 object::object(const object_description &o, pair_t p, object *next) :
@@ -37,7 +38,8 @@ object::object(const object_description &o, pair_t p, object *next) :
   attribute(o.get_attribute().roll()),
   value(o.get_value().roll()),
   seen(false),
-  next(next)
+  next(next),
+  equipped(false)
 {
   position[dim_x] = p[dim_x];
   position[dim_y] = p[dim_y];

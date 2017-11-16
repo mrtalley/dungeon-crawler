@@ -820,6 +820,48 @@ void display_carry(dungeon_t *d)
   io_display(d);
 }
 
+void display_equipment(dungeon_t *d)
+{
+  int count = EQUIPSLOTS;
+  char key[] = "ABCDEFGHIJKL";
+
+  char(*s)[60]; /* pointer to array of 40 char */
+
+  s = (char(*)[60])malloc((count + 1) * sizeof(*s));
+
+  mvprintw(2, 19, " %-60s ", "Equipment");
+  // mvprintw(3, 19, " %-s %-d %-s ", "You have", count, "items in inventory");
+  mvprintw(4, 19, " %-3s %-10s %-30s %-7s %-6s ", "Key", "Type", "Name", "Damage", "Speed");
+  mvprintw(5, 19, " %-60s ", "");
+
+  for (int i = 0; i < count; i++)
+  {
+    if(d->PC->equipment[i].equipped) {
+      snprintf(s[i], 60, "%-3c %-10s %-30s %-d+%-dd%-3d %-6d",
+               key[i],
+               i != count - 1 ? get_object_type_name(d->PC->equipment[i - 1].get_o_type()) : get_object_type_name(d->PC->equipment[i].get_o_type()),
+               d->PC->equipment[i].get_name(),
+               d->PC->equipment[i].get_damage_base(),
+               d->PC->equipment[i].get_damage_number(),
+               d->PC->equipment[i].get_damage_sides(),
+               d->PC->equipment[i].get_speed());
+    } else {
+      snprintf(s[i], 60, "%-3c %-10s",
+              key[i],
+              i != count - 1 ? get_object_type_name_by_index(i) : get_object_type_name_by_index(i - 1));
+    }
+    mvprintw(i + 6, 19, " %-60s ", s[i]);
+  }
+
+  mvprintw(count + 6, 19, " %-60s ", "");
+  mvprintw(count + 7, 19, " %-60s ", "Hit escape to continue.");
+  while (getch() != 27 /* escape */)
+    ;
+
+  free(s);
+  io_display(d);
+}
+
 void io_handle_input(dungeon *d)
 {
   uint32_t fail_code;
@@ -974,7 +1016,7 @@ void io_handle_input(dungeon *d)
       display_carry(d);
       break;
     case 'e':
-      // list pc equipment
+      display_equipment(d);
       break;
     case 'I':
       // inspect item. prompts user for carry slot. item's description is displayed

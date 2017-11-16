@@ -21,6 +21,7 @@ class object {
   object();
   object(const object_description &o, pair_t p, object *next);
   ~object();
+  bool equipped;
   inline int32_t get_damage_base() const
   {
     return damage.get_base();

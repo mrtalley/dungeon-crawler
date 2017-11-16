@@ -50,7 +50,11 @@ void config_pc(dungeon_t *d)
 
   d->character_map[character_get_y(d->PC)][character_get_x(d->PC)] = d->PC;
 
-  memset(d->PC->equipment, 0, sizeof(d->PC->equipment));
+  // for(int i = 0; i < EQUIPSLOTS; i++) {
+  //   &d->PC->equipment[i] = NULL;
+  // }
+
+  // memset(d->PC->equipment, 0, sizeof(d->PC->equipment));
 
   dijkstra(d);
   dijkstra_tunnel(d);

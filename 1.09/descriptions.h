@@ -42,6 +42,7 @@ extern const char object_symbol[];
 class npc;
 
 char *get_object_type_name(object_type_t t);
+char *get_object_type_name_by_index(int t);
 
 class monster_description {
  private:
