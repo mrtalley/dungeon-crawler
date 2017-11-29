@@ -9,7 +9,7 @@
 # include "dice.h"
 # include "npc.h"
 
-typedef struct dungeon dungeon_t;
+typedef class dungeon dungeon_t;
 
 uint32_t parse_descriptions(dungeon_t *d);
 uint32_t print_descriptions(dungeon_t *d);
@@ -84,7 +84,7 @@ class monster_description {
   {
     num_alive--;
   }
-  friend npc;
+  friend class npc;
   friend uint32_t spongebob_is_alive(dungeon *d);
 };
 

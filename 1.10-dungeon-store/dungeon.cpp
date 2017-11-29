@@ -1,11 +1,12 @@
 #include <stdio.h>
 #include <stdint.h>
-#include <endian.h>
+// #include <endian.h>
 #include <sys/stat.h>
 #include <sys/time.h>
 #include <limits.h>
 #include <errno.h>
 
+#include "endian.h"
 #include "dungeon.h"
 #include "utils.h"
 #include "heap.h"
@@ -60,7 +61,7 @@ static void dijkstra_corridor(dungeon_t *d, pair_t from, pair_t to)
     }
     initialized = 1;
   }
-  
+
   for (y = 0; y < DUNGEON_Y; y++) {
     for (x = 0; x < DUNGEON_X; x++) {
       path[y][x].cost = INT_MAX;
@@ -88,7 +89,7 @@ static void dijkstra_corridor(dungeon_t *d, pair_t from, pair_t to)
       for (x = to[dim_x], y = to[dim_y];
            (x != from[dim_x]) || (y != from[dim_y]);
            p = &path[y][x], x = p->from[dim_x], y = p->from[dim_y]) {
-        if (mapxy(x, y) != ter_floor_room) {
+        if (mapxy(x, y) != ter_floor_room && mapxy(x, y) != ter_floor_store){
           mapxy(x, y) = ter_floor_hall;
           hardnessxy(x, y) = 0;
         }
@@ -159,7 +160,7 @@ static void dijkstra_corridor_inv(dungeon_t *d, pair_t from, pair_t to)
     }
     initialized = 1;
   }
-  
+
   for (y = 0; y < DUNGEON_Y; y++) {
     for (x = 0; x < DUNGEON_X; x++) {
       path[y][x].cost = INT_MAX;
@@ -187,7 +188,7 @@ static void dijkstra_corridor_inv(dungeon_t *d, pair_t from, pair_t to)
       for (x = to[dim_x], y = to[dim_y];
            (x != from[dim_x]) || (y != from[dim_y]);
            p = &path[y][x], x = p->from[dim_x], y = p->from[dim_y]) {
-        if (mapxy(x, y) != ter_floor_room) {
+        if (mapxy(x, y) != ter_floor_room && mapxy(x, y) != ter_floor_store) {
           mapxy(x, y) = ter_floor_hall;
           hardnessxy(x, y) = 0;
         }
@@ -539,8 +540,14 @@ static int place_rooms(dungeon_t *d)
                      (p[dim_y] != r->position[dim_y] + r->size[dim_y]) &&
                      (p[dim_x] != r->position[dim_x] - 1)              &&
                      (p[dim_x] != r->position[dim_x] + r->size[dim_x])) {
-            mappair(p) = ter_floor_room;
-            hardnesspair(p) = 0;
+            if(i == 2) {
+              mappair(p) = ter_floor_store;
+              hardnesspair(p) = 0;
+              r->store = true;
+            } else {
+              mappair(p) = ter_floor_room;
+              hardnesspair(p) = 0;
+            }
           }
         }
       }
@@ -589,7 +596,7 @@ static void place_stairs(dungeon_t *d)
            (p[dim_x] = rand_range(1, DUNGEON_X - 2)) &&
            ((mappair(p) < ter_floor)                 ||
             (mappair(p) > ter_stairs)))
-      
+
       ;
     mappair(p) = ter_stairs_up;
   } while (rand_under(2, 4));
@@ -782,7 +789,7 @@ int read_rooms(dungeon_t *d, FILE *f)
 
       exit(-1);
     }
-        
+
 
     /* After reading each room, we need to reconstruct them in the dungeon. */
     for (y = d->rooms[i].position[dim_y];

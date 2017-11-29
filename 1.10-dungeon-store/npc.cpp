@@ -15,7 +15,7 @@ static uint32_t max_monster_cells(dungeon *d)
   uint32_t sum;
 
   /* The PC always starts in room 0, so we don't need to search for it. */
-  for (i = 1, sum = 0; i < d->num_rooms; i++) {
+  for (i = 1, sum = 0; i < d->num_rooms - 1; i++) {
     sum += d->rooms[i].size[dim_y] * d->rooms[i].size[dim_x];
   }
 
@@ -716,13 +716,16 @@ npc::npc(dungeon *d, monster_description &m) : md(m)
   color = m.color;
   i = 0;
   do {
-    room = rand_range(1, d->num_rooms - 1);
+    do {
+      room = rand_range(1, d->num_rooms - 1);
+    } while(d->rooms[room].store);
+
     p[dim_y] = rand_range(d->rooms[room].position[dim_y],
-                          (d->rooms[room].position[dim_y] +
-                           d->rooms[room].size[dim_y] - 1));
+                            (d->rooms[room].position[dim_y] +
+                            d->rooms[room].size[dim_y] - 1));
     p[dim_x] = rand_range(d->rooms[room].position[dim_x],
                           (d->rooms[room].position[dim_x] +
-                           d->rooms[room].size[dim_x] - 1));
+                          d->rooms[room].size[dim_x] - 1));
     i++;
   } while (d->character_map[p[dim_y]][p[dim_x]]);
   pc_last_known_position[dim_y] = p[dim_y];
