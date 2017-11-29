@@ -46,6 +46,7 @@ typedef enum __attribute__ ((__packed__)) terrain_type {
   ter_floor,
   ter_floor_room,
   ter_floor_hall,
+  ter_floor_store,
   ter_stairs,
   ter_stairs_up,
   ter_stairs_down

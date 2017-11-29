@@ -257,6 +257,10 @@ static void io_redisplay_visible_monsters(dungeon *d, pair_t cursor)
           mvaddch(d->PC->position[dim_y] + pos[dim_y] + 1,
                   d->PC->position[dim_x] + pos[dim_x], '#');
           break;
+        case ter_floor_store:
+          mvaddch(d->PC->position[dim_y] + pos[dim_y] + 1,
+                  d->PC->position[dim_x] + pos[dim_x], '+');
+          break;
         case ter_debug:
           mvaddch(d->PC->position[dim_y] + pos[dim_y] + 1,
                   d->PC->position[dim_x] + pos[dim_x], '*');
@@ -337,6 +341,9 @@ void io_display(dungeon *d)
           break;
         case ter_floor_hall:
           mvaddch(pos[dim_y] + 1, pos[dim_x], '#');
+          break;
+        case ter_floor_store:
+          mvaddch(pos[dim_y] + 1, pos[dim_x], '+');
           break;
         case ter_debug:
           mvaddch(pos[dim_y] + 1, pos[dim_x], '*');
@@ -431,6 +438,9 @@ void io_display_no_fog(dungeon *d)
         case ter_floor_hall:
           mvaddch(y + 1, x, '#');
           break;
+        case ter_floor_store:
+          mvaddch(y + 1, x, '+');
+          break;
         case ter_debug:
           mvaddch(y + 1, x, '*');
           break;
@@ -509,6 +519,9 @@ uint32_t io_teleport_pc(dungeon *d)
       break;
     case ter_floor_hall:
       mvaddch(dest[dim_y] + 1, dest[dim_x], '#');
+      break;
+    case ter_floor_store:
+      mvaddch(dest[dim_y] + 1, dest[dim_x], '+');
       break;
     case ter_debug:
       mvaddch(dest[dim_y] + 1, dest[dim_x], '*');
@@ -605,7 +618,7 @@ uint32_t io_teleport_pc(dungeon *d)
 
   if (charpair(dest) && charpair(dest) != d->PC) {
     io_queue_message("Teleport failed.  Destination occupied.");
-  } else {  
+  } else {
     d->character_map[d->PC->position[dim_y]][d->PC->position[dim_x]] = NULL;
     d->character_map[dest[dim_y]][dest[dim_x]] = d->PC;
 
@@ -1029,7 +1042,7 @@ static uint32_t io_display_obj_info(object *o)
   refresh();
   getch();
 
-  return 0;  
+  return 0;
 }
 
 static uint32_t io_inspect_eq(dungeon_t *d);
@@ -1271,12 +1284,12 @@ static uint32_t io_inspect_monster(dungeon_t *d)
   mvprintw(n + 4, 0, "Hit any key to continue. ");
 
   refresh();
-  
+
   getch();
 
   io_display(d);
 
-  return 0;  
+  return 0;
 }
 
 static uint32_t io_inspect_eq(dungeon_t *d)
