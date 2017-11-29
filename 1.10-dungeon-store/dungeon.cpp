@@ -543,6 +543,7 @@ static int place_rooms(dungeon_t *d)
             if(i == 2) {
               mappair(p) = ter_floor_store;
               hardnesspair(p) = 0;
+              r->store = true;
             } else {
               mappair(p) = ter_floor_room;
               hardnesspair(p) = 0;

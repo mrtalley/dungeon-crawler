@@ -55,6 +55,7 @@ typedef enum __attribute__ ((__packed__)) terrain_type {
 typedef struct room {
   pair_t position;
   pair_t size;
+  bool store;
 } room_t;
 
 class pc;
