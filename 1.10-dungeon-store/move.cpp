@@ -282,7 +282,10 @@ void do_moves(dungeon_t *d)
     }
 
     npc_next_pos(d, (npc *) c, next);
-    move_character(d, c, next);
+
+    if(mappair(next) != ter_floor_store) {
+      move_character(d, c, next);
+    }
 
     heap_insert(&d->events, update_event(d, e, 1000 / c->speed));
   }
