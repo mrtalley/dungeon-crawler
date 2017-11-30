@@ -40,7 +40,10 @@ void gen_object(dungeon_t *d)
   const std::vector<object_description> &v = d->object_descriptions;
   const object_description &od = v[rand_range(0, v.size() - 1)];
 
-  room = rand_range(0, d->num_rooms - 1);
+  do {
+    room = rand_range(0, d->num_rooms - 1);
+  } while(room == 2);
+
   do {
     p[dim_y] = rand_range(d->rooms[room].position[dim_y],
                           (d->rooms[room].position[dim_y] +
@@ -52,7 +55,7 @@ void gen_object(dungeon_t *d)
 
   o = new object(od, p, d->objmap[p[dim_y]][p[dim_x]]);
 
-  d->objmap[p[dim_y]][p[dim_x]] = o;  
+  d->objmap[p[dim_y]][p[dim_x]] = o;
 }
 
 void gen_objects(dungeon_t *d)
@@ -114,7 +117,7 @@ int32_t object::get_type()
 
 uint32_t object::is_equipable()
 {
-  return type >= objtype_WEAPON && type <= objtype_RING; 
+  return type >= objtype_WEAPON && type <= objtype_RING;
 }
 
 uint32_t object::is_removable()
