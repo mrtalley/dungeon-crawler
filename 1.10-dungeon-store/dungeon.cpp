@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdint.h>
-// #include <endian.h>
+#include <endian.h>
 #include <sys/stat.h>
 #include <sys/time.h>
 #include <limits.h>
