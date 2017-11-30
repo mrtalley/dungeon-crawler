@@ -1,5 +1,12 @@
 1.10 -- Dungeon Store
-* For this assignment, I created a dungeon Store
+* For this assignment, I created a dungeon store
 * The store is rendered with + signs
 * If one of the store room dimensions is smaller than 3 units,
 no objects will spawn in the room.
+* When the PC is in the store, as you walk over items it will display how
+much gold you have, how much the item costs, and the name of it.
+* Price is loosely based on the average damage of an item -- higher damage
+items are more expensive.
+* Every item in the dungeon has a price, and if there is an open space in the
+item area of the store, you can drop the item there to sell it and receive the
+amount of gold that it's worth.

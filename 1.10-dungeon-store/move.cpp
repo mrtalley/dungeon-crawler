@@ -423,7 +423,7 @@ uint32_t move_pc(dungeon_t *d, uint32_t dir)
     move_character(d, d->PC, next);
     dijkstra(d);
     dijkstra_tunnel(d);
-    d->PC->pick_up(d);
+    d->PC->pick_up(d, false);
 
     return 0;
   }

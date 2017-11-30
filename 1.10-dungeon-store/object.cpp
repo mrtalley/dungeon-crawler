@@ -113,7 +113,7 @@ void gen_object(dungeon_t *d)
   o = new object(od, p, d->objmap[p[dim_y]][p[dim_x]]);
 
   o->set_in_store(false);
-  o->set_price(0);
+  o->set_price(set_object_price(o));
 
   d->objmap[p[dim_y]][p[dim_x]] = o;
 }
