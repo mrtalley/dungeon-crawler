@@ -1,0 +1,5 @@
+1.10 -- Dungeon Store
+* For this assignment, I created a dungeon Store
+* The store is rendered with + signs
+* If one of the store room dimensions is smaller than 3 units,
+no objects will spawn in the room.

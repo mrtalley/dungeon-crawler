@@ -17,6 +17,8 @@ class object {
   int32_t hit, dodge, defence, weight, speed, attribute, value;
   bool seen;
   object *next;
+  bool in_store;
+  int price;
  public:
   object(const object_description &o, pair_t p, object *next);
   ~object();
@@ -31,6 +33,22 @@ class object {
   inline int32_t get_damage_sides() const
   {
     return damage.get_sides();
+  }
+  inline int get_price()
+  {
+    return price;
+  }
+  inline void set_price(int set_price)
+  {
+    price = set_price;
+  }
+  inline bool is_in_store()
+  {
+    return in_store;
+  }
+  inline void set_in_store(bool set)
+  {
+    in_store = set;
   }
   char get_symbol();
   uint32_t get_color();
