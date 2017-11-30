@@ -31,6 +31,7 @@ class pc : public character {
   uint32_t has_open_inventory_slot();
   int32_t get_first_open_inventory_slot();
   object *from_pile(dungeon_t *d, pair_t pos);
+  uint32_t gold;
  public:
   pc();
   ~pc();
@@ -40,11 +41,23 @@ class pc : public character {
 
   uint32_t wear_in(uint32_t slot);
   uint32_t remove_eq(uint32_t slot);
-  uint32_t drop_in(dungeon_t *d, uint32_t slot);
+  uint32_t drop_in(dungeon_t *d, uint32_t slot, bool sell);
   uint32_t destroy_in(uint32_t slot);
-  uint32_t pick_up(dungeon_t *d);
+  uint32_t pick_up(dungeon_t *d, bool purchase);
   terrain_type_t known_terrain[DUNGEON_Y][DUNGEON_X];
   uint8_t visible[DUNGEON_Y][DUNGEON_X];
+  inline uint32_t get_gold()
+  {
+    return gold;
+  }
+  inline void subtract_gold(uint32_t amount)
+  {
+    gold -= amount;
+  }
+  inline void add_gold(uint32_t amount)
+  {
+    gold += amount;
+  }
 };
 
 void pc_delete(pc *pc);

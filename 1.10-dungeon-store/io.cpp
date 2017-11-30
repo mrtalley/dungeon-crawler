@@ -808,9 +808,9 @@ void io_display_ch(dungeon_t *d)
 void io_object_to_string(object *o, char *s, uint32_t size)
 {
   if (o) {
-    snprintf(s, size, "%s (sp: %d, dmg: %d+%dd%d)",
+    snprintf(s, size, "%s (sp: %d, dmg: %d+%dd%d, gold: %d)",
              o->get_name(), o->get_speed(), o->get_damage_base(),
-             o->get_damage_number(), o->get_damage_sides());
+             o->get_damage_number(), o->get_damage_sides(), o->get_price());
   } else {
     *s = '\0';
   }
@@ -961,7 +961,7 @@ void io_display_eq(dungeon_t *d)
   io_display(d);
 }
 
-uint32_t io_drop_in(dungeon_t *d)
+uint32_t io_drop_in(dungeon_t *d, bool sell)
 {
   uint32_t i, key;
   char s[61];
@@ -998,7 +998,7 @@ uint32_t io_drop_in(dungeon_t *d)
       continue;
     }
 
-    if (!d->PC->drop_in(d, key - '0')) {
+    if (!d->PC->drop_in(d, key - '0', sell)) {
       return 0;
     }
 
@@ -1525,7 +1525,7 @@ void io_handle_input(dungeon *d)
       fail_code = io_remove_eq(d);
       break;
     case 'd':
-      fail_code = io_drop_in(d);
+      fail_code = io_drop_in(d, false);
       break;
     case 'x':
       fail_code = io_expunge_in(d);
@@ -1550,7 +1550,13 @@ void io_handle_input(dungeon *d)
       io_inspect_monster(d);
       fail_code = 1;
       break;
-     case 'q':
+    case 'P':
+      fail_code = d->PC->pick_up(d, true);
+      break;
+    case 'S':
+      fail_code = io_drop_in(d, true);
+      break;
+    case 'q':
       /* Demonstrate use of the message queue.  You can use this for *
        * printf()-style debugging (though gdb is probably a better   *
        * option.  Not that it matterrs, but using this command will  *

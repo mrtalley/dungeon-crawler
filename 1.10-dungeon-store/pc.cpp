@@ -38,6 +38,7 @@ pc::pc()
   }
 
   hp = 1000;
+  gold = 0;
 }
 
 pc::~pc()
@@ -50,7 +51,7 @@ pc::~pc()
       in[i] = NULL;
     }
   }
-    
+
   for (i = 0; i < num_eq_slots; i++) {
     if (eq[i]) {
       delete eq[i];
@@ -95,6 +96,7 @@ void config_pc(dungeon_t *d)
   d->PC->color.push_back(COLOR_WHITE);
   d->PC->damage = &pc_dice;
   d->PC->name = "Isabella Garcia-Shapiro";
+  d->PC->add_gold(rand() % 11);
 
   d->character_map[character_get_y(d->PC)][character_get_x(d->PC)] = d->PC;
 
@@ -287,7 +289,7 @@ void pc_observe_terrain(pc *p, dungeon_t *d)
     can_see(d, p->position, where, 1, 1);
     where[dim_y] = y_max;
     can_see(d, p->position, where, 1, 1);
-  }       
+  }
 }
 
 int32_t is_illuminated(pc *p, int16_t y, int16_t x)
@@ -395,18 +397,33 @@ uint32_t pc::remove_eq(uint32_t slot)
   return 0;
 }
 
-uint32_t pc::drop_in(dungeon_t *d, uint32_t slot)
+uint32_t pc::drop_in(dungeon_t *d, uint32_t slot, bool sell)
 {
   if (!in[slot] || !in[slot]->is_dropable()) {
     return 1;
   }
 
-  io_queue_message("You drop %s.", in[slot]->get_name());
+  if(!sell) {
+    io_queue_message("You drop %s.", in[slot]->get_name());
 
-  in[slot]->to_pile(d, position);
-  in[slot] = NULL;
+    in[slot]->to_pile(d, position);
+    in[slot] = NULL;
+  } else if (sell && !d->objmap[d->PC->position[dim_y]][d->PC->position[dim_x]] &&
+            mappair(d->PC->position) == ter_floor_store) {
+    // add gold to pc
+    d->PC->add_gold(in[slot]->get_price());
+    // drop item
+    io_queue_message("You sell %s for %d gold. You now have %d gold", in[slot]->get_name(),
+                                                                      in[slot]->get_price(),
+                                                                      d->PC->get_gold());
+    in[slot]->to_pile(d, position);
+    in[slot] = NULL;
+  } else if(sell && d->objmap[d->PC->position[dim_y]][d->PC->position[dim_x]] &&
+           mappair(d->PC->position) == ter_floor_store) {
+    io_queue_message("You must sell the item on an empty slot");
+  }
 
-  return 0;
+    return 0;
 }
 
 uint32_t pc::destroy_in(uint32_t slot)
@@ -423,22 +440,47 @@ uint32_t pc::destroy_in(uint32_t slot)
   return 0;
 }
 
-uint32_t pc::pick_up(dungeon_t *d)
+uint32_t pc::pick_up(dungeon_t *d, bool purchase)
 {
   object *o;
 
   while (has_open_inventory_slot() &&
-         d->objmap[position[dim_y]][position[dim_x]]) {
+         d->objmap[position[dim_y]][position[dim_x]] &&
+         !d->objmap[position[dim_y]][position[dim_x]]->is_in_store())
+  {
     io_queue_message("You pick up %s.",
                      d->objmap[position[dim_y]][position[dim_x]]->get_name());
     in[get_first_open_inventory_slot()] =
       from_pile(d, position);
   }
 
+  while (has_open_inventory_slot() &&
+         d->objmap[position[dim_y]][position[dim_x]] &&
+         d->objmap[position[dim_y]][position[dim_x]]->is_in_store() &&
+         purchase)
+  {
+    if(d->objmap[position[dim_y]][position[dim_x]]->get_price() <= d->PC->get_gold()) {
+      io_queue_message("You purchase %s for %d gold.",
+                      d->objmap[position[dim_y]][position[dim_x]]->get_name(),
+                      d->objmap[position[dim_y]][position[dim_x]]->get_price());
+
+      d->PC->subtract_gold(d->objmap[position[dim_y]][position[dim_x]]->get_price());
+      in[get_first_open_inventory_slot()] =
+          from_pile(d, position);
+    } else {
+      io_queue_message("You don't have enough gold to purcase %s", d->objmap[position[dim_y]][position[dim_x]]->get_name());
+      return 0;
+    }
+  }
+
   for (o = d->objmap[position[dim_y]][position[dim_x]];
-       o;
-       o = o->get_next()) {
-    io_queue_message("You have no room for %s.", o->get_name());
+      o;
+      o = o->get_next()) {
+        if(o->is_in_store()) {
+          io_queue_message("You have %d gold -- Name: %s | Price: %d gold", d->PC->get_gold(), o->get_name(), o->get_price());
+        } else {
+          io_queue_message("You have no room for %s.", o->get_name());
+        }
   }
 
   return 0;
