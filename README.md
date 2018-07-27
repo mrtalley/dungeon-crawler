@@ -1,6 +1,8 @@
 # CS327
 ## Advanced Programming in C
 
+![Dungeon Crawler Image](https://dev.maxwelltalley.com/assets/images/dungeonCrawler.png)
+
 In this class, you create a roguelike game, similar to command line games like NetHack.
 
 0-abelian-sandpile is the only program that is separate.
