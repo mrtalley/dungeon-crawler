@@ -1,5 +1,4 @@
-# CS327
-## Advanced Programming in C
+# Advanced Programming in C
 
 ![Dungeon Crawler Image](https://dev.maxwelltalley.com/assets/images/dungeonCrawler.png)
 
