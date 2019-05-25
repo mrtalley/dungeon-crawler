@@ -1,3 +1,75 @@
+commit 1d89fb6a6e2aa4d45987df9dd8a151d0f2b18a52
+Merge: 6690e87 98fd674
+Author: Maxwell Talley <max.talley0@gmail.com>
+Date:   Thu Nov 30 16:32:43 2017 -0600
+
+    Merge pull request #106 from mrtalley/DS-2
+    
+    Ds 2
+
+commit 98fd6747b4478dfd36dc82fdf0d6bc7ae4e9df60
+Author: mrtalley <mrtalley@iastate.edu>
+Date:   Thu Nov 30 16:31:47 2017 -0600
+
+    DS-2 Purchase & sell items in the store
+
+commit 784eb84223b9e2d5a0df2caf86c2c7525278f8d0
+Author: mrtalley <mrtalley@iastate.edu>
+Date:   Thu Nov 30 00:52:36 2017 -0600
+
+    DS-2 Objects spawn in store w/ price
+
+commit 2fb7d4ae7937786264ed8e521f87c5d8f87c5609
+Author: mrtalley <mrtalley@iastate.edu>
+Date:   Wed Nov 29 23:23:00 2017 -0600
+
+    DS-2 Items don't randomly spawn in dungeon store
+
+commit 6690e876432cc9739519b6b251859f34a730b3b3
+Merge: a145fb8 f029447
+Author: Maxwell Talley <max.talley0@gmail.com>
+Date:   Wed Nov 29 16:46:36 2017 -0600
+
+    Merge pull request #105 from mrtalley/DS-1
+    
+    DS-1
+
+commit f029447e4350d5054154d800fa28ed357250ae12
+Author: mrtalley <mrtalley@iastate.edu>
+Date:   Wed Nov 29 16:42:06 2017 -0600
+
+    DS-1 Monsters can't move into dungeon store
+
+commit 0f028df0f9eeb87a3525ccda70c54f6b0def7e91
+Author: mrtalley <mrtalley@iastate.edu>
+Date:   Wed Nov 29 13:39:56 2017 -0600
+
+    DS-1 Monsters don't spawn in dungeon store
+
+commit 4e9fc7689c2cb8ac07ad7e2adbfb091840b945bb
+Author: mrtalley <mrtalley@iastate.edu>
+Date:   Wed Nov 29 09:21:58 2017 -0600
+
+    DS-1 Added new room type
+
+commit a145fb815823f74ad4221d432bcc5e33b085126d
+Author: mrtalley <mrtalley@iastate.edu>
+Date:   Tue Nov 28 23:04:54 2017 -0600
+
+    Changed folder names, added 1.10
+
+commit 891c36417def26ad85ebfe39afd1cdca9a22788a
+Author: mrtalley <mrtalley@iastate.edu>
+Date:   Thu Nov 16 14:49:45 2017 -0600
+
+    Added copy constructor for object
+
+commit 5d29891d48eeedacdbbca8ff72a62885aa154f18
+Author: mrtalley <mrtalley@iastate.edu>
+Date:   Thu Nov 16 14:37:37 2017 -0600
+
+    Updates to 1.09 README and changelog
+
 commit cac3b7e2e75569699c5652fc8bc4635fa456031b
 Merge: 0c0085a 56d6341
 Author: Maxwell Talley <max.talley0@gmail.com>

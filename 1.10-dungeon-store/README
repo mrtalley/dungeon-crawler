@@ -10,3 +10,9 @@ items are more expensive.
 * Every item in the dungeon has a price, and if there is an open space in the
 item area of the store, you can drop the item there to sell it and receive the
 amount of gold that it's worth.
+
+* When I run this on my Mac, everything works fine. When I run it on pyrite, I
+get a floating point exception. This is because the size of the object descriptions
+vector in object.cpp:gen_objects() is 0. I get this for the unaltered 1.09 solution
+as well, so I believe it's just an issue with the object_desc.txt file. I
+wanted to make note of it here however, just in case.

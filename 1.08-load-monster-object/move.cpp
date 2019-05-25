@@ -3,6 +3,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <assert.h>
+#include <ncurses.h>
 
 #include "dungeon.h"
 #include "heap.h"
@@ -265,6 +266,8 @@ uint32_t move_pc(dungeon_t *d, uint32_t dir)
   case 4:
   case 7:
     next[dim_x]--;
+    mvprintw(23, 1, "-- 7 --");
+    refresh();
     break;
   case 2:
   case 5:
